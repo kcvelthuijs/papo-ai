@@ -1,0 +1,98 @@
+import { useState, useRef } from "react"
+import {
+  VerbConjugation,
+  PronounId,
+} from "webtypes/src/Types/Interfaces/Pronoun"
+import { VerbCardLayout } from "./VerbCardLayout"
+import StarBurst from "../animations/starburst"
+
+type Props = {
+  verb: VerbConjugation
+  description?: string
+}
+
+export function VerbTypeTest({ verb, description }: Props) {
+  const [answers, setAnswers] = useState<Record<string, string>>({})
+  const [matches, setMatches] = useState<Record<string, string>>({})
+  const [wrong, setWrong] = useState<string | null>(null)
+  const [stars, setStars] = useState<any[]>([])
+  const starIdRef = useRef(0)
+  const inputRefs = useRef<Record<string, HTMLInputElement>>({})
+
+  const nextPronoun = Object.keys(verb.forms).find((id) => !matches[id]) as
+    | PronounId
+    | undefined
+
+  function spawnStars(pronounId: PronounId, count = 3, delay = 100) {
+    const rect = inputRefs.current[pronounId]?.getBoundingClientRect()
+    if (!rect) return
+
+    for (let i = 0; i < count; i++) {
+      setTimeout(() => {
+        const star = {
+          id: starIdRef.current++,
+          x: rect.left + rect.width / 2 + (Math.random() * 40 - 20),
+          y: rect.top + (Math.random() * 20 - 10),
+        }
+        setStars((s) => [...s, star])
+        setTimeout(() => {
+          setStars((s) => s.filter((x) => x.id !== star.id))
+        }, 600)
+      }, i * delay)
+    }
+  }
+
+  function checkAnswer(pronounId: PronounId) {
+    const value = answers[pronounId]?.trim().toLowerCase()
+    if (!value) return
+    if (value === verb.forms[pronounId]) {
+      const newMatches = { ...matches, [pronounId]: value }
+      setMatches(newMatches)
+      spawnStars(pronounId, 3, 150)
+      const next = Object.keys(verb.forms).find((id) => !newMatches[id]) as
+        | PronounId
+        | undefined
+      if (next) setTimeout(() => inputRefs.current[next]?.focus(), 0)
+    } else {
+      setWrong(pronounId)
+      setTimeout(() => setWrong(null), 400)
+    }
+  }
+
+  return (
+    <VerbCardLayout
+      title={verb.infinitive}
+      description={description}
+      matches={matches}
+      nextPronounId={nextPronoun}
+      stars={stars}
+      renderField={(pronounId) => (
+        <input
+          ref={(el) => {
+            if (el) inputRefs.current[pronounId] = el
+          }}
+          aria-label={`Conjugação de pronome ${pronounId}`}
+          autoFocus={pronounId === nextPronoun}
+          value={answers[pronounId] || ""}
+          disabled={!!matches[pronounId]}
+          onChange={(e) =>
+            setAnswers({ ...answers, [pronounId]: e.target.value })
+          }
+          onKeyDown={(e) => {
+            if (e.key === "Enter") checkAnswer(pronounId)
+          }}
+          className={`bg-transparent text-center outline-none ${
+            wrong === pronounId
+              ? "text-red-500"
+              : matches[pronounId]
+                ? "font-semibold text-gray-800"
+                : "text-gray-800"
+          }`}
+          style={{
+            width: `${Math.max((answers[pronounId]?.length || 1) + 1, 2)}ch`,
+          }}
+        />
+      )}
+    />
+  )
+}

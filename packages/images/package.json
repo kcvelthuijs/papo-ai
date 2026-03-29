@@ -1,0 +1,20 @@
+{
+  "name": "images",
+  "module": "server.ts",
+  "devDependencies": {
+    "@types/bun": "latest",
+    "webtypes": "workspace:*"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@fastify/cors": "^11.2.0",
+    "@fastify/static": "^9.0.0",
+    "dotenv": "^17.3.1",
+    "fastify": "^5.8.4",
+    "zod": "^4.3.6"
+  }
+}
