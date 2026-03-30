@@ -1,0 +1,37 @@
+title: Previsão do tempo
+
+type: previsão
+
+level: A2
+
+image: noticias-tempo.png
+
+description:
+   Je kijkt naar het journaal op de televisie. Je hebt de ondertiteling aangezet zodat je niet alles hoeft te verstaan, maar je ook de tekst kunt lezen van het bericht.
+   Het is tijd voor het weer. Er verschijnt een vrouw in beeld. Begrijp je de weersvoorspelling voor jouw regio?
+
+voice: marin
+
+prompt: |
+   Opdracht:
+   Genereer een tekst voor het weerbulletin in het journaal op de Portugese televisie op taalniveau A2 en verdeel de tekst in logische paragrafen.
+   Vereisten:
+   * Begin meteen met het weer, niet met een begroeting. 
+   * Gebruik alleen feiten uit de data — verzin er niets bij.
+   * Houd de stijl neutraal en journalistiek, passend bij een item in een nieuwsbulletin.
+   * Maak 3 paragrafen van elk 150 tot 300 woorden met het weer van vandaag, morgen en overmorgen.
+   * Stel 3 tot 5 vragen in een quiz die duidelijk maken of de inhoud begrepen is.   
+   * Presenteer alles als **één JSON-object** in de volgende structuur:
+   {
+   "text": ["paragraaf 1", "paragraaf 2", "paragraaf 3", en optioneel nog meer ],
+   "vocabulario": [
+      { "pt": "Portugees woord", "nl": "Nederlandse vertaling" }
+   ],
+   "quiz": [
+      {
+         "q": "Vraag over de inhoud in het Portugees",
+         "a": "Correct antwoord in het Portugees",
+         "f": ["3 foute antwoorden in het Portugees"]
+      }
+   ]
+   }

@@ -1,0 +1,28 @@
+{
+  "name": "backend",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "cheerio": "^1.2.0",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "openai": "^6.33.0",
+    "path": "^0.12.7",
+    "rss-parser": "^3.13.0",
+    "yaml": "^2.8.3",
+    "zod": "^4.3.6",
+    "dtotypes": "workspace:*"
+  },
+  "scripts": {
+      "start": "bun run index.ts",
+      "build": "tsc -b",
+      "dev": "bun --watch run index.ts"
+   },
+}

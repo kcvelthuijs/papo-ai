@@ -1,0 +1,39 @@
+title: Notícias país
+
+image: noticias-nacional.png
+
+type: notícias
+
+level: A2
+
+description: |
+   Je kijkt naar het journaal op de televisie. Je hebt de ondertiteling aangezet zodat je niet alles hoeft te verstaan, maar je ook de tekst kunt lezen van het bericht.
+   Het is tijd voor het binnenlandse nieuws. In beeld komt een reporter die je bijpraat met het laatste nieuws. Begrijp je wat er aan de hand is?
+
+voice: onyx
+
+prompt: |
+   Opdracht:
+   Genereer een tekst voor een item in het journaal op de Portugese televisie op taalniveau A2 en verdeel de tekst in logische paragrafen.
+   Vereisten:
+   * Begin meteen met het item, niet met een begroeting. 
+   * Houd de stijl neutraal en journalistiek, passend bij een item in een nieuwsbulletin.
+   * Zorg voor tenminste 3 paragrafen en 300 tot 500 woorden. 
+   * Gebruik alleen feiten uit de tekst — verzin niets.
+   * Voeg voor 3 tot 10 moeilijkste woorden uit de tekst een vertaling naar het Nederlands toe. 
+   * Maak een quiz met 3 tot 5 vragen op basis van de tekst waarmee duidelijk wordt of de lezer de inhoud begrijpt.
+   * Presenteer alles als **één JSON-object** in de volgende structuur:
+   {
+   "text": ["paragraaf 1", "paragraaf 2", "paragraaf 3", en optioneel nog meer ],
+   "vocabulario": [
+      { "pt": "Portugees woord", "nl": "Nederlandse vertaling" }
+   ],
+   "quiz": [
+      {
+         "q": "Vraag over de inhoud in het Portugees",
+         "a": "Correct antwoord in het Portugees",
+         "f": ["3 foute antwoorden in het Portugees"]
+      }
+   ]
+   }
+   Gebruik de tekst hieronder als basis:

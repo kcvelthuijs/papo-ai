@@ -21,7 +21,8 @@
   },
   "workspaces": [
     "apps/*",
-    "packages/*"
+    "packages/*",
+    "services/*"
   ],
   "dependencies": {
     "fastify-cors": "^6.1.0",

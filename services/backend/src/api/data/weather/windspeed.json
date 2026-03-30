@@ -1,0 +1,26 @@
+{
+   "owner": "IPMA",
+   "country": "PT",
+   "data": [
+      {
+         "descrição": "---",
+         "classWindSpeed": "-99"
+      },
+      {
+         "descrição": "Fraco",
+         "classWindSpeed": "1"
+      },
+      {
+         "descrição": "Moderado",
+         "classWindSpeed": "2"
+      },
+      {
+         "descrição": "Forte",
+         "classWindSpeed": "3"
+      },
+      {
+         "descrição": "Muito forte",
+         "classWindSpeed": "4"
+      }
+   ]
+}

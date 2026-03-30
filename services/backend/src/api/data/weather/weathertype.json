@@ -1,0 +1,134 @@
+{
+   "owner": "IPMA",
+   "country": "PT",
+   "data": [
+      {
+         "descrição": "---",
+         "idWeatherType": -99
+      },
+      {
+         "descrição": "Sem informa\u00e7\u00e3o",
+         "idWeatherType": 0
+      },
+      {
+         "descrição": "C\u00e9u limpo",
+         "idWeatherType": 1
+      },
+      {
+         "descrição": "C\u00e9u pouco nublado",
+         "idWeatherType": 2
+      },
+      {
+         "descrição": "C\u00e9u parcialmente nublado",
+         "idWeatherType": 3
+      },
+      {
+         "descrição": "C\u00e9u muito nublado ou encoberto",
+         "idWeatherType": 4
+      },
+      {
+         "descrição": "C\u00e9u nublado por nuvens altas",
+         "idWeatherType": 5
+      },
+      {
+         "descrição": "Aguaceiros/chuva",
+         "idWeatherType": 6
+      },
+      {
+         "descrição": "Aguaceiros/chuva fracos",
+         "idWeatherType": 7
+      },
+      {
+         "descrição": "Aguaceiros/chuva fortes",
+         "idWeatherType": 8
+      },
+      {
+         "descrição": "Chuva/aguaceiros",
+         "idWeatherType": 9
+      },
+      {
+         "descrição": "Chuva fraca ou chuvisco",
+         "idWeatherType": 10
+      },
+      {
+         "descrição": "Chuva/aguaceiros forte",
+         "idWeatherType": 11
+      },
+      {
+         "descrição": "Per\u00edodos de chuva",
+         "idWeatherType": 12
+      },
+      {
+         "descrição": "Per\u00edodos de chuva fraca",
+         "idWeatherType": 13
+      },
+      {
+         "descrição": "Per\u00edodos de chuva forte",
+         "idWeatherType": 14
+      },
+      {
+         "descrição": "Chuvisco",
+         "idWeatherType": 15
+      },
+      {
+         "descrição": "Neblina",
+         "idWeatherType": 16
+      },
+      {
+         "descrição": "Nevoeiro ou nuvens baixas",
+         "idWeatherType": 17
+      },
+      {
+         "descrição": "Neve",
+         "idWeatherType": 18
+      },
+      {
+         "descrição": "Trovoada",
+         "idWeatherType": 19
+      },
+      {
+         "descrição": "Aguaceiros e possibilidade de trovoada",
+         "idWeatherType": 20
+      },
+      {
+         "descrição": "Granizo",
+         "idWeatherType": 21
+      },
+      {
+         "descrição": "Geada",
+         "idWeatherType": 22
+      },
+      {
+         "descrição": "Chuva e possibilidade de trovoada",
+         "idWeatherType": 23
+      },
+      {
+         "descrição": "Nebulosidade convectiva",
+         "idWeatherType": 24
+      },
+      {
+         "descrição": "C\u00e9u com per\u00edodos de muito nublado",
+         "idWeatherType": 25
+      },
+      {
+         "descrição": "Nevoeiro",
+         "idWeatherType": 26
+      },
+      {
+         "descrição": "C\u00e9u nublado",
+         "idWeatherType": 27
+      },
+      {
+         "descrição": "Aguaceiros de neve",
+         "idWeatherType": 28
+      },
+      {
+         "descrição": "Chuva e Neve",
+         "idWeatherType": 29
+      },
+      {
+         "descrição": "Chuva e Neve",
+         "idWeatherType": 30
+      }
+   ]
+}
