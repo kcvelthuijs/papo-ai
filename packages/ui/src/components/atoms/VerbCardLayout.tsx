@@ -1,26 +1,29 @@
-import React, { ReactNode, useState } from "react"
+import React, { ReactNode, useState } from "react";
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
   CardDescription,
-} from "../shadcn/card"
-import { Button } from "../shadcn/button"
+} from "../shadcn/card";
+import { Button } from "../shadcn/button";
 
-import StarBurst from "../animations/starburst"
-import { PronounId, PtPronouns } from "webtypes/src/Types/Interfaces/Pronoun"
+import StarBurst from "../animations/starburst";
+import {
+  PronounId,
+  PtPronouns,
+} from "@workspace/webtypes/src/Types/Interfaces/Pronoun";
 
 type VerbCardLayoutProps = {
-  title: string
-  description?: string
-  matches: Record<string, string>
-  nextPronounId?: string
-  stars?: any[]
-  onComplete?: () => void
-  renderField: (pronounId: PronounId) => ReactNode
-  children?: React.ReactNode
-}
+  title: string;
+  description?: string;
+  matches: Record<string, string>;
+  nextPronounId?: string;
+  stars?: any[];
+  onComplete?: () => void;
+  renderField: (pronounId: PronounId) => ReactNode;
+  children?: React.ReactNode;
+};
 
 export function VerbCardLayout({
   title,
@@ -32,7 +35,7 @@ export function VerbCardLayout({
   renderField,
   children,
 }: VerbCardLayoutProps) {
-  const complete: boolean = Object.keys(matches).length === PtPronouns.length
+  const complete: boolean = Object.keys(matches).length === PtPronouns.length;
   return (
     <div className="min-h-screen bg-gray-300 shadow-lg xl:flex xl:justify-center dark:bg-gray-900">
       <div className="h-[calc(100vh-5rem)] bg-gray-100 p-4 sm:w-full xl:w-300 xl:border-r xl:border-l xl:border-gray-400 dark:border-gray-800 dark:bg-gray-700">
@@ -51,7 +54,7 @@ export function VerbCardLayout({
                     const colour =
                       p.id === nextPronounId
                         ? "border-red-400 bg-white border-1 border-b-2"
-                        : "border-gray-200 bg-white border-1 border-b-2"
+                        : "border-gray-200 bg-white border-1 border-b-2";
 
                     return (
                       <div
@@ -67,7 +70,7 @@ export function VerbCardLayout({
                           {renderField(p.id)}{" "}
                         </span>
                       </div>
-                    )
+                    );
                   })}
                 </div>
               </CardContent>
@@ -88,5 +91,5 @@ export function VerbCardLayout({
         )}
       </div>
     </div>
-  )
+  );
 }

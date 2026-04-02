@@ -1,4 +1,6 @@
-import z from "zod"
+import z from "zod";
+
+export type ImageSize = "full" | "small" | "x-small";
 
 export const imageSchema = z.object({
   name: z.string().min(2, "Image name cannot be empty"),
@@ -7,6 +9,6 @@ export const imageSchema = z.object({
 
   size: z.enum(
     ["full", "small", "xsmall", "none"],
-    'Size must be one of "full", "small", "xsmall" or "none".'
+    'Size must be one of "full", "small", "xsmall" or "none".',
   ),
-})
+});

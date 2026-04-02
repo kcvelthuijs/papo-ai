@@ -1,4 +1,4 @@
-import { DictionaryItem } from "webtypes/src/Types/Interfaces/Dictionary"
+import { DictionaryItem } from "@workspace/webtypes/src/Types/Interfaces/Dictionary";
 
 function TooltipWord({ word, translation }: DictionaryItem) {
   return (
@@ -8,7 +8,7 @@ function TooltipWord({ word, translation }: DictionaryItem) {
         {translation}
       </span>
     </span>
-  )
+  );
 }
 
-export default TooltipWord
+export default TooltipWord;

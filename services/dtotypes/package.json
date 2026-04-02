@@ -1,5 +1,5 @@
 {
-  "name": "dtotypes",
+  "name": "@workspace/dtotypes",
   "module": "index.ts",
   "type": "module",
   "private": true,

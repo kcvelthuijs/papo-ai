@@ -1,17 +1,17 @@
-import { useState } from "react"
-import { shuffle } from "../../lib/shuffle"
+import { useState } from "react";
+import { shuffle } from "../../lib/shuffle";
 import {
   VerbConjugation,
   PronounId,
   PtPronouns,
-} from "webtypes/src/Types/Interfaces/Pronoun"
-import { VerbCardLayout } from "./VerbCardLayout"
-import { Button } from "../shadcn/button"
+} from "@workspace/webtypes/src/Types/Interfaces/Pronoun";
+import { VerbCardLayout } from "./VerbCardLayout";
+import { Button } from "../shadcn/button";
 
 type Props = {
-  verb: VerbConjugation
-  description?: string
-}
+  verb: VerbConjugation;
+  description?: string;
+};
 
 export function VerbClickTest({ verb, description }: Props) {
   const [forms, setForms] = useState(() =>
@@ -19,27 +19,27 @@ export function VerbClickTest({ verb, description }: Props) {
       Object.entries(verb.forms).map(([id, text]) => ({
         id: id as PronounId,
         text,
-      }))
-    )
-  )
-  const [matches, setMatches] = useState<Record<string, string>>({})
-  const [wrong, setWrong] = useState<string | null>(null)
+      })),
+    ),
+  );
+  const [matches, setMatches] = useState<Record<string, string>>({});
+  const [wrong, setWrong] = useState<string | null>(null);
 
   const nextPronounObj = (Object.keys(verb.forms) as PronounId[]).find(
-    (id) => !matches[id]
-  )
+    (id) => !matches[id],
+  );
 
   function handleSelect(id: PronounId) {
-    if (!nextPronounObj) return
-    const formObj = forms.find((f) => f.id === id)
-    if (!formObj) return
+    if (!nextPronounObj) return;
+    const formObj = forms.find((f) => f.id === id);
+    if (!formObj) return;
 
     if (formObj.text === verb.forms[nextPronounObj]) {
-      setMatches({ ...matches, [nextPronounObj]: id })
-      setForms(forms.filter((f) => f.id !== id))
+      setMatches({ ...matches, [nextPronounObj]: id });
+      setForms(forms.filter((f) => f.id !== id));
     } else {
-      setWrong(id)
-      setTimeout(() => setWrong(null), 400)
+      setWrong(id);
+      setTimeout(() => setWrong(null), 400);
     }
   }
 
@@ -50,8 +50,8 @@ export function VerbClickTest({ verb, description }: Props) {
       nextPronounId={nextPronounObj}
       matches={matches}
       renderField={(pronounId) => {
-        const matchedFormId = matches[pronounId]
-        return matchedFormId ? <p>{verb.forms[pronounId]}</p> : null
+        const matchedFormId = matches[pronounId];
+        return matchedFormId ? <p>{verb.forms[pronounId]}</p> : null;
       }}
       onComplete={() => console.log("Alle antwoorden ingevuld!")}
     >
@@ -73,5 +73,5 @@ export function VerbClickTest({ verb, description }: Props) {
         </div>
       </div>
     </VerbCardLayout>
-  )
+  );
 }

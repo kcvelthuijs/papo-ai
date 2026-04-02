@@ -15,9 +15,13 @@
     "@hugeicons/core-free-icons": "^4.0.0",
     "@hugeicons/react": "^1.1.6",
     "@workspace/ui": "workspace:*",
-    "webtypes": "workspace:*",
+    "axios": "^1.14.0",
     "react": "^19.2.4",
-    "react-dom": "^19.2.4"
+    "react-dom": "^19.2.4",
+    "react-nice-avatar": "^1.5.0",
+    "@workspace/webtypes": "workspace:*",
+    "@workspace/dtotypes": "workspace:*",
+    "zustand": "^5.0.12"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.1.18",

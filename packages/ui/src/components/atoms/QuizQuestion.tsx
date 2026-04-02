@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react"
+import { useMemo, useState } from "react";
 
 import {
   Card,
@@ -6,16 +6,16 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "../shadcn/card"
-import { RadioGroup, RadioGroupItem } from "../shadcn/radio-group"
-import { Field, FieldDescription } from "../shadcn/field"
-import { Button } from "../shadcn/button"
-import { QuizQuestionProps } from "webtypes/src/Types/Props/QuizQuestionProps"
+} from "../shadcn/card";
+import { RadioGroup, RadioGroupItem } from "../shadcn/radio-group";
+import { Field, FieldDescription } from "../shadcn/field";
+import { Button } from "../shadcn/button";
+import { QuizQuestionProps } from "@workspace/webtypes/src/Types/Props/QuizQuestionProps";
 
 type Answer = {
-  answer: string
-  correct: string
-}
+  answer: string;
+  correct: string;
+};
 
 const QuizQuestion = ({
   className,
@@ -23,37 +23,37 @@ const QuizQuestion = ({
   correct,
   options,
 }: QuizQuestionProps) => {
-  const [selected, setSelected] = useState<string>("")
-  const [checked, setChecked] = useState(false)
-  const [isCorrect, setIsCorrect] = useState<boolean | null>(null)
+  const [selected, setSelected] = useState<string>("");
+  const [checked, setChecked] = useState(false);
+  const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
 
   const respostas = useMemo(
     () => setAnswers(correct, options),
-    [correct, options]
-  )
+    [correct, options],
+  );
 
   const setAnswers = (correct: string, options: string[]) => {
-    let respostas: Answer[] = []
-    const indexcorrect = Math.floor(Math.random() * 4)
+    let respostas: Answer[] = [];
+    const indexcorrect = Math.floor(Math.random() * 4);
     for (let i = 0; i < options.length; i++) {
       if (i == indexcorrect)
-        respostas = [...respostas, { answer: correct, correct: "v" }]
-      respostas = [...respostas, { answer: options[i], correct: `f${i}` }]
+        respostas = [...respostas, { answer: correct, correct: "v" }];
+      respostas = [...respostas, { answer: options[i], correct: `f${i}` }];
     }
     if (indexcorrect >= options.length)
-      respostas = [...respostas, { answer: correct, correct: "v" }]
-    console.log(respostas)
-    return respostas
-  }
+      respostas = [...respostas, { answer: correct, correct: "v" }];
+    console.log(respostas);
+    return respostas;
+  };
 
   const setAltKey = (i: number) => {
-    return "ABCDEFGHIJ".substring(i, i + 1)
-  }
+    return "ABCDEFGHIJ".substring(i, i + 1);
+  };
 
   function onSubmit() {
-    const correct: boolean = selected === "v"
-    setIsCorrect(correct)
-    setChecked(true)
+    const correct: boolean = selected === "v";
+    setIsCorrect(correct);
+    setChecked(true);
   }
 
   return (
@@ -107,7 +107,7 @@ const QuizQuestion = ({
         )}
       </CardFooter>
     </Card>
-  )
-}
+  );
+};
 
-export default QuizQuestion
+export default QuizQuestion;

@@ -1,6 +1,6 @@
 import { Observador } from "../repository/articles.observador";
 import { RTP } from "../repository/articles.rtp";
-import { type Article } from "dtotypes/src/Interfaces/Article";
+import { type Article } from "@workspace/dtotypes/src/Interfaces/Article";
 
 // Correio de Manha: https://www.cmjornal.pt/rss
 // Público: https://feeds.feedburner.com/PublicoRSS

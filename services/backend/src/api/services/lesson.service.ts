@@ -6,7 +6,7 @@ import { parse } from "yaml";
 import {
   type LessonResponse,
   type LessonSummary,
-} from "dtotypes/src/Interfaces/lesson";
+} from "@workspace/dtotypes/src/Interfaces/lesson";
 
 const lessonPath = "data/lessons";
 
@@ -41,7 +41,7 @@ export const lessonService = {
           description: lessonData.description,
           type: lessonData.type,
           level: lessonData.level,
-          image: `/img/${lessonData.image ?? ""}`,
+          image: lessonData.image ?? "",
         };
       } else {
         throw new Error(`File "${filename}" not found.`);

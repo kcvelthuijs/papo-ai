@@ -1,4 +1,4 @@
-import { type VerbConjugation } from "../Interfaces/Pronoun"
+import { type VerbConjugation } from "../Interfaces/Pronouns"
 
 export type VerbTestMode = "click" | "type"
 
