@@ -12,6 +12,13 @@ type LessonState = {
   isLoading: boolean;
   error?: string;
 
+  // Onderdelen van de pagina
+  // die zichtbaar zijn
+  hasImage: boolean;
+  hasText: boolean;
+  hasAudio: boolean;
+  hasDialogue: boolean;
+
   fetchAllLessons: () => Promise<void>;
   getLessonByID: (lessonID: string) => Promise<LessonResponse>;
   setCurrentLesson: (lessonID: string) => void;
@@ -24,9 +31,13 @@ export const useLessonStore = create<LessonState>((set, get) => ({
   isLoading: false,
   error: undefined,
 
+  hasImage: true,
+  hasText: true,
+  hasAudio: false,
+  hasDialogue: false,
+
   fetchAllLessons: async () => {
     set({ isLoading: true, error: undefined });
-    console.log("Start fetching...");
 
     try {
       const { data } = await axios.get("/api/lessons");
@@ -86,5 +97,26 @@ export const useLessonStore = create<LessonState>((set, get) => ({
 
   setCurrentLesson: (lessonID: string) => {
     set({ currentLessonID: lessonID });
+    const existingLesson = get().lessonDetails[lessonID];
+    switch (existingLesson.type) {
+      case "notícias":
+      case "previsão":
+        set({
+          hasImage: true,
+          hasAudio: true,
+          hasText: true,
+          hasDialogue: false,
+        });
+        break;
+
+      case "diálogo":
+        set({
+          hasImage: true,
+          hasText: true,
+          hasAudio: true,
+          hasDialogue: false,
+        });
+        break;
+    }
   },
 }));

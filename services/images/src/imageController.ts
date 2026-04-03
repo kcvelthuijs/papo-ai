@@ -6,7 +6,6 @@ import { promisify } from "node:util";
 
 import { imageSchema, type ImageSize } from "./imageSchema";
 import type { FastifyRequest, FastifyReply } from "fastify";
-import type { ServerResponse, IncomingMessage } from "node:http";
 
 export type ImageRequestBody = {
   name: string;
@@ -15,6 +14,20 @@ export type ImageRequestBody = {
 };
 
 const pump = promisify(pipeline);
+
+const getContentType = (ext: string) => {
+  switch (ext) {
+    case ".png":
+      return "image/png";
+    case ".jpg":
+    case ".jpeg":
+      return "image/jpeg";
+    case ".svg":
+      return "image/svg+xml";
+    default:
+      return "application/octet-stream";
+  }
+};
 
 export const imageController = {
   async getImage(
@@ -49,36 +62,31 @@ export const imageController = {
       name,
     );
 
+    // fase 1: zoek met grootte
     if (!fs.existsSync(fullPath)) {
+      // fase 2: zoek zonder grootte
       return reply.status(400).send(`Image ${fullPath} not found!`);
     }
 
-    let contentType = "application/octet-stream";
     const ext = path.extname(fullPath).toLowerCase();
-    switch (ext) {
-      case ".png":
-        contentType = "image/png";
-        break;
-      case ".jpg":
-      case ".jpeg":
-        contentType = "image/jpeg";
-        break;
-      case ".svg":
-        contentType = "image/svg+xml";
-        break;
-    }
+    const contentType = getContentType(ext);
 
-    try {
-      // Stream via pipeline, handle errors netjes
-      await pump(fs.createReadStream(fullPath), reply.raw);
-      return reply;
-    } catch (err) {
-      console.error("Stream error:", err);
-    }
+    if (contentType === "image/svg+xml") {
+      const svgContent = fs.readFileSync(fullPath, "utf-8");
+      reply.type("image/svg+xml").send(svgContent);
+    } else {
+      try {
+        // Stream via pipeline, handle errors netjes
+        await pump(fs.createReadStream(fullPath), reply.raw);
+        return reply;
+      } catch (err) {
+        console.error("Stream error:", err);
+      }
 
-    const stream = fs.createReadStream(fullPath);
-    stream.on("error", (err) => {
-      console.error("Stream error", err);
-    });
+      const stream = fs.createReadStream(fullPath);
+      stream.on("error", (err) => {
+        console.error("Stream error", err);
+      });
+    }
   },
 };

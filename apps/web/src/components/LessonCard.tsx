@@ -51,7 +51,8 @@ export const LessonCard = ({ lesson, onSelectLesson }: LessonCardProps) => {
       <ImageComponent
         name={lesson.image}
         tree={["lessons", "title"]}
-        size="full"
+        size="small"
+        className="w-100 h-50"
       />
 
       <CardHeader className="px-2 m-0">

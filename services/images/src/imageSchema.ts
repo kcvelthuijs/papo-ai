@@ -1,7 +1,5 @@
 import z from "zod";
 
-export type ImageSize = "full" | "small" | "x-small";
-
 export const imageSchema = z.object({
   name: z.string().min(2, "Image name cannot be empty"),
 

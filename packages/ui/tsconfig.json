@@ -11,7 +11,8 @@
     "baseUrl": ".",
     "paths": {
       "@workspace/ui/*": ["./src/*"]
-    }
+    },
+    "forceConsistentCasingInFileNames": true,
   },
   "include": ["."],
   "exclude": ["node_modules", "dist"]

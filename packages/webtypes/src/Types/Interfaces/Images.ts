@@ -6,4 +6,5 @@ export interface ImageComponentProps {
   name: string;
   tree: string[];
   size: ImageSize;
+  className?: string;
 }

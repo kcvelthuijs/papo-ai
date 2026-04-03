@@ -1,9 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 
 import { type ImageComponentProps } from "@workspace/webtypes/src/Types/Interfaces/Images";
 
-function ImageComponent({ name, tree, size }: ImageComponentProps) {
+function ImageComponent({ name, tree, size, className }: ImageComponentProps) {
   const [imgSrc, setImgSrc] = useState<string | null>(null);
 
   useEffect(() => {
@@ -42,7 +42,11 @@ function ImageComponent({ name, tree, size }: ImageComponentProps) {
 
   return (
     <div>
-      {imgSrc ? <img src={imgSrc || ""} alt={name} /> : <p>Loading image...</p>}
+      {imgSrc ? (
+        <img src={imgSrc || ""} alt={name} className={className} />
+      ) : (
+        <p>Loading image...</p>
+      )}
     </div>
   );
 }

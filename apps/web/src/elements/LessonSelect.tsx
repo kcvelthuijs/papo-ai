@@ -2,8 +2,8 @@ import { useEffect, useRef } from "react";
 
 import type { LessonSelectProps } from "@workspace/webtypes/src/Types/Props/LessonSelectProps";
 
-import { LessonCard, LessonCardSkeleton } from "../components/LessonCard";
-import { useLessonStore } from "../stores/Lesson/LessonStore";
+import { LessonCard, LessonCardSkeleton } from "../Components/LessonCard";
+import { useLessonStore } from "../Stores/LessonStore";
 
 export const LessonSelect = ({ onSelect }: LessonSelectProps) => {
   const { lessonSummaries, fetchAllLessons, isLoading } = useLessonStore();
