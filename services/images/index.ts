@@ -31,11 +31,12 @@ const result = dotenv.config({ debug: true, override: true });
 if (result.error) throw result.error;
 
 // get port for the service
-const cdnport = process.env.CDNPORT || "3001";
+const cdnHost = process.env.CDN_HOST || "localhost";
+const cdnPort = process.env.CDN_PORT || "3001";
 const listenPort: number =
-  cdnport == "" || parseInt(cdnport) == 0 ? 3001 : parseInt(cdnport);
+  cdnPort == "" || parseInt(cdnPort) == 0 ? 3001 : parseInt(cdnPort);
 
 // Start server
 fastify.listen({ port: listenPort }).then(() => {
-  console.log(`Images server is listening on http://localhost:${listenPort}`);
+  console.log(`Images server is listening on http://${cdnHost}:${listenPort}`);
 });

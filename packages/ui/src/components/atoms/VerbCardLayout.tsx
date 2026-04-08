@@ -3,7 +3,6 @@ import {
   PronounId,
 } from "@workspace/webtypes/src/Types/Interfaces/Pronouns";
 import { CardLayout } from "./CardLayout";
-import StarBurst from "../animations/Starburst";
 import { ReactNode } from "react";
 
 type VerbCardLayoutProps = {

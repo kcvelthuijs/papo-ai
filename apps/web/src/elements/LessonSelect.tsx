@@ -6,7 +6,8 @@ import { LessonCard, LessonCardSkeleton } from "../Components/LessonCard";
 import { useLessonStore } from "../Stores/LessonStore";
 
 export const LessonSelect = ({ onSelect }: LessonSelectProps) => {
-  const { lessonSummaries, fetchAllLessons, isLoading } = useLessonStore();
+  const { lessonSummaries, fetchAllLessons, isLoading, setCurrentLesson } =
+    useLessonStore();
 
   const reading = useRef(false);
 
@@ -20,6 +21,7 @@ export const LessonSelect = ({ onSelect }: LessonSelectProps) => {
 
   const onLessonCardSelect = (lessonID: string): void => {
     console.log("onSelect: lesson:", lessonID);
+    setCurrentLesson(lessonID);
     if (onSelect) onSelect(lessonID);
   };
 

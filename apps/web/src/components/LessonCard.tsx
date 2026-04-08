@@ -37,7 +37,7 @@ export const LessonCard = ({ lesson, onSelectLesson }: LessonCardProps) => {
   return (
     <Card
       id={lesson.id}
-      className="relative overflow-hidden mx-auto w-full max-w-sm pt-0 pb-3 bg-gray-100 border-gray-500"
+      className="relative overflow-hidden mx-auto w-full max-w-sm pt-0 pb-3 bg-gray-100 border-gray-500 h-65"
     >
       {lesson.type && (
         <Badge

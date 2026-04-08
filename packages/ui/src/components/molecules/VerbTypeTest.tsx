@@ -4,8 +4,7 @@ import {
   VerbConjugation,
   PronounId,
 } from "@workspace/webtypes/src/Types/Interfaces/Pronouns";
-import { VerbCardLayout } from "./VerbCardLayout";
-import StarBurst from "../animations/starburst";
+import { VerbCardLayout } from "../atoms/VerbCardLayout";
 
 type Props = {
   verb: VerbConjugation;
