@@ -1,17 +1,19 @@
+/* eslint-disable no-inline-styles */
 import { useState, useRef } from "react";
 import {
   VerbConjugation,
   PronounId,
-} from "@workspace/webtypes/src/Types/Interfaces/Pronoun";
+} from "@workspace/webtypes/src/Types/Interfaces/Pronouns";
 import { VerbCardLayout } from "./VerbCardLayout";
 import StarBurst from "../animations/starburst";
 
 type Props = {
   verb: VerbConjugation;
   description?: string;
+  onComplete?: () => void;
 };
 
-export function VerbTypeTest({ verb, description }: Props) {
+export function VerbTypeTest({ verb, description, onComplete }: Props) {
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [matches, setMatches] = useState<Record<string, string>>({});
   const [wrong, setWrong] = useState<string | null>(null);
@@ -31,8 +33,10 @@ export function VerbTypeTest({ verb, description }: Props) {
       setTimeout(() => {
         const star = {
           id: starIdRef.current++,
-          x: rect.left + rect.width / 2 + (Math.random() * 40 - 20),
-          y: rect.top + (Math.random() * 20 - 10),
+          x: rect.left + Math.random() * 2 * rect.width,
+          y: rect.top + (Math.random() * rect.height) / 2,
+          rotation: Math.random() * 360,
+          scale: 0.4 + Math.random() * 0.4,
         };
         setStars((s) => [...s, star]);
         setTimeout(() => {
@@ -66,6 +70,7 @@ export function VerbTypeTest({ verb, description }: Props) {
       matches={matches}
       nextPronounId={nextPronoun}
       stars={stars}
+      onComplete={onComplete}
       renderField={(pronounId) => (
         <input
           ref={(el) => {

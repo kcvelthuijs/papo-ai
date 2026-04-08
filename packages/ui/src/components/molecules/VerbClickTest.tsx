@@ -4,16 +4,18 @@ import {
   VerbConjugation,
   PronounId,
   PtPronouns,
-} from "@workspace/webtypes/src/Types/Interfaces/Pronoun";
-import { VerbCardLayout } from "./VerbCardLayout";
+} from "@workspace/webtypes/src/Types/Interfaces/Pronouns";
+import { VerbCardLayout } from "../atoms/VerbCardLayout";
 import { Button } from "../shadcn/button";
+import { AnswerButton } from "../atoms/AnswerButton";
 
 type Props = {
   verb: VerbConjugation;
   description?: string;
+  onComplete?: () => void;
 };
 
-export function VerbClickTest({ verb, description }: Props) {
+export function VerbClickTest({ verb, description, onComplete }: Props) {
   const [forms, setForms] = useState(() =>
     shuffle(
       Object.entries(verb.forms).map(([id, text]) => ({
@@ -53,22 +55,18 @@ export function VerbClickTest({ verb, description }: Props) {
         const matchedFormId = matches[pronounId];
         return matchedFormId ? <p>{verb.forms[pronounId]}</p> : null;
       }}
-      onComplete={() => console.log("Alle antwoorden ingevuld!")}
+      onComplete={onComplete}
     >
       <div className="flex flex-col items-center">
         <div className="wrap mt-2 flex flex-row flex-wrap justify-center gap-2">
           {forms.map((f) => (
-            <button
-              key={f.id}
+            <AnswerButton
+              id={f.id}
+              state={wrong === f.id}
               onClick={() => handleSelect(f.id)}
-              className={`rounded-lg border px-3 py-2 transition ${
-                wrong === f.id
-                  ? "animate-shake border-red-400 bg-red-100"
-                  : "border-gray-600 bg-gray-100 hover:bg-white"
-              }`}
             >
               {f.text}
-            </button>
+            </AnswerButton>
           ))}
         </div>
       </div>

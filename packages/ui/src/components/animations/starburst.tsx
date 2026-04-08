@@ -1,23 +1,31 @@
-import { NodeGroup } from "react-move"
+/* eslint-disable no-inline-styles */
+import { NodeGroup } from "react-move";
+import { Star } from "../atoms/Star";
 
-type Star = {
-  id: number
-  x: number
-  y: number
-}
+type StarDefinition = {
+  id: number;
+  x: number;
+  y: number;
+  rotation: number;
+  scale: number;
+};
 
 type Props = {
-  stars: Star[]
-}
+  stars: StarDefinition[];
+};
 
-export default function StarBurst({ stars }: Props) {
+function StarBurst({ stars }: Props) {
+  const starClassName = `w-8 h-8 text-yellow-500
+    drop-shadow-[0_0_6px_rgba(254,222,39,0.9)]
+    drop-shadow-[0_0_12px_rgba(254,190,27,0.6)]`;
   return (
     <NodeGroup
       data={stars}
       keyAccessor={(s) => s.id}
-      start={() => ({ y: 0 })}
+      start={() => ({ y: 0, x: 0 })}
       enter={() => ({
         y: [-32],
+        x: [Math.random() * 20 - 10],
         opacity: [0],
         timing: { duration: 600 },
       })}
@@ -29,18 +37,19 @@ export default function StarBurst({ stars }: Props) {
               key={key}
               style={{
                 position: "absolute",
-                left: data.x,
+                left: data.x + (state.x ?? 0),
                 top: data.y + state.y,
-                transform: "translate(-50%,0)",
+                transform: `translate(-50%,0) rotate(${data.rotation}deg) scale(${data.scale})`,
                 opacity: 0.8 - Math.abs(state.y) / 40,
               }}
-              className="text-xl font-bold text-yellow-400"
             >
-              ✨
+              <Star className={starClassName} />
             </span>
           ))}
         </div>
       )}
     </NodeGroup>
-  )
+  );
 }
+
+export default StarBurst;

@@ -1,4 +1,4 @@
-import Page from "./Features/Page";
+import Page from "./features/Page";
 
 export function App() {
   return (
