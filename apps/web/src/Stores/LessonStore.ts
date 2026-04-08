@@ -9,6 +9,7 @@ type LessonState = {
   lessonSummaries: Record<string, LessonSummary>;
   lessonDetails: Record<string, LessonResponse>;
   currentLessonID?: string;
+  currentLesson?: LessonSummary;
   isLoading: boolean;
   error?: string;
 
@@ -28,6 +29,7 @@ export const useLessonStore = create<LessonState>((set, get) => ({
   lessonSummaries: {},
   lessonDetails: {},
   currentLessonID: undefined,
+  currentLesson: undefined,
   isLoading: false,
   error: undefined,
 
@@ -97,8 +99,8 @@ export const useLessonStore = create<LessonState>((set, get) => ({
 
   setCurrentLesson: (lessonID: string) => {
     set({ currentLessonID: lessonID });
-    const existingLesson = get().lessonDetails[lessonID];
-    switch (existingLesson.type) {
+    const currentLesson = get().lessonSummaries[lessonID];
+    switch (currentLesson.type) {
       case "notícias":
       case "previsão":
         set({
