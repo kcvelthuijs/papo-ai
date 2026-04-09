@@ -16,7 +16,6 @@ const Lesson = ({ id }: LessonProps) => {
       try {
         const { data } = await axios.post("/api/lesson", { id: id });
         setLesson(data);
-        console.log("Lesson data:", data);
       } catch (err) {
         console.error("Error fetching lesson:", err);
       }
@@ -25,15 +24,16 @@ const Lesson = ({ id }: LessonProps) => {
   }, []);
 
   return (
-    <div>
+    <div className="mx-3">
       <p>Lesson ID: {id}</p>
-      <p> Lesson Title: {lesson?.title}</p>
       <ImageComponent
         name={lesson?.image ?? ""}
         tree={["lessons", "title"]}
         size="full"
-        className="w-400"
+        className="flex flex-col w-full"
       />
+      <p className="text-2xl py-3 font-bold underline">{lesson?.title}</p>
+      <p className="text-lg">{lesson?.description}</p>
     </div>
   );
 };

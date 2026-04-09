@@ -2,8 +2,9 @@ import axios from "axios";
 import { create } from "zustand";
 import type {
   LessonSummary,
-  LessonResponse,
+  LessonResponse
 } from "@workspace/dtotypes/src/Interfaces/lesson";
+import { getAllLessons } from "@workspace/connectors/src/Lessons/LessonConnector";
 
 type LessonState = {
   lessonSummaries: Record<string, LessonSummary>;
@@ -42,24 +43,25 @@ export const useLessonStore = create<LessonState>((set, get) => ({
     set({ isLoading: true, error: undefined });
 
     try {
-      const { data } = await axios.get("/api/lessons");
-      const summaries: LessonSummary[] = data.lessons;
-      const summaryDict = summaries.reduce(
-        (acc, lesson) => {
-          acc[lesson.id] = lesson;
-          return acc;
-        },
-        {} as Record<string, LessonSummary>,
-      );
+      const summaries: LessonSummary[] | undefined = await getAllLessons();
+      if (summaries) {
+        const summaryDict = summaries.reduce(
+          (acc, lesson) => {
+            acc[lesson.id] = lesson;
+            return acc;
+          },
+          {} as Record<string, LessonSummary>
+        );
 
-      set({
-        lessonSummaries: summaryDict,
-        isLoading: false,
-      });
+        set({
+          lessonSummaries: summaryDict,
+          isLoading: false
+        });
+      }
     } catch (err: any) {
       set({
         isLoading: false,
-        error: err?.message ?? "Fout bij het laden van de lessen",
+        error: err?.message ?? "Fout bij het laden van de lessen"
       });
     }
   },
@@ -75,23 +77,23 @@ export const useLessonStore = create<LessonState>((set, get) => ({
     set({ isLoading: true, error: undefined });
     try {
       const { data } = await axios.post<LessonResponse>("/api/lesson", {
-        id: lessonID,
+        id: lessonID
       });
 
       set((state) => ({
         lessonDetails: {
           ...state.lessonDetails,
-          [lessonID]: data,
+          [lessonID]: data
         },
         currentLessonID: lessonID,
-        isLoading: false,
+        isLoading: false
       }));
 
       return data;
     } catch (err: any) {
       set({
         isLoading: false,
-        error: err?.message ?? "Kon les niet laden",
+        error: err?.message ?? "Kon les niet laden"
       });
       throw err;
     }
@@ -107,7 +109,7 @@ export const useLessonStore = create<LessonState>((set, get) => ({
           hasImage: true,
           hasAudio: true,
           hasText: true,
-          hasDialogue: false,
+          hasDialogue: false
         });
         break;
 
@@ -116,9 +118,9 @@ export const useLessonStore = create<LessonState>((set, get) => ({
           hasImage: true,
           hasText: true,
           hasAudio: true,
-          hasDialogue: false,
+          hasDialogue: false
         });
         break;
     }
-  },
+  }
 }));

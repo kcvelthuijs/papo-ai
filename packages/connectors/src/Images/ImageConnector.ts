@@ -1,8 +1,10 @@
 import axios from 'axios';
+
 import type {
   ImageProps,
   ImageSize,
-} from '@workspace/dtotypes/src/Interfaces/images';
+} from '@workspace/dtotypes/src/Interfaces/image';
+
 
 export const getImage = async ({ name, tree, size }: ImageProps) => {
   let cancelToken = axios.CancelToken.source();
