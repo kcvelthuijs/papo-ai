@@ -15,12 +15,10 @@ export const LessonSelect = ({ onSelect }: LessonSelectProps) => {
     if (reading.current) return;
     reading.current = true;
 
-    console.log("Fetch all lessons ...");
     fetchAllLessons();
   }, []);
 
   const onLessonCardSelect = (lessonID: string): void => {
-    console.log("onSelect: lesson:", lessonID);
     setCurrentLesson(lessonID);
     if (onSelect) onSelect(lessonID);
   };

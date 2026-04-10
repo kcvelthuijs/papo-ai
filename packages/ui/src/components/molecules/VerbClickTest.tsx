@@ -3,33 +3,50 @@ import { shuffle } from "../../lib/shuffle";
 import {
   VerbConjugation,
   PronounId,
-  PtPronouns,
+  PtPronouns
 } from "@workspace/webtypes/src/Types/Interfaces/Pronouns";
 import { VerbCardLayout } from "../atoms/VerbCardLayout";
 import { Button } from "../shadcn/button";
 import { AnswerButton } from "../atoms/AnswerButton";
+import { type Pronoun } from "@workspace/webtypes/src/Types/Interfaces/Pronouns";
 
 type Props = {
   verb: VerbConjugation;
   description?: string;
+  onRight?: (data: any) => void;
+  onWrong?: (data: any) => void;
   onComplete?: () => void;
 };
 
-export function VerbClickTest({ verb, description, onComplete }: Props) {
+export function VerbClickTest({
+  verb,
+  description,
+  onRight,
+  onWrong,
+  onComplete
+}: Props) {
   const [forms, setForms] = useState(() =>
     shuffle(
       Object.entries(verb.forms).map(([id, text]) => ({
         id: id as PronounId,
-        text,
-      })),
-    ),
+        text
+      }))
+    )
   );
   const [matches, setMatches] = useState<Record<string, string>>({});
   const [wrong, setWrong] = useState<string | null>(null);
 
   const nextPronounObj = (Object.keys(verb.forms) as PronounId[]).find(
-    (id) => !matches[id],
+    (id) => !matches[id]
   );
+
+  function handleRight(verb: Pronoun) {
+    if (onRight) onRight(verb);
+  }
+
+  function handleWrong(verb: Pronoun) {
+    if (onWrong) onWrong(verb);
+  }
 
   function handleSelect(id: PronounId) {
     if (!nextPronounObj) return;
@@ -37,9 +54,11 @@ export function VerbClickTest({ verb, description, onComplete }: Props) {
     if (!formObj) return;
 
     if (formObj.text === verb.forms[nextPronounObj]) {
+      handleRight(formObj);
       setMatches({ ...matches, [nextPronounObj]: id });
       setForms(forms.filter((f) => f.id !== id));
     } else {
+      handleWrong(formObj);
       setWrong(id);
       setTimeout(() => setWrong(null), 400);
     }

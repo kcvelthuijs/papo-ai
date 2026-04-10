@@ -12,6 +12,6 @@
         "baseUrl": ".",
         "paths": { "@workspace/ui/*": [ "./src/*" ]}
     },
-    "include": [ "." ],
+//    "include": [ ".", "../../apps/web/src/Utilities/AudioQueue.ts" ],
     "exclude": [ "node_modules", "dist" ]
 }

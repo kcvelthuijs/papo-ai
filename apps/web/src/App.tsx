@@ -1,5 +1,6 @@
 import Page from "./Features/Page";
 
+
 export function App() {
   return (
     <>
@@ -7,3 +8,4 @@ export function App() {
     </>
   );
 }
+

@@ -3,12 +3,20 @@ import { useState } from "react";
 import { VerbClickLearn } from "@workspace/ui/components/atoms/VerbClickLearn";
 import { VerbClickTest } from "@workspace/ui/components/molecules/VerbClickTest";
 import { VerbTypeTest } from "@workspace/ui/components/molecules/VerbTypeTest";
-import { type VerbConjugation } from "@workspace/webtypes/src/Types/Interfaces/Pronouns";
+import {
+  type VerbConjugation,
+  type Pronoun,
+  PtPronouns
+} from "@workspace/webtypes/src/Types/Interfaces/Pronouns";
+
+import { AudioQueue } from "../Utilities/AudioQueue";
+import { getSpeechAudio } from "@workspace/connectors/src/LanguageModel/SpeechConnector";
 
 export default function VerbLesson() {
   // const { currentLessonID, lessonDetails, getLessonByID } = useLessonStore();
   const [stage, setStage] = useState<"learn" | "click" | "test">("learn");
   const [verbId, setVerbId] = useState<number>(0);
+  const [ready, setReady] = useState<boolean>(true);
 
   const verbs: VerbConjugation[] = [
     {
@@ -20,8 +28,8 @@ export default function VerbLesson() {
         p3ev: "é",
         p1mv: "somos",
         p2mv: "são",
-        p3mv: "são",
-      },
+        p3mv: "são"
+      }
     },
     {
       infinitive: "estar",
@@ -32,8 +40,8 @@ export default function VerbLesson() {
         p3ev: "está",
         p1mv: "estamos",
         p2mv: "estão",
-        p3mv: "estão",
-      },
+        p3mv: "estão"
+      }
     },
     {
       infinitive: "ter",
@@ -44,10 +52,30 @@ export default function VerbLesson() {
         p3ev: "tem",
         p1mv: "temos",
         p2mv: "têm",
-        p3mv: "têm",
-      },
-    },
+        p3mv: "têm"
+      }
+    }
   ];
+
+  const speakText = async (text: string) => {
+    setReady(false);
+    const task = await getSpeechAudio(text);
+    if (task) AudioQueue.enqueue(task);
+    await AudioQueue.waitUntilEmpty();
+    setReady(true);
+  };
+
+  const handleRight = ({ id, text }: Pronoun) => {
+    const pronoun = PtPronouns.find((p) => p.id === id);
+    if (pronoun) {
+      const pronounText = `${pronoun.text.replaceAll("/", ",")} ${text}`;
+      speakText(pronounText);
+    }
+  };
+
+  const handleWrong = ({ id, text }: Pronoun) => {
+    console.log("Answer", id, text, "❌");
+  };
 
   const NextStage = () => {
     switch (stage) {
@@ -72,6 +100,8 @@ export default function VerbLesson() {
         <VerbClickLearn
           verb={verbs[verbId]}
           description={`Leer de vervoegingen van het werkwoord '${verbs[verbId]}'!`}
+          enabled={ready}
+          onReady={handleRight}
           onComplete={NextStage}
         />
       )}
@@ -80,6 +110,8 @@ export default function VerbLesson() {
         <VerbClickTest
           verb={verbs[verbId]}
           description={`Selecteer de juiste vervoeging van het werkwoord '${verbs[verbId]}'!`}
+          onRight={handleRight}
+          onWrong={handleWrong}
           onComplete={NextStage}
         />
       )}
@@ -88,6 +120,8 @@ export default function VerbLesson() {
         <VerbTypeTest
           verb={verbs[verbId]}
           description={`Typ de juiste vervoeging van het werkwoord '${verbs[verbId]}'!`}
+          onRight={handleRight}
+          onWrong={handleWrong}
           onComplete={NextStage}
         />
       )}

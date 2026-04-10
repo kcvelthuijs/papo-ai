@@ -2,25 +2,21 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 import { type ImageComponentProps } from "@workspace/webtypes/src/Types/Interfaces/Images";
+import { Skeleton } from "@workspace/ui/components/shadcn/skeleton";
+import { getImage } from "@workspace/connectors/src/Images/ImageConnector";
 
 function ImageComponent({ name, tree, size, className }: ImageComponentProps) {
   const [imgSrc, setImgSrc] = useState<string | null>(null);
+  const [loading, setLoading] = useState<Boolean>(true);
 
   useEffect(() => {
     let cancelToken = axios.CancelToken.source();
-    const fetchImage = async () => {
-      try {
-        const response = await axios.post(
-          "http://localhost:3026/api/images",
-          { name, tree, size },
-          {
-            responseType: "blob", // belangrijk!
-            cancelToken: cancelToken.token,
-          },
-        );
+    let currentUrl: string | null = null;
 
-        // Blob omzetten naar een URL die <img> kan gebruiken
-        const url = URL.createObjectURL(response.data);
+    const load = async () => {
+      setLoading(true);
+      try {
+        const url = await getImage({ name, tree, size }, cancelToken.token);
         setImgSrc(url);
         console.log("url", url);
       } catch (err) {
@@ -29,23 +25,25 @@ function ImageComponent({ name, tree, size, className }: ImageComponentProps) {
         } else {
           console.error(err);
         }
+      } finally {
+        setLoading(false);
       }
     };
-    fetchImage();
-
-    // Cleanup: URL vrijgeven en request annuleren bij unmount
+    load();
     return () => {
       cancelToken.cancel();
-      if (imgSrc) URL.revokeObjectURL(imgSrc);
+      if (currentUrl) {
+        URL.revokeObjectURL(currentUrl);
+      }
     };
   }, [name, tree.join("/"), size]);
 
   return (
     <div>
-      {imgSrc ? (
-        <img src={imgSrc || ""} alt={name} className={className} />
+      {loading ? (
+        <Skeleton className="flex flex-col w-full aspect-2/1 animate-pulse bg-gray-200 " />
       ) : (
-        <p>Loading image...</p>
+        <img src={imgSrc || "null"} alt={name} className={className} />
       )}
     </div>
   );

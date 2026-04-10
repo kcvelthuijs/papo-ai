@@ -2,17 +2,26 @@
 import { useState, useRef } from "react";
 import {
   VerbConjugation,
-  PronounId,
+  PronounId
 } from "@workspace/webtypes/src/Types/Interfaces/Pronouns";
 import { VerbCardLayout } from "../atoms/VerbCardLayout";
+import { type Pronoun } from "@workspace/webtypes/src/Types/Interfaces/Pronouns";
 
 type Props = {
   verb: VerbConjugation;
   description?: string;
+  onRight?: (data: any) => void;
+  onWrong?: (data: any) => void;
   onComplete?: () => void;
 };
 
-export function VerbTypeTest({ verb, description, onComplete }: Props) {
+export function VerbTypeTest({
+  verb,
+  description,
+  onRight,
+  onWrong,
+  onComplete
+}: Props) {
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [matches, setMatches] = useState<Record<string, string>>({});
   const [wrong, setWrong] = useState<string | null>(null);
@@ -23,6 +32,14 @@ export function VerbTypeTest({ verb, description, onComplete }: Props) {
   const nextPronoun = Object.keys(verb.forms).find((id) => !matches[id]) as
     | PronounId
     | undefined;
+
+  function handleRight(verb: Pronoun) {
+    if (onRight) onRight(verb);
+  }
+
+  function handleWrong(verb: Pronoun) {
+    if (onWrong) onWrong(verb);
+  }
 
   function spawnStars(pronounId: PronounId, count = 3, delay = 100) {
     const rect = inputRefs.current[pronounId]?.getBoundingClientRect();
@@ -35,7 +52,7 @@ export function VerbTypeTest({ verb, description, onComplete }: Props) {
           x: rect.left + Math.random() * 2 * rect.width,
           y: rect.top + (Math.random() * rect.height) / 2,
           rotation: Math.random() * 360,
-          scale: 0.4 + Math.random() * 0.4,
+          scale: 0.4 + Math.random() * 0.4
         };
         setStars((s) => [...s, star]);
         setTimeout(() => {
@@ -49,6 +66,7 @@ export function VerbTypeTest({ verb, description, onComplete }: Props) {
     const value = answers[pronounId]?.trim().toLowerCase();
     if (!value) return;
     if (value === verb.forms[pronounId]) {
+      handleRight({ id: pronounId, text: value });
       const newMatches = { ...matches, [pronounId]: value };
       setMatches(newMatches);
       spawnStars(pronounId, 3, 150);
@@ -57,6 +75,7 @@ export function VerbTypeTest({ verb, description, onComplete }: Props) {
         | undefined;
       if (next) setTimeout(() => inputRefs.current[next]?.focus(), 0);
     } else {
+      handleWrong({ id: pronounId, text: value });
       setWrong(pronounId);
       setTimeout(() => setWrong(null), 400);
     }
@@ -93,7 +112,7 @@ export function VerbTypeTest({ verb, description, onComplete }: Props) {
                 : "text-gray-800"
           }`}
           style={{
-            width: `${Math.max((answers[pronounId]?.length || 1) + 1, 2)}ch`,
+            width: `${Math.max((answers[pronounId]?.length || 1) + 1, 2)}ch`
           }}
         />
       )}
