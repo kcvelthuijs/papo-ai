@@ -86,10 +86,14 @@ class AudioQueueClass {
       const check = () => {
         if (!this.current && this.queue.length === 0) {
           resolve();
-        } else {
-          setTimeout(check, 50);
         }
       };
+      const unsubscribe = this.subscribe(() => {
+        if (!this.current && this.queue.length === 0) {
+          unsubscribe();
+          resolve();
+        }
+      });
       check();
     });
   }

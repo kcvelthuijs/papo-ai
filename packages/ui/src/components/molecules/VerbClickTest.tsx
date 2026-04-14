@@ -3,12 +3,10 @@ import { shuffle } from "../../lib/shuffle";
 import {
   VerbConjugation,
   PronounId,
-  PtPronouns
+  type Pronoun
 } from "@workspace/webtypes/src/Types/Interfaces/Pronouns";
 import { VerbCardLayout } from "../atoms/VerbCardLayout";
-import { Button } from "../shadcn/button";
 import { AnswerButton } from "../atoms/AnswerButton";
-import { type Pronoun } from "@workspace/webtypes/src/Types/Interfaces/Pronouns";
 
 type Props = {
   verb: VerbConjugation;
@@ -54,7 +52,8 @@ export function VerbClickTest({
     if (!formObj) return;
 
     if (formObj.text === verb.forms[nextPronounObj]) {
-      handleRight(formObj);
+      handleRight({ id: nextPronounObj, text: formObj.text });
+      console.log("handleSelect", formObj, nextPronounObj);
       setMatches({ ...matches, [nextPronounObj]: id });
       setForms(forms.filter((f) => f.id !== id));
     } else {

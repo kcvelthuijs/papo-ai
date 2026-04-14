@@ -1,12 +1,8 @@
 import axios from "axios";
 
-import { LLM_HOST, LLM_PORT } from "../Connector.config";
 import { type SpeechOptions } from "@workspace/webtypes/src/Types/Interfaces/Speech";
 import { type AudioTask } from "@workspace/webtypes/src/Types/Interfaces/Audio";
-
-const getRouteUrl = (route: string): string => {
-  return `http://${LLM_HOST}:${LLM_PORT}${route}`;
-};
+import { getRouteUrl } from "./LanguageModelConnector";
 
 export const getSpeechAudio = async (
   text: string,

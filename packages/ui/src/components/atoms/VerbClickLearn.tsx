@@ -43,10 +43,6 @@ export function VerbClickLearn({
     const next = (Object.keys(verb.forms) as PronounId[]).find(
       (id) => !newMatches[id]
     );
-
-    if (!next) {
-      onComplete?.();
-    }
   }
 
   return (

@@ -2,7 +2,7 @@ import z from "zod";
 import type { Request, Response } from "express";
 
 import { speechService } from "../services/speech.service";
-import { SpeechReturnStateEnum } from "../types/speech.types";
+import { SpeechReturnStateEnum } from "@workspace/dtotypes/src/Interfaces/speech.types";
 
 const speechSchema = z.object({
   text: z.string().trim().min(1, "Text is required."),
@@ -20,12 +20,12 @@ const speechSchema = z.object({
     "onyx",
     "sage",
     "shimmer",
-    "verse",
+    "verse"
   ]),
 
   instructions: z.string().trim().optional(),
 
-  speed: z.number().min(0.5).max(1.5).optional(),
+  speed: z.number().min(0.5).max(1.5).optional()
 });
 
 export const speechController = {
@@ -43,7 +43,7 @@ export const speechController = {
         text,
         voice,
         instructions,
-        speed,
+        speed
       );
 
       if (response.state == SpeechReturnStateEnum.ok) {
@@ -53,5 +53,5 @@ export const speechController = {
     } catch (error) {
       res.status(500).json({ error: "Failed to generate a response." });
     }
-  },
+  }
 };

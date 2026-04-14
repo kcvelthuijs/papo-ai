@@ -1,11 +1,10 @@
-/* eslint-disable no-inline-styles */
 import { useState, useRef } from "react";
 import {
   VerbConjugation,
-  PronounId
+  PronounId,
+  type Pronoun
 } from "@workspace/webtypes/src/Types/Interfaces/Pronouns";
 import { VerbCardLayout } from "../atoms/VerbCardLayout";
-import { type Pronoun } from "@workspace/webtypes/src/Types/Interfaces/Pronouns";
 
 type Props = {
   verb: VerbConjugation;

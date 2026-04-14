@@ -8,10 +8,9 @@
         "skipLibCheck": true,
         "strict": true,
         "noEmit": true,
-        "forceConsistentCasingInFileNames": true,
-        "baseUrl": ".",
-        "paths": { "@workspace/ui/*": [ "./src/*" ]}
+        "forceConsistentCasingInFileNames": true /* "baseUrl": ".",
+        "paths": { "@workspace/ui/*": [ "./src/*" ]} */
     },
-//    "include": [ ".", "../../apps/web/src/Utilities/AudioQueue.ts" ],
+    // "include": [ ".", "../../apps/web/src/Utilities/AudioQueue.ts" ],
     "exclude": [ "node_modules", "dist" ]
 }

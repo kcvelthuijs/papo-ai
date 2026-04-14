@@ -59,21 +59,25 @@ export default function VerbLesson() {
 
   const speakText = async (text: string) => {
     setReady(false);
-    const task = await getSpeechAudio(text);
+    const task = await getSpeechAudio(text, {
+      voice: "marin",
+      instructions:
+        "Speak Português Europeu with the accent from Coimbra. Use a happy and joyfull tone."
+    });
     if (task) AudioQueue.enqueue(task);
     await AudioQueue.waitUntilEmpty();
     setReady(true);
   };
 
-  const handleRight = ({ id, text }: Pronoun) => {
+  const handleRight = async ({ id, text }: Pronoun) => {
     const pronoun = PtPronouns.find((p) => p.id === id);
     if (pronoun) {
       const pronounText = `${pronoun.text.replaceAll("/", ",")} ${text}`;
-      speakText(pronounText);
+      await speakText(pronounText);
     }
   };
 
-  const handleWrong = ({ id, text }: Pronoun) => {
+  const handleWrong = async ({ id, text }: Pronoun) => {
     console.log("Answer", id, text, "❌");
   };
 
@@ -99,7 +103,7 @@ export default function VerbLesson() {
       {stage === "learn" && (
         <VerbClickLearn
           verb={verbs[verbId]}
-          description={`Leer de vervoegingen van het werkwoord '${verbs[verbId]}'!`}
+          description={`Leer de vervoegingen van het werkwoord "${verbs[verbId].infinitive}"!`}
           enabled={ready}
           onReady={handleRight}
           onComplete={NextStage}
@@ -109,7 +113,7 @@ export default function VerbLesson() {
       {stage === "click" && (
         <VerbClickTest
           verb={verbs[verbId]}
-          description={`Selecteer de juiste vervoeging van het werkwoord '${verbs[verbId]}'!`}
+          description={`Selecteer de juiste vervoeging van het werkwoord "${verbs[verbId].infinitive}"!`}
           onRight={handleRight}
           onWrong={handleWrong}
           onComplete={NextStage}
@@ -119,7 +123,7 @@ export default function VerbLesson() {
       {stage === "test" && (
         <VerbTypeTest
           verb={verbs[verbId]}
-          description={`Typ de juiste vervoeging van het werkwoord '${verbs[verbId]}'!`}
+          description={`Typ de juiste vervoeging van het werkwoord "${verbs[verbId].infinitive}"!`}
           onRight={handleRight}
           onWrong={handleWrong}
           onComplete={NextStage}

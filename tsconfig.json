@@ -1,9 +1,11 @@
 {
-  "compilerOptions": {
-    "target": "ES2022",
-    "module": "ESNext",
-    "moduleResolution": "bundler",
-    "skipLibCheck": true,
-    "strict": true
-  }
+    "compilerOptions": {
+        "target": "ES2022",
+        "module": "ESNext",
+        "types": [ "node" ],
+        "moduleResolution": "bundler",
+        "skipLibCheck": true,
+        "strict": true,
+        "forceConsistentCasingInFileNames": true
+    }
 }
