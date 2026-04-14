@@ -1,0 +1,25 @@
+{
+  "name": "@services/llm",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "scripts": {
+    "start": "bun run index.ts",
+    "build": "tsc -b",
+    "dev": "bun --watch run index.ts"
+  },
+  "dependencies": {
+    "@types/express": "^5.0.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "openai": "^6.34.0",
+    "zod": "^4.3.6",
+    "@workspace/dtotypes": "*"
+  }
+}

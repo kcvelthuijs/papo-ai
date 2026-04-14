@@ -1,0 +1,28 @@
+{
+  "name": "@services/api",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@types/express": "^5.0.6",
+    "cheerio": "^1.2.0",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "path": "^0.12.7",
+    "rss-parser": "^3.13.0",
+    "yaml": "^2.8.3",
+    "zod": "^4.3.6",
+    "@workspace/dtotypes": "workspace:*"
+  },
+  "scripts": {
+    "start": "bun run index.ts",
+    "build": "tsc -b",
+    "dev": "bun --watch run index.ts"
+  }
+}

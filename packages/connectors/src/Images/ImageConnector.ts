@@ -1,6 +1,6 @@
 import axios, { type CancelToken } from "axios";
 
-import type { ImageProps } from "@workspace/dtotypes/src/Interfaces/image";
+import type { ImageProps } from "../../../../definitions/dtotypes/src/Interfaces/image";
 import { CDN_HOST, CDN_PORT } from "../Connector.config";
 
 const getRouteUrl = (route: string): string => {

@@ -1,5 +1,5 @@
-import MenuButton from "@/Components/MenuButton";
 import Avatar from "../Components/Avatar";
+import MenuButton from "../Components/MenuButton";
 
 const NavigationBar = () => {
   return (
@@ -28,7 +28,7 @@ const NavigationBar = () => {
               style={{
                 width: "3.4rem",
                 height: "3.4rem",
-                transform: "scaleX(-1)",
+                transform: "scaleX(-1)"
               }}
             />
           </div>

@@ -1,6 +1,6 @@
 /* eslint-disable no-inline-styles */
 import { NodeGroup } from "react-move";
-import { Star } from "../atoms/Star";
+import { Sparkle, Star } from "../atoms/Star";
 
 type StarDefinition = {
   id: number;
@@ -27,7 +27,7 @@ function StarBurst({ stars }: Props) {
         y: [-32],
         x: [Math.random() * 20 - 10],
         opacity: [0],
-        timing: { duration: 600 },
+        timing: { duration: 600 }
       })}
     >
       {(nodes) => (
@@ -39,11 +39,11 @@ function StarBurst({ stars }: Props) {
                 position: "absolute",
                 left: data.x + (state.x ?? 0),
                 top: data.y + state.y,
-                transform: `translate(-50%,0) rotate(${data.rotation}deg) scale(${data.scale})`,
-                opacity: 0.8 - Math.abs(state.y) / 40,
+                transform: `translate(+50%,0) rotate(${data.rotation}deg) scale(${data.scale})`,
+                opacity: 0.8 - Math.abs(state.y) / 40
               }}
             >
-              <Star className={starClassName} />
+              <Sparkle className={starClassName} />
             </span>
           ))}
         </div>

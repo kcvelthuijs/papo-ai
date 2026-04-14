@@ -16,3 +16,26 @@ export function Star({ className }: Props) {
     </svg>
   );
 }
+
+export function Sparkle({ className }: Props) {
+  return (
+    <svg viewBox="0 0 80 80" fill="currentColor" className={className}>
+      <path
+        fillRule="evenodd"
+        opacity={0.8}
+        stroke="e3bc51"
+        strokeMiterlimit={10}
+        strokeWidth={20}
+        d="M76,40c-27,0-36,10-36,40,0-30-9-40-36-40,27,0,36-10,36-40,0,30,9,40,36,40Z"
+      />
+      <path
+        fillRule="evenodd"
+        opacity={0.8}
+        stroke="e3bc51"
+        strokeMiterlimit={10}
+        strokeWidth={20}
+        d="M76,40c-27,0-36,10-36,40,0-30-9-40-36-40,27,0,36-10,36-40,0,30,9,40,36,40Z"
+      />
+    </svg>
+  );
+}

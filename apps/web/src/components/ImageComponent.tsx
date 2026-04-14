@@ -18,10 +18,8 @@ function ImageComponent({ name, tree, size, className }: ImageComponentProps) {
       try {
         const url = await getImage({ name, tree, size }, cancelToken.token);
         setImgSrc(url);
-        console.log("url", url);
       } catch (err) {
         if (axios.isCancel(err)) {
-          console.log("Request geannuleerd");
         } else {
           console.error(err);
         }

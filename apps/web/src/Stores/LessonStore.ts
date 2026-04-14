@@ -3,7 +3,7 @@ import { create } from "zustand";
 import type {
   LessonSummary,
   LessonResponse
-} from "@workspace/dtotypes/src/Interfaces/lesson";
+} from "../../../../definitions/dtotypes/src/Interfaces/lesson";
 import { getAllLessons } from "@workspace/connectors/src/Lessons/LessonConnector";
 
 type LessonState = {
