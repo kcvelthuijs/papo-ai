@@ -4,7 +4,7 @@ export const API_PORT = 3000;
 
 // Connectie naar LLM
 export const LLM_HOST = "localhost";
-export const LLM_PORT = 3000;
+export const LLM_PORT = 3001;
 
 // Connectie naar CDN
 export const CDN_HOST = "localhost";

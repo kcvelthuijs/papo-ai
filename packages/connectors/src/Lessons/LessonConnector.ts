@@ -1,7 +1,7 @@
 import axios from "axios";
 
 import { API_HOST, API_PORT } from "../Connector.config";
-import type { LessonSummary } from "../../../../definitions/dtotypes/src/Interfaces/lesson";
+import type { LessonSummary } from "@workspace/dtotypes/src/Interfaces/lesson";
 
 const getRouteUrl = (route: string): string => {
   return `http://${API_HOST}:${API_PORT}${route}`;

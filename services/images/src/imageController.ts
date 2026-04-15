@@ -4,7 +4,8 @@ import z from "zod";
 import { pipeline } from "node:stream";
 import { promisify } from "node:util";
 
-import { imageSchema, type ImageSize } from "./imageSchema";
+import { imageSchema } from "./imageSchema";
+import { type ImageSize } from "@workspace/dtotypes/src/Interfaces/image";
 import type { FastifyRequest, FastifyReply } from "fastify";
 
 export type ImageRequestBody = {
@@ -32,7 +33,7 @@ const getContentType = (ext: string) => {
 export const imageController = {
   async getImage(
     req: FastifyRequest<{ Body: ImageRequestBody }>,
-    reply: FastifyReply,
+    reply: FastifyReply
   ) {
     const parseResult = imageSchema.safeParse(req.body);
     console.log(
@@ -41,17 +42,14 @@ export const imageController = {
       "; tree:",
       req.body.tree.join("/"),
       ";size:",
-      req.body.size,
+      req.body.size
     );
     if (!parseResult.success) {
       console.log("parseResult", parseResult.error);
       return reply.status(400).send(z.prettifyError(parseResult.error));
     }
 
-    // get data from request
     const { name, tree, size } = parseResult.data;
-
-    // Get path to the file
     const imagePath = tree.join("/").toLowerCase();
     const fullPath = path.join(
       __dirname,
@@ -59,12 +57,10 @@ export const imageController = {
       "public",
       imagePath,
       size !== "none" ? size : "",
-      name,
+      name
     );
 
-    // fase 1: zoek met grootte
     if (!fs.existsSync(fullPath)) {
-      // fase 2: zoek zonder grootte
       return reply.status(400).send(`Image ${fullPath} not found!`);
     }
 
@@ -76,7 +72,6 @@ export const imageController = {
       reply.type("image/svg+xml").send(svgContent);
     } else {
       try {
-        // Stream via pipeline, handle errors netjes
         await pump(fs.createReadStream(fullPath), reply.raw);
         return reply;
       } catch (err) {
@@ -88,5 +83,5 @@ export const imageController = {
         console.error("Stream error", err);
       });
     }
-  },
+  }
 };

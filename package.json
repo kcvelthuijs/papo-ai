@@ -23,6 +23,7 @@
     "apps/*",
     "definitions/*",
     "packages/*",
+    "repositories/*",
     "services/*"
   ],
   "dependencies": {

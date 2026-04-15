@@ -13,11 +13,12 @@
     "@fastify/cors": "^11.2.0",
     "@fastify/static": "^9.0.0",
     "@workspace/webtypes": "workspace:*",
+    "@workspace/dtotypes": "workspace:*",
     "dotenv": "^17.3.1",
     "fastify": "^5.8.4",
     "zod": "^4.3.6"
   },
-    "scripts": {
+  "scripts": {
     "start": "bun run index.ts",
     "build": "tsc -b",
     "dev": "bun --watch run index.ts"

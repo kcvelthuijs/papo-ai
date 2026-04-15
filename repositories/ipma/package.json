@@ -1,0 +1,16 @@
+{
+  "name": "@repositories/ipma",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@workspace/dtotypes": "workspace:*",
+    "path": "^0.12.7"
+  }
+}
