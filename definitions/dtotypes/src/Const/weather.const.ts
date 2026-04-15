@@ -1,0 +1,15 @@
+export const weatherZones: string[] = [
+  'Continente',
+  'Norte',
+  'Centro',
+  'Sul',
+  'Norte litoral',
+  'Serras norte ',
+  'Centro litoral',
+  'Serras centro',
+  'Sul litoral',
+  'Sul interior',
+  'Serras sul',
+  'Madeira',
+  'Açores',
+];

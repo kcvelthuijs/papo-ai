@@ -10,6 +10,7 @@
     "typescript": "^5"
   },
   "dependencies": {
+    "@types/node": "^25.6.0",
     "@workspace/dtotypes": "workspace:*",
     "path": "^0.12.7"
   }

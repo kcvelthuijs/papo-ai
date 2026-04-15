@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useState } from 'react';
 import {
   VerbConjugation,
-  PronounId
-} from "@workspace/webtypes/src/Types/Interfaces/Pronouns";
-import { VerbCardLayout } from "./VerbCardLayout";
-import { Button } from "../shadcn/button";
+  PronounId,
+} from '@workspace/webtypes/src/Types/Interfaces/Pronouns';
+import { VerbCardLayout } from '../atoms/VerbCardLayout';
+import { Button } from '../shadcn/button';
 
 type Props = {
   verb: VerbConjugation;
@@ -19,12 +19,12 @@ export function VerbClickLearn({
   description,
   enabled,
   onReady,
-  onComplete
+  onComplete,
 }: Props) {
   const [matches, setMatches] = useState<Record<string, string>>({});
 
   const nextPronounObj = (Object.keys(verb.forms) as PronounId[]).find(
-    (id) => !matches[id]
+    (id) => !matches[id],
   );
 
   function handleNext() {
@@ -36,19 +36,19 @@ export function VerbClickLearn({
 
     const newMatches = {
       ...matches,
-      [currentId]: currentId
+      [currentId]: currentId,
     };
     setMatches(newMatches);
 
     const next = (Object.keys(verb.forms) as PronounId[]).find(
-      (id) => !newMatches[id]
+      (id) => !newMatches[id],
     );
   }
 
   return (
     <VerbCardLayout
       title={verb.infinitive}
-      description={description ?? "Aprenda a conjugação"}
+      description={description ?? 'Aprenda a conjugação'}
       nextPronounId={nextPronounObj}
       matches={matches}
       renderField={(pronounId) => {
@@ -58,12 +58,12 @@ export function VerbClickLearn({
       onComplete={onComplete}
     >
       {/* 👇 Slechts één knop */}
-      <div className="flex flex-col items-center">
+      <div className='flex flex-col items-center'>
         {nextPronounObj && (
           <Button
             onClick={handleNext}
             disabled={!enabled}
-            className="rounded-lg border px-4 py-2 bg-white border-gray-600 hover:bg-gray-200 text-black"
+            className='rounded-lg border px-4 py-2 bg-white border-gray-600 hover:bg-gray-200 text-black'
           >
             {verb.forms[nextPronounObj]}
           </Button>
