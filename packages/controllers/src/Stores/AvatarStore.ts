@@ -16,14 +16,14 @@ const DEFAULT_AVATARS: Record<string, AvatarFullConfig> = {
     hatStyle: "none",
     hatColor: "#F48150",
     shirtColor: "#FC909F",
-    bgColor: "#D2EFF3",
-  },
+    bgColor: "#D2EFF3"
+  }
 };
 
 type Role = string;
 
 type AvatarState = {
-  avatarsByRole: Record<Role, AvatarFullConfig>;
+  avatarsByRole: Partial<Record<Role, AvatarFullConfig>>;
 
   // ophalen met fallback (optioneel handig)
   getAvatar: (role: Role) => AvatarFullConfig;
@@ -50,14 +50,14 @@ export const useAvatarStore = create<AvatarState>((set, get) => ({
 
     // optioneel: direct opslaan zodat consistent blijft
     set((state) => ({
-      avatarsByRole: { ...state.avatarsByRole, [role]: fallback },
+      avatarsByRole: { ...state.avatarsByRole, [role]: fallback }
     }));
     return fallback;
   },
 
   setAvatar: (role, avatar) =>
     set((state) => ({
-      avatarsByRole: { ...state.avatarsByRole, [role]: avatar },
+      avatarsByRole: { ...state.avatarsByRole, [role]: avatar }
     })),
 
   updateAvatar: (role, partial) =>
@@ -66,8 +66,8 @@ export const useAvatarStore = create<AvatarState>((set, get) => ({
       return {
         avatarsByRole: {
           ...state.avatarsByRole,
-          [role]: { ...current, ...partial },
-        },
+          [role]: { ...current, ...partial }
+        }
       };
     }),
 
@@ -77,8 +77,8 @@ export const useAvatarStore = create<AvatarState>((set, get) => ({
       return {
         avatarsByRole: {
           ...state.avatarsByRole,
-          [role]: initial ?? DEFAULT_AVATARS.default,
-        },
+          [role]: initial ?? DEFAULT_AVATARS.default
+        }
       };
-    }),
+    })
 }));

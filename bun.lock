@@ -15,7 +15,7 @@
         "typescript": "5.9.3",
       },
     },
-    "apps/web": {
+    "apps/client": {
       "name": "web",
       "version": "0.0.1",
       "dependencies": {
@@ -24,14 +24,17 @@
         "@services/api": "workspace:*",
         "@services/llm": "workspace:*",
         "@workspace/connectors": "workspace:*",
+        "@workspace/controllers": "workspace:*",
         "@workspace/dtotypes": "workspace:*",
         "@workspace/ui": "workspace:*",
         "@workspace/webtypes": "workspace:*",
         "axios": "^1.14.0",
+        "clsx": "^2.1.1",
         "react": "^19.2.4",
         "react-dom": "^19.2.4",
         "react-icons": "^5.6.0",
         "react-nice-avatar": "^1.5.0",
+        "tailwind-merge": "^3.5.0",
         "zustand": "^5.0.12",
       },
       "devDependencies": {
@@ -87,6 +90,24 @@
       "peerDependencies": {
         "@workspace/dtotypes": "workspace:*",
         "@workspace/webtypes": "workspace:*",
+        "typescript": "^5",
+      },
+    },
+    "packages/controllers": {
+      "name": "@workspace/controllers",
+      "dependencies": {
+        "@workspace/connectors": "workspace:*",
+        "@workspace/dtotypes": "workspace:*",
+        "@workspace/ui": "workspace:*",
+        "@workspace/webtypes": "workspace:*",
+        "axios": "^1.15.0",
+        "react-nice-avatar": "^1.5.0",
+        "zustand": "^5.0.12",
+      },
+      "devDependencies": {
+        "@types/bun": "latest",
+      },
+      "peerDependencies": {
         "typescript": "^5",
       },
     },
@@ -949,6 +970,8 @@
     "@vitejs/plugin-react": ["@vitejs/plugin-react@5.2.0", "", { "dependencies": { "@babel/core": "^7.29.0", "@babel/plugin-transform-react-jsx-self": "^7.27.1", "@babel/plugin-transform-react-jsx-source": "^7.27.1", "@rolldown/pluginutils": "1.0.0-rc.3", "@types/babel__core": "^7.20.5", "react-refresh": "^0.18.0" }, "peerDependencies": { "vite": "^4.2.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0" } }, "sha512-YmKkfhOAi3wsB1PhJq5Scj3GXMn3WvtQ/JC0xoopuHoXSdmtdStOpFrYaT1kie2YgFBcIe64ROzMYRjCrYOdYw=="],
 
     "@workspace/connectors": ["@workspace/connectors@workspace:packages/connectors"],
+
+    "@workspace/controllers": ["@workspace/controllers@workspace:packages/controllers"],
 
     "@workspace/dtotypes": ["@workspace/dtotypes@workspace:definitions/dtotypes"],
 
@@ -2072,7 +2095,7 @@
 
     "w3c-xmlserializer": ["w3c-xmlserializer@5.0.0", "", { "dependencies": { "xml-name-validator": "^5.0.0" } }, "sha512-o8qghlI8NZHU1lLPrpi2+Uq7abh4GGPpYANlalzWxyWteJOCsr/P+oPBA49TOLu5FTZO4d3F9MnWJfiMo4BkmA=="],
 
-    "web": ["web@workspace:apps/web"],
+    "web": ["web@workspace:apps/client"],
 
     "web-streams-polyfill": ["web-streams-polyfill@3.3.3", "", {}, "sha512-d2JWLCivmZYTSIoge9MsgFCZrt571BikcWGYkjC1khllbTeDlGqZ2D8vD8E/lJa8WGWbb7Plm8/XJYV7IJHZZw=="],
 

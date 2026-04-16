@@ -1,0 +1,21 @@
+{
+  "name": "@workspace/controllers",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@workspace/connectors": "workspace:*",
+    "@workspace/dtotypes": "workspace:*",
+    "@workspace/ui": "workspace:*",
+    "@workspace/webtypes": "workspace:*",
+    "axios": "^1.15.0",
+    "react-nice-avatar": "^1.5.0",
+    "zustand": "^5.0.12"
+  }
+}

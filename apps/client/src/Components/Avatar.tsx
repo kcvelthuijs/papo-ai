@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import Avatar from "react-nice-avatar";
 
-import { useAvatarStore } from "../Stores/AvatarStore";
+import { useAvatarStore } from "@workspace/controllers/src/Stores/AvatarStore";
 
 type Props = {
   role: string;

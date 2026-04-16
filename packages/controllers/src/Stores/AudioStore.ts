@@ -1,7 +1,7 @@
 import { create } from "zustand";
 
 import { type AudioTask } from "@workspace/webtypes/src/Types/Interfaces/Audio";
-import { AudioQueue } from "../Utilities/AudioQueue";
+import { AudioQueue } from "../Queues/AudioQueue";
 
 type AudioStore = {
   current: AudioTask | null;

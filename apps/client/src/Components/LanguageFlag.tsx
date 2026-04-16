@@ -1,4 +1,4 @@
-import { useLanguageStore } from "../Stores/LanguageStore";
+import { useLanguageStore } from "@workspace/controllers/src/Stores/LanguageStore";
 import AppIcon from "@/assets/papo-logo.svg";
 
 import ImageComponent from "./ImageComponent";
