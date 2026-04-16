@@ -2,16 +2,16 @@ import { create } from "zustand";
 import {
   LANGUAGES,
   DEFAULT_LANGUAGE,
-  type LanguageConfig,
+  type LanguageConfig
 } from "@workspace/webtypes/src/Assets/Data/Languages";
 
 type Code = string;
 
 type LanguageState = {
-  languageByCode: Record<Code, LanguageConfig>;
+  languageByCode: Partial<Record<Code, LanguageConfig>>;
 
   currentLanguage: Code;
-  currentLanguageConfig: LanguageConfig;
+  currentLanguageConfig: LanguageConfig | undefined;
 
   getLanguage: (code: Code) => LanguageConfig;
   setLanguage: (code: Code, Language: LanguageConfig) => void;
@@ -27,19 +27,16 @@ export const useLanguageStore = create<LanguageState>((set, get) => ({
     const found = get().languageByCode[code];
     if (found) return found;
 
-    // fallback: maak 'm aan met default (of leeg)
     const fallback = LANGUAGES.default;
-
-    // optioneel: direct opslaan zodat consistent blijft
     set((state) => ({
-      languageByCode: { ...state.languageByCode, [code]: fallback },
+      languageByCode: { ...state.languageByCode, [code]: fallback }
     }));
     return fallback;
   },
 
   setLanguage: (code, Language) =>
     set((state) => ({
-      languageByCode: { ...state.languageByCode, [code]: Language },
+      languageByCode: { ...state.languageByCode, [code]: Language }
     })),
 
   select: (code) => {
@@ -48,10 +45,10 @@ export const useLanguageStore = create<LanguageState>((set, get) => ({
 
     set({
       currentLanguage: code,
-      currentLanguageConfig: get().languageByCode[code], // update derived state
+      currentLanguageConfig: get().languageByCode[code] // update derived state
     });
   },
 
   // initial derived state
-  currentLanguageConfig: LANGUAGES[DEFAULT_LANGUAGE],
+  currentLanguageConfig: LANGUAGES[DEFAULT_LANGUAGE]
 }));

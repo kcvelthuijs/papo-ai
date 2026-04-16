@@ -1,15 +1,15 @@
-import axios from 'axios';
-import { create } from 'zustand';
+import axios from "axios";
+import { create } from "zustand";
 import type {
   LessonSummary,
-  LessonResponse,
-} from '@workspace/dtotypes/src/Interfaces/lesson';
-import { getAllLessons } from '@workspace/connectors/src/Lessons/LessonConnector';
+  LessonResponse
+} from "@workspace/dtotypes/src/Interfaces/lesson";
+import { getAllLessons } from "@workspace/connectors/src/Lessons/LessonConnector";
 
 type LessonState = {
   lessonSummaries: Record<string, LessonSummary>;
   lessonDetails: Record<string, LessonResponse>;
-  currentLessonID?: string;
+  currentLessonID: string | undefined;
   currentLesson?: LessonSummary;
   isLoading: boolean;
   error?: string;
@@ -50,18 +50,18 @@ export const useLessonStore = create<LessonState>((set, get) => ({
             acc[lesson.id] = lesson;
             return acc;
           },
-          {} as Record<string, LessonSummary>,
+          {} as Record<string, LessonSummary>
         );
 
         set({
           lessonSummaries: summaryDict,
-          isLoading: false,
+          isLoading: false
         });
       }
     } catch (err: any) {
       set({
         isLoading: false,
-        error: err?.message ?? 'Fout bij het laden van de lessen',
+        error: err?.message ?? "Fout bij het laden van de lessen"
       });
     }
   },
@@ -76,24 +76,24 @@ export const useLessonStore = create<LessonState>((set, get) => ({
 
     set({ isLoading: true, error: undefined });
     try {
-      const { data } = await axios.post<LessonResponse>('/api/lesson', {
-        id: lessonID,
+      const { data } = await axios.post<LessonResponse>("/api/lesson", {
+        id: lessonID
       });
 
       set((state) => ({
         lessonDetails: {
           ...state.lessonDetails,
-          [lessonID]: data,
+          [lessonID]: data
         },
         currentLessonID: lessonID,
-        isLoading: false,
+        isLoading: false
       }));
 
       return data;
     } catch (err: any) {
       set({
         isLoading: false,
-        error: err?.message ?? 'Kon les niet laden',
+        error: err?.message ?? "Kon les niet laden"
       });
       throw err;
     }
@@ -102,25 +102,28 @@ export const useLessonStore = create<LessonState>((set, get) => ({
   setCurrentLesson: (lessonID: string) => {
     set({ currentLessonID: lessonID });
     const currentLesson = get().lessonSummaries[lessonID];
-    switch (currentLesson.type) {
-      case 'notícias':
-      case 'previsão':
+    const lessonType =
+      currentLesson != undefined ? currentLesson.type : undefined;
+    
+    switch (lessonType) {
+      case "notícias":
+      case "previsão":
         set({
           hasImage: true,
           hasAudio: true,
           hasText: true,
-          hasDialogue: false,
+          hasDialogue: false
         });
         break;
 
-      case 'diálogo':
+      case "diálogo":
         set({
           hasImage: true,
           hasText: true,
           hasAudio: true,
-          hasDialogue: false,
+          hasDialogue: false
         });
         break;
     }
-  },
+  }
 }));
