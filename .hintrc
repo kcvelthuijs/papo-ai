@@ -1,8 +1,4 @@
 {
-  "extends": [
-    "development"
-  ],
-  "hints": {
-    "typescript-config/is-valid": "off"
-  }
+    "extends": [ "development" ],
+    "hints": { "typescript-config/is-valid": "off", "no-inline-styles": [ "warning", { "requireNoStyleElement": true }]}
 }

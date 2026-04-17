@@ -1,0 +1,14 @@
+{
+  "name": "@repository/mongodb",
+  "module": "index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "mongoose": "^9.4.1"
+  }
+}

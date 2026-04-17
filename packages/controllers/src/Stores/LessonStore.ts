@@ -1,36 +1,59 @@
-import axios from "axios";
-import { create } from "zustand";
+import axios from 'axios';
+import { create } from 'zustand';
+import type { LessonSummary } from '@workspace/dtotypes/src/Interfaces/lesson';
+import { getAllLessons } from '@workspace/connectors/src/Lessons/LessonConnector';
+
+import { lessonEngine } from '../Engines/LessonEngine';
 import type {
-  LessonSummary,
-  LessonResponse
-} from "@workspace/dtotypes/src/Interfaces/lesson";
-import { getAllLessons } from "@workspace/connectors/src/Lessons/LessonConnector";
+  Exercise,
+  ExerciseResult
+} from '@workspace/dtotypes/src/Types/Exercise';
+
+// LessonDetails bestaat uit de summary en de oefeningen
+type LessonDetails = LessonSummary & {
+  exercises: Exercise[];
+};
 
 type LessonState = {
   lessonSummaries: Record<string, LessonSummary>;
-  lessonDetails: Record<string, LessonResponse>;
-  currentLessonID: string | undefined;
-  currentLesson?: LessonSummary;
+  lessonDetails: Record<string, LessonDetails>;
+
+  currentLessonID?: string;
+  currentLesson?: LessonDetails;
+
+  currentExerciseIndex: number;
+  currentExercise?: Exercise;
+
+  results: ExerciseResult[];
+
   isLoading: boolean;
   error?: string;
 
-  // Onderdelen van de pagina
-  // die zichtbaar zijn
   hasImage: boolean;
   hasText: boolean;
   hasAudio: boolean;
   hasDialogue: boolean;
 
   fetchAllLessons: () => Promise<void>;
-  getLessonByID: (lessonID: string) => Promise<LessonResponse>;
-  setCurrentLesson: (lessonID: string) => void;
+  getLessonByID: (lessonID: string) => Promise<LessonDetails>;
+  setCurrentLesson: (lessonID: string) => Promise<void>;
+  startLesson: () => void;
+  submitAnswer: (answer: any) => void;
+  nextExercise: () => void;
 };
 
 export const useLessonStore = create<LessonState>((set, get) => ({
   lessonSummaries: {},
   lessonDetails: {},
+
   currentLessonID: undefined,
   currentLesson: undefined,
+
+  currentExerciseIndex: 0,
+  currentExercise: undefined,
+
+  results: [] as ExerciseResult[],
+
   isLoading: false,
   error: undefined,
 
@@ -39,11 +62,16 @@ export const useLessonStore = create<LessonState>((set, get) => ({
   hasAudio: false,
   hasDialogue: false,
 
+  // -------------------------
+  // DATA LOADING (blijft grotendeels hetzelfde)
+  // -------------------------
+
   fetchAllLessons: async () => {
     set({ isLoading: true, error: undefined });
 
     try {
-      const summaries: LessonSummary[] | undefined = await getAllLessons();
+      const summaries = await getAllLessons();
+
       if (summaries) {
         const summaryDict = summaries.reduce(
           (acc, lesson) => {
@@ -61,22 +89,22 @@ export const useLessonStore = create<LessonState>((set, get) => ({
     } catch (err: any) {
       set({
         isLoading: false,
-        error: err?.message ?? "Fout bij het laden van de lessen"
+        error: err?.message ?? 'Fout bij het laden van de lessen'
       });
     }
   },
 
   getLessonByID: async (lessonID: string) => {
-    const existingLesson = get().lessonDetails[lessonID];
+    const existing = get().lessonDetails[lessonID];
 
-    if (existingLesson) {
-      set({ currentLessonID: lessonID });
-      return existingLesson;
+    if (existing) {
+      return existing;
     }
 
     set({ isLoading: true, error: undefined });
+
     try {
-      const { data } = await axios.post<LessonResponse>("/api/lesson", {
+      const { data } = await axios.post<LessonDetails>('/api/lesson', {
         id: lessonID
       });
 
@@ -85,7 +113,6 @@ export const useLessonStore = create<LessonState>((set, get) => ({
           ...state.lessonDetails,
           [lessonID]: data
         },
-        currentLessonID: lessonID,
         isLoading: false
       }));
 
@@ -93,21 +120,32 @@ export const useLessonStore = create<LessonState>((set, get) => ({
     } catch (err: any) {
       set({
         isLoading: false,
-        error: err?.message ?? "Kon les niet laden"
+        error: err?.message ?? 'Kon les niet laden'
       });
       throw err;
     }
   },
 
-  setCurrentLesson: (lessonID: string) => {
-    set({ currentLessonID: lessonID });
-    const currentLesson = get().lessonSummaries[lessonID];
-    const lessonType =
-      currentLesson != undefined ? currentLesson.type : undefined;
-    
-    switch (lessonType) {
-      case "notícias":
-      case "previsão":
+  // -------------------------
+  // LES SELECTIE
+  // -------------------------
+
+  setCurrentLesson: async (lessonID: string) => {
+    const lesson = await get().getLessonByID(lessonID);
+
+    set({
+      currentLessonID: lessonID,
+      currentLesson: lesson,
+      currentExerciseIndex: 0,
+      currentExercise: lesson.exercises[0],
+      results: []
+    });
+
+    const summary = get().lessonSummaries[lessonID];
+
+    switch (summary?.type) {
+      case 'notícias':
+      case 'previsão':
         set({
           hasImage: true,
           hasAudio: true,
@@ -116,7 +154,7 @@ export const useLessonStore = create<LessonState>((set, get) => ({
         });
         break;
 
-      case "diálogo":
+      case 'diálogo':
         set({
           hasImage: true,
           hasText: true,
@@ -124,6 +162,62 @@ export const useLessonStore = create<LessonState>((set, get) => ({
           hasDialogue: false
         });
         break;
+    }
+  },
+
+  // -------------------------
+  // LES FLOW (NIEUW)
+  // -------------------------
+
+  startLesson: () => {
+    const lesson = get().currentLesson;
+    if (!lesson) return;
+
+    const firstExercise = lesson.exercises[0];
+    if (firstExercise) {
+      set({
+        currentExerciseIndex: 0,
+        currentExercise: firstExercise,
+        results: []
+      });
+      lessonEngine.startExercise(firstExercise);
+    }
+  },
+
+  submitAnswer: async (answer: any) => {
+    const { currentExercise } = get();
+    if (!currentExercise) return;
+
+    const result = (await lessonEngine.evaluate(
+      currentExercise,
+      answer
+    )) as ExerciseResult;
+    set((state) => ({
+      results: [...state.results, result]
+    }));
+
+    if (result.type === 'right') {
+      get().nextExercise();
+    }
+  },
+
+  nextExercise: () => {
+    const { currentLesson, currentExerciseIndex } = get();
+    if (!currentLesson) return;
+
+    const nextIndex = currentExerciseIndex + 1;
+    if (nextIndex >= currentLesson.exercises.length) {
+      console.log('Lesson completed');
+      return;
+    }
+
+    const nextExercise = currentLesson.exercises[nextIndex];
+    if (nextExercise) {
+      set({
+        currentExerciseIndex: nextIndex,
+        currentExercise: nextExercise
+      });
+      lessonEngine.startExercise(nextExercise);
     }
   }
 }));

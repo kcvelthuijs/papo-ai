@@ -1,10 +1,11 @@
-import { useState, useRef } from "react";
+import { useState, useRef } from 'react';
 import {
   VerbConjugation,
   PronounId,
   type Pronoun
-} from "@workspace/webtypes/src/Types/Interfaces/Pronouns";
-import { VerbCardLayout } from "../atoms/VerbCardLayout";
+} from '@workspace/webtypes/src/Types/Interfaces/Pronouns';
+import { VerbCardLayout } from '../atoms/VerbCardLayout';
+import { ExerciseInput } from '../atoms/ExerciseInput';
 
 type Props = {
   verb: VerbConjugation;
@@ -89,29 +90,32 @@ export function VerbTypeTest({
       stars={stars}
       onComplete={onComplete}
       renderField={(pronounId) => (
-        <input
-          ref={(el) => {
+        <ExerciseInput
+          ref={(el: HTMLInputElement | null) => {
             if (el) inputRefs.current[pronounId] = el;
           }}
           aria-label={`Conjugação de pronome ${pronounId}`}
           autoFocus={pronounId === nextPronoun}
-          value={answers[pronounId] || ""}
+          value={answers[pronounId] || ''}
           disabled={!!matches[pronounId]}
-          onChange={(e) =>
-            setAnswers({ ...answers, [pronounId]: e.target.value })
-          }
-          onKeyDown={(e) => {
-            if (e.key === "Enter") checkAnswer(pronounId);
-          }}
-          className={`bg-transparent text-center outline-none ${
+          size={(answers[pronounId]?.length || 1) + 1}
+          state={
             wrong === pronounId
-              ? "text-red-500"
+              ? 'wrong'
               : matches[pronounId]
-                ? "font-semibold text-gray-800"
-                : "text-gray-800"
-          }`}
-          style={{
-            width: `${Math.max((answers[pronounId]?.length || 1) + 1, 2)}ch`
+                ? 'correct'
+                : 'idle'
+          }
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setAnswers((prev) => ({
+              ...prev,
+              [pronounId]: e.target.value
+            }))
+          }
+          onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
+            if (e.key === 'Enter') {
+              checkAnswer(pronounId);
+            }
           }}
         />
       )}

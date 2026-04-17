@@ -35,3 +35,4 @@ export type Exercise =
   | VerbTypeLearn
   | SentenceClickTest
   | QuizQuestion;
+

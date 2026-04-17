@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { VerbClickLearn } from '@workspace/ui/components/atoms/VerbClickLearn';
+import { VerbClickLearn } from '@workspace/ui/components/Exercises/VerbClickLearn';
 import { VerbClickTest } from '@workspace/ui/components/Exercises/VerbClickTest';
 import { VerbTypeTest } from '@workspace/ui/components/Exercises/VerbTypeTest';
 import {
@@ -9,7 +9,7 @@ import {
   PtPronouns,
 } from '@workspace/webtypes/src/Types/Interfaces/Pronouns';
 
-import { AudioQueue } from '../Utilities/AudioQueue';
+import { AudioQueue } from '@workspace/controllers/src/Queues/AudioQueue';
 import { getSpeechAudio } from '@workspace/connectors/src/LanguageModel/SpeechConnector';
 
 export default function VerbLesson() {
