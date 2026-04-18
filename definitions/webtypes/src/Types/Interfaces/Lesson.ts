@@ -1,7 +1,8 @@
-import type {
-  LessonSummary as LessonSummaryDto,
-  LessonResponse as LessonResponseDto,
-} from "@workspace/dtotypes/src/Interfaces/lesson";
-
+import type { LessonSummary as LessonSummaryDto } from '@workspace/dtotypes/src/Interfaces/lesson';
+import type { ExerciseResult } from './Exercise';
 export type LessonSummary = LessonSummaryDto;
-export type LessonResponse = LessonResponseDto;
+
+export type LessonEngineEvaluation = {
+  result: ExerciseResult;
+  nextAction: 'next-exercise' | 'retry' | 'stay';
+};

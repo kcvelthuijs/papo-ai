@@ -1,4 +1,4 @@
-import { type VerbConjugation } from "../Interfaces/Pronouns"
+import { type VerbConjugation } from "@workspace/dtotypes/src/Types/Pronouns"
 
 export type VerbTestMode = "click" | "type"
 

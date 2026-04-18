@@ -1,23 +1,13 @@
-export type SentenceModel = {
-  id: string;
-  type: 'sentence-type-test';
-  sentences: Sentence[];
-};
+import {
+  type SentenceExercise as dtoSentenceExercise,
+  type Sentence as dtoSentence
+} from '@workspace/dtotypes/src/Types/Exercise';
 
-export type Gap = {
-  id: string;
-  correct: string;
-  hint?: string;
-};
+export type Sentence = dtoSentence;
 
-export type Sentence = {
-  id: string;
-  textParts: string[];
-  gaps: Gap[];
-  translation?: string;
-};
+export type SentenceExercise = dtoSentenceExercise;
 
 export type SentenceProps = {
-  exercise: SentenceModel;
+  exercise: SentenceExercise;
   onComplete: (answer: Record<string, string>) => void;
 };

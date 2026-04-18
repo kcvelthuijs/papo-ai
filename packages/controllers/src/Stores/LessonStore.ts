@@ -4,10 +4,9 @@ import type { LessonSummary } from '@workspace/dtotypes/src/Interfaces/lesson';
 import { getAllLessons } from '@workspace/connectors/src/Lessons/LessonConnector';
 
 import { lessonEngine } from '../Engines/LessonEngine';
-import type {
-  Exercise,
-  ExerciseResult
-} from '@workspace/dtotypes/src/Types/Exercise';
+import type { Exercise } from '@workspace/dtotypes/src/Types/Exercise';
+import type { ExerciseResult } from '@workspace/webtypes/src/Types/Interfaces/Exercise';
+import type { LessonEngineEvaluation } from '@workspace/webtypes/src/Types/Interfaces/Lesson';
 
 // LessonDetails bestaat uit de summary en de oefeningen
 type LessonDetails = LessonSummary & {
@@ -188,16 +187,27 @@ export const useLessonStore = create<LessonState>((set, get) => ({
     const { currentExercise } = get();
     if (!currentExercise) return;
 
-    const result = (await lessonEngine.evaluate(
+    const { result, nextAction } = (await lessonEngine.evaluate(
       currentExercise,
       answer
-    )) as ExerciseResult;
+    )) as LessonEngineEvaluation;
+
     set((state) => ({
       results: [...state.results, result]
     }));
 
-    if (result.type === 'right') {
-      get().nextExercise();
+    switch (nextAction) {
+      case 'next-exercise':
+        get().nextExercise();
+        break;
+
+      case 'retry':
+        // niets doen → zelfde exercise blijft actief
+        break;
+
+      case 'stay':
+        // bijv. dialogue / multi-step
+        break;
     }
   },
 

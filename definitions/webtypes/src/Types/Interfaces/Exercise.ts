@@ -1,38 +1,34 @@
-export type BaseExercise = {
-  id: string;
-  type: string;
+import type {
+  VerbLearnExercise as dtoVerbLearnExercise,
+  Sentence as dtoSentence,
+  Gap as dtoGap
+} from '@workspace/dtotypes/src/Types/Exercise';
+
+export type VerbLearnExercise = dtoVerbLearnExercise;
+export type Sentence = dtoSentence;
+export type Gap = dtoGap;
+
+export type ExerciseResult =
+  | ExerciseRightResult
+  | ExerciseWrongResult
+  | ExerciseRemark;
+
+export type ExerciseRightResult = {
+  type: 'right';
+  exerciseId: string;
+  answer: any;
 };
 
-export type VerbClickLearn = BaseExercise & {
-  type: 'verb-click-learn';
-  prompt: string;
-  options: string[];
-  correct: string;
+export type ExerciseWrongResult = {
+  type: 'wrong';
+  exerciseId: string;
+  answer: any;
+  correctAnswer?: any;
 };
 
-export type VerbTypeLearn = BaseExercise & {
-  type: 'verb-type-learn';
-  verb: string;
-  answer: string;
+export type ExerciseRemark = {
+  type: 'remark';
+  exerciseId: string;
+  answer: any;
+  remark: string;
 };
-
-export type SentenceClickTest = BaseExercise & {
-  type: 'sentence-click-test';
-  sentence: string;
-  options: string[];
-  correctIndex: number;
-};
-
-export type QuizQuestion = BaseExercise & {
-  type: 'quiz-question';
-  question: string;
-  answers: string[];
-  correctIndex: number;
-};
-
-export type Exercise =
-  | VerbClickLearn
-  | VerbTypeLearn
-  | SentenceClickTest
-  | QuizQuestion;
-

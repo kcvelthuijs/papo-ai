@@ -1,51 +1,59 @@
-export type Exercise = {
+import type { VerbConjugation } from './Pronouns';
+
+export type BaseExercise = {
   id: string;
   type: string;
+  title: string;
+  description: string;
+  isDone: boolean;
 };
 
-type ExerciseStrategy = {
-  generate?: (exercise: any) => Promise<any>;
-  start?: (exercise: any) => void;
-  interact?: (exercise: any, input: any) => Promise<any>;
-  evaluate?: (exercise: any, answer: any) => Promise<ExerciseResult>;
-  summarize?: (exercise: any, history: any[]) => Promise<any>;
-  getCorrectAnswer?: (exercise: any) => Promise<any>;
-  validate: (exercise: any, answer: any) => boolean;
+export type VerbLearnExercise = BaseExercise & {
+  type: 'verb-learning';
+  verb: VerbConjugation;
 };
 
-export const exerciseStrategies: Record<string, ExerciseStrategy> = {
-  'verb-click-learn': {
-    validate: (ex, answer) => ex.correct === answer,
-    getCorrectAnswer: (ex) => ex.correct
-  },
-
-  'quiz-question': {
-    validate: (ex, answer) => ex.correctIndex === answer,
-    getCorrectAnswer: (ex) => ex.answers[ex.correctIndex]
-  }
+export type SentenceFillInExercise = BaseExercise & {
+  type: 'sentence-click-test';
+  sentences: Sentence[];
 };
 
-export type ExerciseResult =
-  | ExerciseRightResult
-  | ExerciseWrongResult
-  | ExerciseRemark;
-
-export type ExerciseRightResult = {
-  type: 'right';
-  exerciseId: string;
-  answer: any;
+export type SentenceClickTest = BaseExercise & {
+  type: 'sentence-click-test';
+  sentence: string;
+  options: string[];
+  correctIndex: number;
 };
 
-export type ExerciseWrongResult = {
-  type: 'wrong';
-  exerciseId: string;
-  answer: any;
-  correctAnswer?: any;
+export type QuizQuestion = BaseExercise & {
+  type: 'quiz-question';
+  question: string;
+  answers: string[];
+  correctIndex: number;
 };
 
-export type ExerciseRemark = {
-  type: 'remark';
-  exerciseId: string;
-  answer: any;
-  remark: string;
+export type Exercise =
+  | BaseExercise
+  | VerbLearnExercise
+  | SentenceClickTest
+  | SentenceClickTest
+  | QuizQuestion;
+
+export type SentenceExercise = {
+  id: string;
+  type: 'sentence-type-test';
+  sentences: Sentence[];
+};
+
+export type Gap = {
+  id: string;
+  correct: string;
+  hint?: string;
+};
+
+export type Sentence = {
+  id: string;
+  textParts: string[];
+  gaps: Gap[];
+  translation?: string;
 };

@@ -3,7 +3,7 @@ import { Button } from '../shadcn/button';
 
 import { CardLayout } from '../atoms/CardLayout';
 import { ExerciseInput } from '../atoms/ExerciseInput';
-import { Gap } from '@workspace/webtypes/src/Types/Props/ExercisesProps';
+import { Gap } from '@workspace/webtypes/src/Types/Interfaces/Exercise';
 
 type Props = {
   exercise: any;
