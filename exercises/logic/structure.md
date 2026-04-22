@@ -1,0 +1,16 @@
+.
+./structure.md
+./bun.lock
+./README.md
+./.gitignore
+./index.ts
+./src
+./src/types
+./src/types/Exercise.types.ts
+./src/logic
+./src/logic/ExercuteExercise.ts
+./src/check
+./src/check/OpenExercise.logic.ts
+./src/check/SentenceBuild.logic.ts
+./src/check/CheckVerb.logic.ts
+./src/check/CheckGap.logic.ts

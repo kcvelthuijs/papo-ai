@@ -1,0 +1,15 @@
+.
+./structure.md
+./README.md
+./.gitignore
+./index.ts
+./src
+./src/Types
+./src/Types/ExerciseComponentRegistry.ts
+./src/Stores
+./src/Stores/AvatarStore.ts
+./src/Stores/LanguageStore.ts
+./src/Stores/AudioStore.ts
+./src/Stores/LessonStore.ts
+./src/Queues
+./src/Queues/AudioQueue.ts

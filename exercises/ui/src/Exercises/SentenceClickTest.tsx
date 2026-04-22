@@ -84,7 +84,7 @@ export function SentenceClickTest({
       title={title ?? 'Title'}
       description={description ?? 'Description'}
       content={content}
-      children={children}
+      footer={children}
       complete={complete}
       onComplete={onComplete}
     />

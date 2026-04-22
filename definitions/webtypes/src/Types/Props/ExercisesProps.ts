@@ -1,7 +1,7 @@
 import {
   type SentenceExercise as dtoSentenceExercise,
-  type Sentence as dtoSentence
-} from '@workspace/dtotypes/src/Types/Exercise';
+  type Sentence as dtoSentence,
+} from '@workspace/dtotypes/src/Types/Exercise.dto';
 
 export type Sentence = dtoSentence;
 

@@ -1,31 +1,31 @@
-import z from "zod";
-import type { Request, Response } from "express";
+import z from 'zod';
+import type { Request, Response } from 'express';
 
-import { speechService } from "../Services/speech.service";
-import { SpeechReturnStateEnum } from "@workspace/dtotypes/src/Interfaces/speech";
+import { speechService } from '../Services/speech.service';
+import { SpeechReturnStateEnum } from '@workspace/dtotypes/src/Interfaces/speech.dto';
 
 const speechSchema = z.object({
-  text: z.string().trim().min(1, "Text is required."),
+  text: z.string().trim().min(1, 'Text is required.'),
 
   voice: z.enum([
-    "alloy",
-    "ash",
-    "ballad",
-    "cedar",
-    "coral",
-    "echo",
-    "fable",
-    "marin",
-    "nova",
-    "onyx",
-    "sage",
-    "shimmer",
-    "verse"
+    'alloy',
+    'ash',
+    'ballad',
+    'cedar',
+    'coral',
+    'echo',
+    'fable',
+    'marin',
+    'nova',
+    'onyx',
+    'sage',
+    'shimmer',
+    'verse',
   ]),
 
   instructions: z.string().trim().optional(),
 
-  speed: z.number().min(0.5).max(1.5).optional()
+  speed: z.number().min(0.5).max(1.5).optional(),
 });
 
 export const speechController = {
@@ -43,15 +43,15 @@ export const speechController = {
         text,
         voice,
         instructions,
-        speed
+        speed,
       );
 
       if (response.state == SpeechReturnStateEnum.ok) {
-        res.setHeader("Content-Type", "audio/mpeg");
+        res.setHeader('Content-Type', 'audio/mpeg');
         res.send(response.audio);
-      } else res.status(500).json({ error: "Failed to retrieve " });
+      } else res.status(500).json({ error: 'Failed to retrieve ' });
     } catch (error) {
-      res.status(500).json({ error: "Failed to generate a response." });
+      res.status(500).json({ error: 'Failed to generate a response.' });
     }
-  }
+  },
 };

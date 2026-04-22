@@ -1,4 +1,4 @@
-# dtotypes
+# @exercise/logic
 
 To install dependencies:
 

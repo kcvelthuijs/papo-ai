@@ -1,9 +1,9 @@
 import {
   PtPronouns,
   PronounId,
-} from "@workspace/webtypes/src/Types/Interfaces/Pronouns";
-import { CardLayout } from "./CardLayout";
-import { ReactNode } from "react";
+} from '@workspace/webtypes/src/Types/Interfaces/Pronouns';
+import { CardLayout } from './CardLayout';
+import { ReactNode } from 'react';
 
 type VerbCardLayoutProps = {
   title: string;
@@ -34,15 +34,15 @@ export function VerbCardLayout({
       {PtPronouns.map((p) => {
         const colour =
           p.id === nextPronounId
-            ? "border-red-400 bg-white border-1 border-b-2"
-            : "border-gray-200 bg-white border-1 border-b-2";
+            ? 'border-red-400 bg-white border-1 border-b-2'
+            : 'border-gray-200 bg-white border-1 border-b-2';
 
         return (
           <div
             key={p.id}
-            className="my-1 grid grid-cols-[40%_30%_30%] gap-y-4 align-bottom"
+            className='my-1 grid grid-cols-[40%_30%_30%] gap-y-4 align-bottom'
           >
-            <span className="border-transparent m-0.5 py-1 pr-2 text-right">
+            <span className='border-transparent m-0.5 py-1 pr-2 text-right'>
               {p.text}
             </span>
             <span
@@ -61,7 +61,7 @@ export function VerbCardLayout({
       title={title}
       description={description}
       content={content}
-      children={children}
+      footer={children}
       complete={complete}
       onComplete={onComplete}
       stars={stars}

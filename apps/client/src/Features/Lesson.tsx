@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 import ImageComponent from '../Components/ImageComponent';
-import { type LessonResponse } from '@workspace/webtypes/src/Types/Interfaces/Lesson';
+import { type LessonSummary } from '@workspace/webtypes/src/Types/Interfaces/Lesson';
 import { Spinner } from '@workspace/ui/components/shadcn/spinner';
 
 type LessonProps = {
@@ -18,7 +18,7 @@ type LessonState =
   | 'finished';
 
 const Lesson = ({ id }: LessonProps) => {
-  const [lesson, setLesson] = useState<LessonResponse | undefined>(undefined);
+  const [lesson, setLesson] = useState<LessonSummary | undefined>(undefined);
   const [state, setState] = useState<LessonState>('begin');
 
   useEffect(() => {
