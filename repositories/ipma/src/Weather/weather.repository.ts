@@ -1,7 +1,7 @@
-import path from "path";
-import type { DailyForecast } from "@workspace/dtotypes//src/Interfaces/weather";
-import { existsSync } from "fs";
-import { readFile } from "fs/promises";
+import path from 'path';
+import type { DailyForecast } from '@workspace/dtotypes';
+import { existsSync } from 'fs';
+import { readFile } from 'fs/promises';
 
 type ipmaCities = {
   owner: string;
@@ -107,13 +107,13 @@ let staticCache: StaticData | null = null;
 
 // Functie om steden op te halen
 async function fetchCities(): Promise<Record<number, City>> {
-  const citiesFilePath = path.join(__dirname, "..", "Data", "cities.json");
+  const citiesFilePath = path.join(__dirname, '..', 'Data', 'cities.json');
   if (!existsSync(citiesFilePath)) {
-    console.log("fetchCities", `File ${citiesFilePath} not found!`);
+    console.log('fetchCities', `File ${citiesFilePath} not found!`);
     return {};
   }
 
-  const fileContent = await readFile(citiesFilePath, "utf8");
+  const fileContent = await readFile(citiesFilePath, 'utf8');
   const feed = JSON.parse(fileContent);
   const cities = feed.data.map((item: any) => ({
     idCity: item.globalIdLocal,
@@ -123,7 +123,7 @@ async function fetchCities(): Promise<Record<number, City>> {
     weatherZone: item.weatherZone,
     elevation: item.elevation,
     latitude: +item.latitude,
-    longitude: +item.longitude
+    longitude: +item.longitude,
   }));
   return Object.fromEntries(cities.map((c: any) => [c.idCity, c]));
 }
@@ -132,20 +132,20 @@ async function fetchCities(): Promise<Record<number, City>> {
 async function fetchWeatherTypes(): Promise<Record<number, WeatherType>> {
   const weatherTypeFilePath = path.join(
     __dirname,
-    "..",
-    "Data",
-    "weathertype.json"
+    '..',
+    'Data',
+    'weathertype.json',
   );
   if (!existsSync(weatherTypeFilePath)) {
-    console.log("fetchWeatherTypes", `File ${weatherTypeFilePath} not found!`);
+    console.log('fetchWeatherTypes', `File ${weatherTypeFilePath} not found!`);
     return [];
   }
 
-  const fileContent = await readFile(weatherTypeFilePath, "utf8");
+  const fileContent = await readFile(weatherTypeFilePath, 'utf8');
   const feed = JSON.parse(fileContent);
   const wtype = feed.data.map((item: any) => ({
     idWeatherType: +item.idWeatherType,
-    descrição: item.descrição
+    descrição: item.descrição,
   }));
   return Object.fromEntries(wtype.map((w: any) => [w.idWeatherType, w]));
 }
@@ -154,20 +154,20 @@ async function fetchWeatherTypes(): Promise<Record<number, WeatherType>> {
 async function fetchWindTypes(): Promise<Record<number, WindType>> {
   const windSpeedFilePath = path.join(
     __dirname,
-    "..",
-    "Data",
-    "windspeed.json"
+    '..',
+    'Data',
+    'windspeed.json',
   );
   if (!existsSync(windSpeedFilePath)) {
-    console.log("fetchWindTypes", `File ${windSpeedFilePath} not found!`);
+    console.log('fetchWindTypes', `File ${windSpeedFilePath} not found!`);
     return [];
   }
 
-  const fileContent = await readFile(windSpeedFilePath, "utf8");
+  const fileContent = await readFile(windSpeedFilePath, 'utf8');
   const feed = JSON.parse(fileContent);
   const wtype = feed.data.map((item: any) => ({
     classWindSpeed: +item.classWindSpeed,
-    descrição: item.descrição
+    descrição: item.descrição,
   }));
   return Object.fromEntries(wtype.map((w: any) => [w.classWindSpeed, w]));
 }
@@ -195,22 +195,22 @@ async function getDailyForecast(day: number): Promise<DailyForecast[]> {
     return {
       forecastDate: feed.forecastDate,
       cityId: d.globalIdLocal,
-      cityName: city?.cityName ?? "",
-      área: city?.área ?? "",
-      zona: city?.zona ?? "",
-      região: city?.região ?? "",
-      weatherZone: city?.weatherZone ?? "",
+      cityName: city?.cityName ?? '',
+      área: city?.área ?? '',
+      zona: city?.zona ?? '',
+      região: city?.região ?? '',
+      weatherZone: city?.weatherZone ?? '',
       elevation: city?.elevation ?? 0,
       longitude: city?.longitude ?? 0,
       latitude: city?.latitude ?? 0,
       idWeatherType: d.idWeatherType,
-      weatherType: weather?.descrição ?? "",
+      weatherType: weather?.descrição ?? '',
       classWindSpeed: d.classWindSpeed,
-      windspeed: wind?.descrição ?? "",
+      windspeed: wind?.descrição ?? '',
       predWindDir: d.predWindDir,
       precipitaProb: d.precipitaProb,
       tMin: +d.tMin,
-      tMax: +d.tMax
+      tMax: +d.tMax,
     };
   });
   return forecast;

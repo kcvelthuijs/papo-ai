@@ -1,4 +1,4 @@
-import type { LessonSummary as LessonSummaryDto } from '@workspace/dtotypes/src/Interfaces/lesson';
+import type { LessonSummary as LessonSummaryDto } from '@workspace/dtotypes';
 import type { ExerciseResult } from './Exercise';
 export type LessonSummary = LessonSummaryDto;
 

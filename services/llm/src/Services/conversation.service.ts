@@ -1,37 +1,37 @@
-import openai, { AI_LLM } from "./openai.service";
+import openai, { AI_LLM } from './openai.service';
 import {
   type ResponseRole,
-  type ResponseResponse
-} from "@workspace/dtotypes/src/Interfaces/response";
-import { type ConversationResponse } from "@workspace/dtotypes/src/Interfaces/conversation";
+  type ResponseResponse,
+  type ConversationResponse,
+} from '@workspace/dtotypes';
 
 export const conversationService = {
   async create(
     appId: string,
     userId: string,
     description: string,
-    prompt: string
+    prompt: string,
   ): Promise<ConversationResponse> {
     const response = await openai.conversations.create({
       metadata: {
         Application: appId,
         User: userId,
-        Description: description
+        Description: description,
       },
       items: [
         {
-          type: "message",
-          role: "assistant",
-          content: prompt
-        }
-      ]
+          type: 'message',
+          role: 'assistant',
+          content: prompt,
+        },
+      ],
     });
 
     return {
       id: response.id,
       message: response.object,
       createdAt: new Date(response.created_at * 1000),
-      metadata: response.metadata
+      metadata: response.metadata,
     };
   },
 
@@ -39,28 +39,28 @@ export const conversationService = {
     conversationId: string,
     role: ResponseRole,
     prompt: string,
-    instructions?: string
+    instructions?: string,
   ): Promise<ResponseResponse> {
     const response = await openai.responses.create({
       model: AI_LLM,
       input: [
         {
-          role: "system",
-          content: instructions ?? "Antwoord in maximaal 50 tokens"
+          role: 'system',
+          content: instructions ?? 'Antwoord in maximaal 50 tokens',
         },
         {
           role: role,
-          content: prompt
-        }
+          content: prompt,
+        },
       ],
-      conversation: conversationId
+      conversation: conversationId,
     });
 
     const retval = {
       id: response.id,
       role,
-      message: response.output_text
+      message: response.output_text,
     };
     return retval;
-  }
+  },
 };

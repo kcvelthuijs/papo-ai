@@ -1,5 +1,5 @@
 import { ExerciseInput } from '../atoms/ExerciseInput';
-import type { Sentence } from '@workspace/webtypes/src/Types/Props/ExercisesProps';
+import type { Sentence } from '@workspace/webtypes';
 
 type Props = {
   sentence: Sentence;
@@ -26,7 +26,7 @@ export function SentenceSlide({ sentence, answers, setAnswers, wrong }: Props) {
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     setAnswers((prev) => ({
                       ...prev,
-                      [gap.id]: e.target.value
+                      [gap.id]: e.target.value,
                     }))
                   }
                   state={wrong ? 'wrong' : 'idle'}

@@ -1,19 +1,18 @@
 import { useMemo, useState } from 'react';
 
 import {
+  Button,
   Card,
   CardContent,
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@workspace/ui/components/shadcn/card';
-import {
+  Field,
+  FieldDescription,
   RadioGroup,
   RadioGroupItem,
-} from '@workspace/ui/components/shadcn/radio-group';
-import { Field, FieldDescription } from '@workspace/ui/components/shadcn/field';
-import { Button } from '@workspace/ui/components/shadcn/button';
-import { type QuizQuestionProps } from '@exercises/logic/src/Types/Exercise.types';
+} from '@workspace/ui';
+import { type QuizQuestionProps } from '@exercises/logic';
 
 type Answer = {
   answer: string;

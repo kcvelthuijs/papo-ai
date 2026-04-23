@@ -1,11 +1,13 @@
 import { useState, useRef } from 'react';
+
+import { ExerciseInput } from '@workspace/ui';
 import {
-  VerbConjugation,
-  PronounId,
-  type Pronoun
-} from '@workspace/webtypes/src/Types/Interfaces/Pronouns';
-import { VerbCardLayout } from '../atoms/VerbCardLayout';
-import { ExerciseInput } from '../atoms/ExerciseInput';
+  type VerbConjugation,
+  type PronounId,
+  type Pronoun,
+} from '@workspace/webtypes';
+
+import { VerbCardLayout } from '../Layouts/VerbCardLayout';
 
 type Props = {
   verb: VerbConjugation;
@@ -20,7 +22,7 @@ export function VerbTypeTest({
   description,
   onRight,
   onWrong,
-  onComplete
+  onComplete,
 }: Props) {
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [matches, setMatches] = useState<Record<string, string>>({});
@@ -52,7 +54,7 @@ export function VerbTypeTest({
           x: rect.left + Math.random() * 2 * rect.width,
           y: rect.top + (Math.random() * rect.height) / 2,
           rotation: Math.random() * 360,
-          scale: 0.4 + Math.random() * 0.4
+          scale: 0.4 + Math.random() * 0.4,
         };
         setStars((s) => [...s, star]);
         setTimeout(() => {
@@ -89,7 +91,7 @@ export function VerbTypeTest({
       nextPronounId={nextPronoun}
       stars={stars}
       onComplete={onComplete}
-      renderField={(pronounId) => (
+      renderField={(pronounId: PronounId) => (
         <ExerciseInput
           ref={(el: HTMLInputElement | null) => {
             if (el) inputRefs.current[pronounId] = el;
@@ -109,7 +111,7 @@ export function VerbTypeTest({
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setAnswers((prev) => ({
               ...prev,
-              [pronounId]: e.target.value
+              [pronounId]: e.target.value,
             }))
           }
           onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {

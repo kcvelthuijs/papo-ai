@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { shuffle } from '@workspace/ui/lib/shuffle';
 
 import { VerbCardLayout } from '../Layouts/VerbCardLayout';
-import { type VerbExerciseProps } from '@exercises/logic/src/Types/Exercise.types';
+import { type VerbExerciseProps } from '@exercises/logic';
 
 export function VerbClickTest({ exercise, onSubmit }: VerbExerciseProps) {
   const [feedback, setFeedback] = useState<Record<string, any>>({});

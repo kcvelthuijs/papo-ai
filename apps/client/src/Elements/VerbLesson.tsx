@@ -1,16 +1,14 @@
 import { useState } from 'react';
 
-import { VerbClickLearn } from '@workspace/ui/components/Exercises/VerbClickLearn';
-import { VerbClickTest } from '@workspace/ui/components/Exercises/VerbClickTest';
-import { VerbTypeTest } from '@workspace/ui/components/Exercises/VerbTypeTest';
+import { VerbClickLearn, VerbClickTest, VerbTypeTest } from '@workspace/ui';
 import {
   type VerbConjugation,
   type Pronoun,
   PtPronouns,
-} from '@workspace/webtypes/src/Types/Interfaces/Pronouns';
+} from '@workspace/webtypes';
 
-import { AudioQueue } from '@workspace/controllers/src/Queues/AudioQueue';
-import { getSpeechAudio } from '@workspace/connectors/src/LanguageModel/SpeechConnector';
+import { AudioQueue } from '@workspace/controllers';
+import { getSpeechAudio } from '@workspace/connectors';
 
 export default function VerbLesson() {
   // const { currentLessonID, lessonDetails, getLessonByID } = useLessonStore();

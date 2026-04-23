@@ -1,5 +1,5 @@
-import { PopoverTextProps } from "@workspace/webtypes/src/Types/Props/PopoverTextProps";
-import PopoverWord from "./PopoverWord";
+import { PopoverTextProps } from '@workspace/webtypes';
+import PopoverWord from './PopoverWord';
 
 function PopoverText({ className, text, dictionary }: PopoverTextProps) {
   const dict = Object.fromEntries(
@@ -8,7 +8,7 @@ function PopoverText({ className, text, dictionary }: PopoverTextProps) {
 
   const tokens = text.split(/(\s+)/);
   const tokenText = tokens.map((token, index) => {
-    const clean = token.toLowerCase().replace(/[.,!?]/g, "");
+    const clean = token.toLowerCase().replace(/[.,!?]/g, '');
     if (dict[clean]) {
       return (
         <PopoverWord

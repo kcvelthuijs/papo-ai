@@ -2,7 +2,7 @@ import type {
   VerbLearnExercise as dtoVerbLearnExercise,
   Sentence as dtoSentence,
   Gap as dtoGap,
-} from '@workspace/dtotypes/src/Types/Exercise.dto';
+} from '@workspace/dtotypes';
 
 export type VerbLearnExercise = dtoVerbLearnExercise;
 export type Sentence = dtoSentence;

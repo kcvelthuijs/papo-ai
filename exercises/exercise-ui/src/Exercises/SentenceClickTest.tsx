@@ -1,7 +1,5 @@
 import { useState } from 'react';
-import { shuffle } from '../../lib/shuffle';
-import { CardLayout } from '../atoms/CardLayout';
-import { AnswerButton } from '../atoms/AnswerButton';
+import { AnswerButton, CardLayout, shuffle } from '@workspace/ui'; // ../../lib/shuffle';
 
 export type SentencePiece = {
   id: string;

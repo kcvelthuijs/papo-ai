@@ -2,7 +2,7 @@ import openai, { AI_TTS } from './openai.service';
 import {
   type SpeechResponse,
   SpeechReturnStateEnum,
-} from '@workspace/dtotypes/src/Interfaces/speech.dto';
+} from '@workspace/dtotypes';
 
 export const speechService = {
   async speak(

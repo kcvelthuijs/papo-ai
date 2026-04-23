@@ -13,11 +13,13 @@
   "dependencies": {
     "@types/node": "^25.5.2",
     "@workspace/dtotypes": "workspace:*",
-    "@workspace/images": "workspace:*",
     "bun-svgr": "^1.0.0",
     "svgr": "^1.3.5"
   },
   "scripts": {
     "svgr": "svgr src/Images --out-dir src/Images/components --ext tsx"
+  },
+  "exports": {
+    ".": "./src/index.ts"
   }
 }

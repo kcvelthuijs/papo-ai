@@ -2,7 +2,7 @@ import z from 'zod';
 import type { Request, Response } from 'express';
 
 import { speechService } from '../Services/speech.service';
-import { SpeechReturnStateEnum } from '@workspace/dtotypes/src/Interfaces/speech.dto';
+import { SpeechReturnStateEnum } from '@workspace/dtotypes';
 
 const speechSchema = z.object({
   text: z.string().trim().min(1, 'Text is required.'),

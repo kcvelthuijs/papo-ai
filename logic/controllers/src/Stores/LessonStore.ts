@@ -2,11 +2,12 @@ import axios from 'axios';
 import { create } from 'zustand';
 
 import { getAllLessons } from '@workspace/connectors';
-
-import type { LessonSummary, LessonDetails } from '@workspace/dtotypes';
-import type { Exercise } from '@workspace/dtotypes';
+import type {
+  LessonSummary,
+  LessonDetails,
+  Exercise,
+} from '@workspace/dtotypes';
 import type { ExerciseResult } from '@workspace/webtypes';
-
 import { executeExercise } from '@exercises/logic';
 
 type LessonState = {

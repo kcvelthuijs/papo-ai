@@ -1,11 +1,12 @@
-export * from './Base renderer/ExerciseRenderer';
 export * from './Exercises/QuizQuestion';
 export * from './Exercises/SentenceClickTest';
 export * from './Exercises/SentenceTypeTest';
 export * from './Exercises/VerbClickLearn';
 export * from './Exercises/VerbClickTest';
-export * from './Exercises/VerbTypeTest.exercise';
-export * from './Renderers/VerbRenderer';
+export * from './Exercises/VerbTypeTest';
 export * from './Layouts/VerbCardLayout';
 export * from './Tests/SentenceClickTestEvaluate';
 export * from './Tests/VerbClickTestEvaluatie';
+export * from './Renderers/ExerciseRenderer';
+export * from './Renderers/VerbRenderer';
+export * from './components/atoms/SentenceSlide';

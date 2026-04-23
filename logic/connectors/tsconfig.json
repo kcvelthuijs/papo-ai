@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     // Environment setup & latest features
-    "types": ["node"],
     "lib": ["ESNext", "DOM"],
     "target": "ESNext",
     "module": "Preserve",

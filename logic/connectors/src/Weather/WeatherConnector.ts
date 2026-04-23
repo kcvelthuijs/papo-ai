@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { type DailyForecast } from '@workspace/dtotypes/src/Interfaces/weather';
+import { type DailyForecast } from '@workspace/dtotypes';
 
 const getWeatherData = async (): Promise<DailyForecast[]> => {
   const { data } = await axios.get<DailyForecast[]>('/api/forecast');

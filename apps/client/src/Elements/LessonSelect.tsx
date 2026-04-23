@@ -1,13 +1,13 @@
 import { useEffect, useRef } from 'react';
 
-import { useLessonStore } from '@workspace/controllers';
+import { useMockLessonStore } from '@workspace/controllers';
 import type { LessonSelectProps } from '@workspace/webtypes';
 
 import { LessonCard, LessonCardSkeleton } from '../Components/LessonCard';
 
 export const LessonSelect = ({ onSelect }: LessonSelectProps) => {
   const { lessonSummaries, fetchAllLessons, isLoading, setCurrentLesson } =
-    useLessonStore();
+    useMockLessonStore();
 
   const reading = useRef(false);
 

@@ -1,4 +1,4 @@
-import { executeExercise } from '@exercises/logic/src/Logic/ExercuteExercise';
+import { executeExercise } from '@exercises/logic';
 
 import { VerbRenderer } from './VerbRenderer';
 // import { SentenceGapRenderer } from './renderers/SentenceGapRenderer';

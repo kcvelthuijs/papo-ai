@@ -25,5 +25,8 @@
     "start": "bun run index.ts",
     "build": "tsc -b",
     "dev": "bun --watch run index.ts"
+  },
+  "exports": {
+    "./Controllers/*": "./src/Controllers/*.ts"
   }
 }

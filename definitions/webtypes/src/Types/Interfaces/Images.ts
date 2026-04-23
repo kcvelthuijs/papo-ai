@@ -1,6 +1,6 @@
-import { type ImageSize as ImageSizeType } from "@workspace/images/src/imageSchema";
+import { type ImageSize as dtoImageSize } from '@workspace/dtotypes';
 
-export type ImageSize = ImageSizeType;
+export type ImageSize = dtoImageSize;
 
 export interface ImageComponentProps {
   name: string;

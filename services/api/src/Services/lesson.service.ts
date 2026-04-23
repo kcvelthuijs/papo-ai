@@ -1,25 +1,22 @@
-import { existsSync } from "fs";
-import { readdir, readFile } from "fs/promises";
-import path from "path";
-import { parse } from "yaml";
+import { existsSync } from 'fs';
+import { readdir, readFile } from 'fs/promises';
+import path from 'path';
+import { parse } from 'yaml';
 
-import {
-  type LessonResponse,
-  type LessonSummary,
-} from "@workspace/dtotypes/src/Interfaces/lesson";
+import { type LessonResponse, type LessonSummary } from '@workspace/dtotypes';
 
-const lessonPath = "data/lessons";
+const lessonPath = 'data/lessons';
 
 export const lessonService = {
   async getAll(): Promise<LessonSummary[]> {
-    const LessonPath = path.join(__dirname, "..", lessonPath);
+    const LessonPath = path.join(__dirname, '..', lessonPath);
     const content = await readdir(LessonPath, { withFileTypes: true });
     const yamlFiles = content
       .filter((f) => f.isFile())
       .map((f) => f.name)
       .filter((name) => {
         const ext = path.extname(name).toLowerCase();
-        return ext === ".yaml" || ext === ".yml";
+        return ext === '.yaml' || ext === '.yml';
       });
 
     const allLessons = await Promise.all(
@@ -30,9 +27,9 @@ export const lessonService = {
 
   async getSummary(filename: string): Promise<LessonSummary> {
     try {
-      const LessonFile = path.join(__dirname, "..", lessonPath, filename);
+      const LessonFile = path.join(__dirname, '..', lessonPath, filename);
       if (existsSync(LessonFile)) {
-        const fileContent = await readFile(LessonFile, "utf8");
+        const fileContent = await readFile(LessonFile, 'utf8');
         const lessonData = parse(fileContent) as LessonResponse;
 
         return {
@@ -41,7 +38,7 @@ export const lessonService = {
           description: lessonData.description,
           type: lessonData.type,
           level: lessonData.level,
-          image: lessonData.image ?? "",
+          image: lessonData.image ?? '',
         };
       } else {
         throw new Error(`File "${filename}" not found.`);
@@ -53,10 +50,10 @@ export const lessonService = {
 
   async getByID(id: string): Promise<LessonResponse> {
     const filename = `lesson${id}.yaml`;
-    const LessonFileName = path.join(__dirname, "..", lessonPath, filename);
+    const LessonFileName = path.join(__dirname, '..', lessonPath, filename);
     try {
       if (existsSync(LessonFileName)) {
-        const fileContent = await readFile(LessonFileName, "utf8");
+        const fileContent = await readFile(LessonFileName, 'utf8');
         const lessonData = parse(fileContent) as LessonResponse;
 
         return {
@@ -66,9 +63,9 @@ export const lessonService = {
           type: lessonData.type,
           level: lessonData.level,
           prompt: lessonData.prompt,
-          voice: lessonData.voice ?? "",
+          voice: lessonData.voice ?? '',
           avatar: lessonData.avatar ?? undefined,
-          speech: lessonData.speech ?? "",
+          speech: lessonData.speech ?? '',
           phrases: lessonData.phrases ?? undefined,
           image: lessonData.image ?? undefined,
         };

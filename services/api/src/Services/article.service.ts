@@ -1,6 +1,6 @@
-import { Observador } from "../Repositories/articles.observador";
-import { RTP } from "../Repositories/articles.rtp";
-import { type Article } from "@workspace/dtotypes/src/Interfaces/Article";
+import { Observador } from '../Repositories/articles.observador';
+import { RTP } from '../Repositories/articles.rtp';
+import { type Article } from '@workspace/dtotypes';
 
 // Correio de Manha: https://www.cmjornal.pt/rss
 // Público: https://feeds.feedburner.com/PublicoRSS
@@ -11,14 +11,14 @@ export const articleService = {
     const article = await RTP.getArticleByCategory(cat);
 
     return {
-      title: article?.title ?? "",
-      description: article?.description ?? "",
-      link: article?.link ?? "",
-      text: article?.text ?? "",
-      creator: article?.creator ?? "",
+      title: article?.title ?? '',
+      description: article?.description ?? '',
+      link: article?.link ?? '',
+      text: article?.text ?? '',
+      creator: article?.creator ?? '',
       pubDate: article?.pubDate ?? new Date(),
       categories: article?.categories ?? [],
-      imageUrl: article.imageUrl ?? "",
+      imageUrl: article.imageUrl ?? '',
     };
   },
 };

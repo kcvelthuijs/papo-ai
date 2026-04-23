@@ -1,7 +1,8 @@
-import type { VerbExerciseProps } from '@exercises/logic/src/Types/Exercise.types';
-import { VerbClickLearn } from '../Exercises/VerbClickLearnn
-import { VerbClickTest } from '../Exercises/VerbClickTest
-import { VerbTypeTest } from '../Exercises/VerbTypeTestt
+import type { VerbExerciseProps } from '@exercises/logic';
+
+import { VerbClickLearn } from '../Exercises/VerbClickLearn';
+import { VerbClickTest } from '../Exercises/VerbClickTest';
+import { VerbTypeTest } from '../Exercises/VerbTypeTest';
 
 export function VerbRenderer({ exercise, onSubmit }: VerbExerciseProps) {
   // centrale handler

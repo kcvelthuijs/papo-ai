@@ -1,32 +1,33 @@
-import axios from "axios";
+import axios from 'axios';
 
-import { type SpeechOptions } from "@workspace/webtypes/src/Types/Interfaces/Speech";
-import { type AudioTask } from "@workspace/webtypes/src/Types/Interfaces/Audio";
-import { getRouteUrl } from "./LanguageModelConnector";
+import { type SpeechOptions } from '@workspace/webtypes';
+import { type AudioTask } from '@workspace/webtypes';
+
+import { getRouteUrl } from './LanguageModelConnector';
 
 export const getSpeechAudio = async (
   text: string,
-  options?: SpeechOptions
+  options?: SpeechOptions,
 ): Promise<any> => {
   const trimmed = text.trim();
   if (!trimmed) return null;
 
-  const voice = (options?.voice ?? "coral").toLocaleLowerCase();
+  const voice = (options?.voice ?? 'coral').toLocaleLowerCase();
   const instructions =
-    options?.instructions ?? "Speak in a friendly, calm teachin tone.";
+    options?.instructions ?? 'Speak in a friendly, calm teachin tone.';
   const speed = options?.speed ?? 1.0;
 
   const response = await axios.post(
-    getRouteUrl("/llm/tts"),
+    getRouteUrl('/llm/tts'),
     {
       text,
       voice,
       instructions,
-      speed
+      speed,
     },
     {
-      responseType: "blob"
-    }
+      responseType: 'blob',
+    },
   );
   const blob = response.data as Blob;
 
@@ -34,7 +35,7 @@ export const getSpeechAudio = async (
     id: crypto.randomUUID(),
     text: trimmed,
     blob,
-    voice
+    voice,
   };
 
   return task;

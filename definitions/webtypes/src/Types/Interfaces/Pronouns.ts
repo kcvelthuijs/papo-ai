@@ -3,8 +3,8 @@ import type {
   Pronoun as dtoPronoun,
   VerbConjugation as dtoVerbConjugation,
   VerbForms as dtoVerbForms,
-} from '@workspace/dtotypes/src/Types/Pronouns.dto';
-import { PtPronouns as dtoPtPronouns } from '@workspace/dtotypes/src/Types/Pronouns.dto';
+} from '@workspace/dtotypes';
+import { PtPronouns as dtoPtPronouns } from '@workspace/dtotypes';
 
 // Neem de definities over uit de dto
 export type PronounId = dtoPronounId;

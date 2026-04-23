@@ -1,5 +1,5 @@
-import { Popover, PopoverContent, PopoverTrigger } from "../shadcn/popover";
-import PopoverWordProps from "@workspace/webtypes/src/Types/Props/PopoverWordProps";
+import { Popover, PopoverContent, PopoverTrigger } from '../shadcn/popover';
+import PopoverWordProps from '@workspace/webtypes';
 
 function PopoverWord({ className, word, translation }: PopoverWordProps) {
   return (
@@ -8,11 +8,11 @@ function PopoverWord({ className, word, translation }: PopoverWordProps) {
         <span
           className={`font-sm cursor-help border-b-2 border-dotted border-blue-700 font-semibold ${className}`}
         >
-          {" "}
-          {word}{" "}
+          {' '}
+          {word}{' '}
         </span>
       </PopoverTrigger>
-      <PopoverContent className="w-auto px-3 py-2 text-sm">
+      <PopoverContent className='w-auto px-3 py-2 text-sm'>
         {translation}
       </PopoverContent>
     </Popover>

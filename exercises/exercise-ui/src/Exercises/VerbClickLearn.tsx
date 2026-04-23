@@ -1,10 +1,9 @@
 import { useState } from 'react';
-import {
-  VerbConjugation,
-  PronounId,
-} from '@workspace/webtypes/src/Types/Interfaces/Pronouns';
-import { VerbCardLayout } from '../atoms/VerbCardLayout';
-import { Button } from '../shadcn/button';
+
+import { Button } from '@workspace/ui';
+import { VerbConjugation, PronounId } from '@workspace/webtypes';
+
+import { VerbCardLayout } from '../Layouts/VerbCardLayout';
 
 type Props = {
   verb: VerbConjugation;

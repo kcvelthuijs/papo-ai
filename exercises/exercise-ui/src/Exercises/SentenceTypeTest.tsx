@@ -1,9 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
-import { Button } from '../shadcn/button';
 
-import { CardLayout } from '../atoms/CardLayout';
-import { ExerciseInput } from '../atoms/ExerciseInput';
-import { Gap } from '@workspace/webtypes/src/Types/Interfaces/Exercise';
+import { Gap } from '@workspace/dtotypes';
+import { Button, CardLayout, ExerciseInput } from '@workspace/ui';
 
 type Props = {
   exercise: any;
@@ -18,7 +16,7 @@ export function SentenceTypeTest({
   description,
   onRight,
   onWrong,
-  onComplete
+  onComplete,
 }: Props) {
   const [index, setIndex] = useState(0);
 
@@ -61,7 +59,7 @@ export function SentenceTypeTest({
           x: rect.left + Math.random() * rect.width,
           y: rect.top + (Math.random() * rect.height) / 2,
           rotation: Math.random() * 360,
-          scale: 0.4 + Math.random() * 0.4
+          scale: 0.4 + Math.random() * 0.4,
         };
 
         setStars((s) => [...s, star]);
@@ -89,7 +87,7 @@ export function SentenceTypeTest({
       onRight?.({ id: gap.id, text: value });
       const newMatches = {
         ...matches,
-        [gap.id]: value
+        [gap.id]: value,
       };
       setMatches(newMatches);
       spawnStars(gap.id);
@@ -152,7 +150,7 @@ export function SentenceTypeTest({
                       onChange={(e: any) =>
                         setAnswers((prev) => ({
                           ...prev,
-                          [gap.id]: e.target.value
+                          [gap.id]: e.target.value,
                         }))
                       }
                       onKeyDown={(e: any) => {
