@@ -1,4 +1,4 @@
-import type { OpenExercise } from '@workspace/dtotypes';
+import type { OpenExercise, CheckVerbExercise } from '@workspace/dtotypes';
 
 export function isOpenExercise(ex: any): ex is OpenExercise {
   return (
@@ -9,12 +9,7 @@ export function isOpenExercise(ex: any): ex is OpenExercise {
 }
 
 export type VerbExerciseProps = {
-  exercise: {
-    type: string;
-    title: string;
-    description?: string;
-    forms: Record<string, string>;
-  };
+  exercise: CheckVerbExercise;
   onSubmit: (answer: { pronounId: string; value: string }) => Promise<any>;
 };
 

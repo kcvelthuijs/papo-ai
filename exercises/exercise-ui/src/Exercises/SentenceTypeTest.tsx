@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 
-import { Gap } from '@workspace/dtotypes';
+import { type Gap } from '@workspace/dtotypes';
 import { Button, CardLayout, ExerciseInput } from '@workspace/ui';
 
 type Props = {

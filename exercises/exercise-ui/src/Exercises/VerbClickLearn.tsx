@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import { Button } from '@workspace/ui';
-import { VerbConjugation, PronounId } from '@workspace/webtypes';
+import { type VerbConjugation, type PronounId } from '@workspace/webtypes';
 
 import { VerbCardLayout } from '../Layouts/VerbCardLayout';
 
@@ -52,7 +52,7 @@ export function VerbClickLearn({
       matches={matches}
       renderField={(pronounId) => {
         const matched = matches[pronounId];
-        return matched ? <p>{verb.forms[pronounId]}</p> : null;
+        return matched ? <p>{verb.forms[pronounId as PronounId]}</p> : null;
       }}
       onComplete={onComplete}
     >

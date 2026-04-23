@@ -8,8 +8,10 @@ export function VerbClickTest({ exercise, onSubmit }: VerbExerciseProps) {
   const [feedback, setFeedback] = useState<Record<string, any>>({});
   const [selected, setSelected] = useState<Record<string, string>>({});
 
-  const options = useState(() => shuffle(Object.values(exercise.forms)))[0];
-  const pronouns = Object.keys(exercise.forms);
+  const options = useState(() =>
+    shuffle(Object.values(exercise.verb.forms)),
+  )[0];
+  const pronouns = Object.keys(exercise.verb.forms);
 
   async function handleClick(pronounId: string, value: string) {
     setSelected((prev) => ({
