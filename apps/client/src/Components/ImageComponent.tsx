@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
-import { type ImageComponentProps } from "@workspace/webtypes/src/Types/Interfaces/Images";
-import { Skeleton } from "@workspace/ui/components/shadcn/skeleton";
-import { getImage } from "@workspace/connectors/src/Images/ImageConnector";
+import { Skeleton } from '@workspace/ui';
+import { getImage } from '@workspace/connectors';
+import { type ImageComponentProps } from '@workspace/webtypes';
 
 function ImageComponent({ name, tree, size, className }: ImageComponentProps) {
   const [imgSrc, setImgSrc] = useState<string | null>(null);
@@ -34,14 +34,14 @@ function ImageComponent({ name, tree, size, className }: ImageComponentProps) {
         URL.revokeObjectURL(currentUrl);
       }
     };
-  }, [name, tree.join("/"), size]);
+  }, [name, tree.join('/'), size]);
 
   return (
     <div>
       {loading ? (
-        <Skeleton className="flex flex-col w-full aspect-2/1 animate-pulse bg-gray-200 " />
+        <Skeleton className='flex flex-col w-full aspect-2/1 animate-pulse bg-gray-200 ' />
       ) : (
-        <img src={imgSrc || "null"} alt={name} className={className} />
+        <img src={imgSrc || 'null'} alt={name} className={className} />
       )}
     </div>
   );

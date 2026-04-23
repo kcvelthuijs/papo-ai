@@ -1,4 +1,4 @@
-import type { Exercise } from '../Types/Exercise.dto';
+import type { Exercise } from '@workspace/dtotypes/src/Types/Exercise.dto';
 
 export type LessonSummary = {
   id: string;

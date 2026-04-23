@@ -23,7 +23,7 @@
     "apps/*",
     "definitions/*",
     "exercises/*",
-    "packages/*",
+    "logic/*",
     "repositories/*",
     "services/*"
   ],

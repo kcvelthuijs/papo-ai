@@ -1,9 +1,9 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from 'react';
 
-import type { LessonSelectProps } from "@workspace/webtypes/src/Types/Props/LessonSelectProps";
-import { useLessonStore } from "@workspace/controllers/src/Stores/LessonStore";
+import { useLessonStore } from '@workspace/controllers';
+import type { LessonSelectProps } from '@workspace/webtypes';
 
-import { LessonCard, LessonCardSkeleton } from "../Components/LessonCard";
+import { LessonCard, LessonCardSkeleton } from '../Components/LessonCard';
 
 export const LessonSelect = ({ onSelect }: LessonSelectProps) => {
   const { lessonSummaries, fetchAllLessons, isLoading, setCurrentLesson } =
@@ -24,9 +24,9 @@ export const LessonSelect = ({ onSelect }: LessonSelectProps) => {
   };
 
   return (
-    <div className="xl:flex xl:justify-center bg-gray-300 shadow-lg">
-      <div className="h-[calc(100vh-5rem)] xl:border-r xl:border-l xl:border-gray-400 bg-white  sm:w-full xl:w-300">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 m-2">
+    <div className='xl:flex xl:justify-center bg-gray-300 shadow-lg'>
+      <div className='h-[calc(100vh-5rem)] xl:border-r xl:border-l xl:border-gray-400 bg-white  sm:w-full xl:w-300'>
+        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 m-2'>
           {isLoading
             ? Array.from({ length: 8 }).map((_, i) => (
                 <LessonCardSkeleton key={i} />

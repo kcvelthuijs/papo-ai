@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
+import { Spinner } from '@workspace/ui';
+import { type LessonSummary } from '@workspace/webtypes';
+
 import ImageComponent from '../Components/ImageComponent';
-import { type LessonSummary } from '@workspace/webtypes/src/Types/Interfaces/Lesson';
-import { Spinner } from '@workspace/ui/components/shadcn/spinner';
 
 type LessonProps = {
   id: string;

@@ -2,7 +2,7 @@ import NavigationBar from '../Elements/NavigationBar';
 
 import Lesson from './Lesson';
 import { LessonSelect } from '../Elements/LessonSelect';
-import { useLessonStore } from '@workspace/controllers/src/Stores/LessonStore';
+import { useLessonStore } from '@workspace/controllers';
 
 export default function Page() {
   const { currentLessonID } = useLessonStore();
@@ -12,7 +12,7 @@ export default function Page() {
       <div className='xl:flex xl:justify-center bg-gray-300 shadow-lg'>
         <div className='h-[calc(100vh-5rem)] xl:border-r xl:border-l xl:border-gray-400 bg-white  sm:w-full xl:w-300'>
           {/* toon overzicht van lessen als de lessonID leeg is*/}
-          {/*<LessonSelect />*}
+          <LessonSelect />
 
           {/*<SentenceTypeTest exercise={myExercise} onComplete={onComplete} />*/}
         </div>

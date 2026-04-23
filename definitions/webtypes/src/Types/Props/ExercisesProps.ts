@@ -1,13 +1,13 @@
 import {
-  type SentenceExercise as dtoSentenceExercise,
+  type SentenceBuildExercise as dtoSentenceBuildExercise,
   type Sentence as dtoSentence,
-} from '@workspace/dtotypes/src/Types/Exercise.dto';
+} from '@workspace/dtotypes';
 
-export type Sentence = dtoSentence;
+type Sentence = dtoSentence;
 
-export type SentenceExercise = dtoSentenceExercise;
+export type SentenceBuildExercise = dtoSentenceBuildExercise;
 
 export type SentenceProps = {
-  exercise: SentenceExercise;
+  exercise: SentenceBuildExercise;
   onComplete: (answer: Record<string, string>) => void;
 };

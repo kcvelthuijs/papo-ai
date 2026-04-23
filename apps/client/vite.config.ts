@@ -1,25 +1,25 @@
-import path from "path";
-import tailwindcss from "@tailwindcss/vite";
-import react from "@vitejs/plugin-react";
-import { defineConfig } from "vite";
+import path from 'path';
+import tailwindcss from '@tailwindcss/vite';
+import react from '@vitejs/plugin-react';
+import { defineConfig } from 'vite';
 
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   resolve: {
+    dedupe: ['react', 'react-dom'],
     alias: {
-      "@": path.resolve(__dirname, "./src"),
+      '@': path.resolve(__dirname, './src'),
     },
   },
-
   server: {
     proxy: {
-      "/api": {
-        target: "http://localhost:3000",
+      '/api': {
+        target: 'http://localhost:3000',
         changeOrigin: true,
       },
-      "/llm": {
-        target: "http://localhost:3000",
+      '/llm': {
+        target: 'http://localhost:3000',
         changeOrigin: true,
         ws: true,
       },
@@ -32,18 +32,18 @@ export default defineConfig({
         manualChunks: {
           // React core
           react: [
-            "react",
-            "react-dom",
-            "react-nice-avatar",
-            "react-markdown",
-            "react-hook-form",
+            'react',
+            'react-dom',
+            'react-nice-avatar',
+            'react-markdown',
+            'react-hook-form',
           ],
 
           // UI / icons
-          ui: ["react-icons"],
+          ui: ['react-icons'],
 
           // Axios router
-          axios: ["axios"],
+          axios: ['axios'],
         },
       },
     },

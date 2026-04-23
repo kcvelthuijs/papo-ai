@@ -1,7 +1,7 @@
-import { useEffect } from "react";
-import Avatar from "react-nice-avatar";
+import { useEffect } from 'react';
+import Avatar from 'react-nice-avatar';
 
-import { useAvatarStore } from "@workspace/controllers/src/Stores/AvatarStore";
+import { useAvatarStore } from '@workspace/controllers';
 
 type Props = {
   role: string;
@@ -20,9 +20,9 @@ function RoleAvatar({ role, className, style }: Props) {
   if (!avatar) return null;
 
   return (
-    <div className="ml-4">
+    <div className='ml-4'>
       <Avatar
-        className={`${className ?? ""} border-gray-400 border-2 shadow-xl`}
+        className={`${className ?? ''} border-gray-400 border-2 shadow-xl`}
         style={{ ...style }}
         {...avatar}
       />

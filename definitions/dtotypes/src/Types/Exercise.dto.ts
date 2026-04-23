@@ -1,4 +1,4 @@
-import type { PronounId, VerbConjugation } from './Pronouns.dto';
+import type { PronounId, VerbConjugation } from '@workspace/dtotypes/src/Types/Pronouns.dto';
 
 export type BaseExercise = {
   id: string;
