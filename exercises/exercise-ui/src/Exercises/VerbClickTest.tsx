@@ -1,90 +1,84 @@
 import { useState } from 'react';
-import { shuffle } from '@workspace/ui/lib/shuffle';
+import { shuffle } from '@workspace/ui';
 
 import { VerbCardLayout } from '../Layouts/VerbCardLayout';
 import { type VerbExerciseProps } from '@exercises/logic';
+import type { PronounId } from '@workspace/dtotypes';
 
 export function VerbClickTest({ exercise, onSubmit }: VerbExerciseProps) {
   const [feedback, setFeedback] = useState<Record<string, any>>({});
   const [selected, setSelected] = useState<Record<string, string>>({});
 
-  const options = useState(() =>
-    shuffle(Object.values(exercise.verb.forms)),
-  )[0];
   const pronouns = Object.keys(exercise.verb.forms);
 
-  async function handleClick(pronounId: string, value: string) {
-    setSelected((prev) => ({
-      ...prev,
-      [pronounId]: value,
-    }));
-    const result = await onSubmit({ pronounId, value });
-    setFeedback((prev) => ({
-      ...prev,
-      [pronounId]: result,
-    }));
+  const [forms, setForms] = useState(() =>
+    shuffle(
+      Object.entries(exercise.verb.forms).map(([id, text]) => ({
+        id,
+        text
+      }))
+    )
+  );
+
+  const [matches, setMatches] = useState<Record<string, string>>({});
+  const [wrong, setWrong] = useState<string | null>(null);
+
+  // 🔥 cruciaal: wie is aan de beurt?
+  const nextPronounId = pronouns.find((id) => !matches[id]);
+
+  async function handleSelect(formId: string) {
+    if (!nextPronounId) return;
+
+    const form = forms.find((f) => f.id === formId);
+    if (!form) return;
+
+    const result = await onSubmit({
+      pronounId: nextPronounId,
+      value: form.text
+    });
+
+    if (result.isCorrect) {
+      // ✔ correct → match opslaan
+      setMatches((prev) => ({
+        ...prev,
+        [nextPronounId]: formId
+      }));
+
+      // ✔ optie verwijderen (zoals vroeger)
+      setForms((prev) => prev.filter((f) => f.id !== formId));
+    } else {
+      // ❌ fout → feedback
+      setWrong(formId);
+      setTimeout(() => setWrong(null), 400);
+    }
   }
 
   return (
     <VerbCardLayout
       title={exercise.title}
       description={exercise.description}
-      footer={
-        Object.keys(feedback).length === pronouns.length && (
-          <div className='flex justify-end'>
-            <span className='text-sm text-gray-500'>Exercise completed</span>
-          </div>
-        )
-      }
+      nextPronounId={nextPronounId}
+      matches={matches}
+      renderField={(pronounId: PronounId) => {
+        const matched = matches[pronounId];
+        return matched ? <p>{exercise.verb.forms[pronounId]}</p> : null;
+      }}
     >
-      <div className='flex flex-col gap-6'>
-        {pronouns.map((pronounId) => {
-          const result = feedback[pronounId];
-          return (
-            <div key={pronounId} className='flex items-center gap-4'>
-              {/* pronoun */}
-              <div className='w-20 font-medium'>{pronounId}</div>
-
-              {/* options */}
-              <div className='flex gap-2 flex-wrap'>
-                {options.map((option) => {
-                  const isSelected = selected[pronounId] === option;
-
-                  const isCorrectSelection =
-                    result?.value === option && result?.isCorrect === true;
-
-                  const isWrongSelection =
-                    result?.value === option && result?.isCorrect === false;
-
-                  return (
-                    <button
-                      key={option}
-                      onClick={() => handleClick(pronounId, option)}
-                      className={`
-                        px-3 py-1 border rounded transition
-                        ${isSelected ? 'bg-gray-100' : ''}
-                        ${
-                          isCorrectSelection
-                            ? 'border-green-500 bg-green-50'
-                            : ''
-                        }
-                        ${isWrongSelection ? 'border-red-500 bg-red-50' : ''}
-                      `}
-                    >
-                      {option}
-                    </button>
-                  );
-                })}
-              </div>
-
-              {/* feedback icon */}
-              <div className='w-6 text-lg'>
-                {result?.isCorrect && '✅'}
-                {result && !result.isCorrect && '❌'}
-              </div>
-            </div>
-          );
-        })}
+      <div className='flex flex-col items-center'>
+        <div className='wrap mt-2 flex flex-row flex-wrap justify-center gap-2'>
+          {forms.map((f) => (
+            <button
+              key={f.id}
+              onClick={() => handleSelect(f.id)}
+              className={`
+                px-3 py-1 border rounded transition
+                ${wrong === f.id ? 'border-red-500 bg-red-50' : ''}
+              `}
+            >
+              {f.text}
+            </button>
+          ))}
+        </div>
       </div>
     </VerbCardLayout>
   );
