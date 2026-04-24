@@ -1,85 +1,70 @@
 import { useState } from 'react';
-import { shuffle } from '@workspace/ui';
+import { shuffle } from '@workspace/ui/lib/shuffle';
+import { AnswerButton } from '@workspace/ui';
+import { type VerbExerciseProps } from '@exercises/logic';
 
 import { VerbCardLayout } from '../Layouts/VerbCardLayout';
-import { type VerbExerciseProps } from '@exercises/logic';
-import type { PronounId } from '@workspace/dtotypes';
+import type { Pronoun } from '@workspace/dtotypes';
 
 export function VerbClickTest({ exercise, onSubmit }: VerbExerciseProps) {
-  const [feedback, setFeedback] = useState<Record<string, any>>({});
-  const [selected, setSelected] = useState<Record<string, string>>({});
-
   const pronouns = Object.keys(exercise.verb.forms);
-
-  const [forms, setForms] = useState(() =>
-    shuffle(
-      Object.entries(exercise.verb.forms).map(([id, text]) => ({
-        id,
-        text
-      }))
-    )
+  const [answers, setAnswers] = useState<Record<string, string>>({});
+  const [wrong, setWrong] = useState<string | null>(null);
+  const [options, setOptions] = useState(() =>
+    shuffle(Object.values(exercise.verb.forms))
   );
 
-  const [matches, setMatches] = useState<Record<string, string>>({});
-  const [wrong, setWrong] = useState<string | null>(null);
+  const nextPronoun = pronouns.find((p) => !answers[p]);
 
-  // 🔥 cruciaal: wie is aan de beurt?
-  const nextPronounId = pronouns.find((id) => !matches[id]);
-
-  async function handleSelect(formId: string) {
-    if (!nextPronounId) return;
-
-    const form = forms.find((f) => f.id === formId);
-    if (!form) return;
+  async function handleSelect(value: string) {
+    if (!nextPronoun) return;
 
     const result = await onSubmit({
-      pronounId: nextPronounId,
-      value: form.text
+      pronounId: nextPronoun,
+      value
     });
 
     if (result.isCorrect) {
-      // ✔ correct → match opslaan
-      setMatches((prev) => ({
+      setAnswers((prev) => ({
         ...prev,
-        [nextPronounId]: formId
+        [nextPronoun]: value
       }));
 
-      // ✔ optie verwijderen (zoals vroeger)
-      setForms((prev) => prev.filter((f) => f.id !== formId));
+      // verwijder gebruikte optie
+      setOptions((prev) => prev.filter((o) => o !== value));
     } else {
-      // ❌ fout → feedback
-      setWrong(formId);
+      setWrong(value);
       setTimeout(() => setWrong(null), 400);
     }
   }
+
+  const isComplete = Object.keys(answers).length === pronouns.length;
 
   return (
     <VerbCardLayout
       title={exercise.title}
       description={exercise.description}
-      nextPronounId={nextPronounId}
-      matches={matches}
-      renderField={(pronounId: PronounId) => {
-        const matched = matches[pronounId];
-        return matched ? <p>{exercise.verb.forms[pronounId]}</p> : null;
-      }}
-    >
-      <div className='flex flex-col items-center'>
-        <div className='wrap mt-2 flex flex-row flex-wrap justify-center gap-2'>
-          {forms.map((f) => (
-            <button
-              key={f.id}
-              onClick={() => handleSelect(f.id)}
-              className={`
-                px-3 py-1 border rounded transition
-                ${wrong === f.id ? 'border-red-500 bg-red-50' : ''}
-              `}
-            >
-              {f.text}
-            </button>
-          ))}
-        </div>
-      </div>
-    </VerbCardLayout>
+      activePronounId={nextPronoun}
+      renderField={(pronounId) => (
+        <span className='w-min-12 items-start rounded-sm p-2 transition'>
+          {answers[pronounId]}
+        </span>
+      )}
+      footer={
+        !isComplete && (
+          <div className='flex flex-wrap gap-2 justify-center'>
+            {options.map((option) => (
+              <AnswerButton
+                key={option}
+                onClick={() => handleSelect(option as string)}
+                state={wrong === option}
+              >
+                {option}
+              </AnswerButton>
+            ))}
+          </div>
+        )
+      }
+    ></VerbCardLayout>
   );
 }

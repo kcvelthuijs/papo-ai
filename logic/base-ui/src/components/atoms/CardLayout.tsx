@@ -9,7 +9,7 @@ import {
   CardAction
 } from '../shadcn/card';
 import { Button } from '../shadcn/button';
-import StarBurst from '../animations/Starburst';
+import StarBurst from '../animations/starburst';
 
 type CardLayoutProps = {
   title?: string;
