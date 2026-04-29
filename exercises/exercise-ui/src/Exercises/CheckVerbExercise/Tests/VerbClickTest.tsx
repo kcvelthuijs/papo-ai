@@ -1,65 +1,71 @@
 import { useState } from 'react';
+
 import { shuffle } from '@workspace/ui/lib/shuffle';
 import { AnswerButton } from '@workspace/ui';
 import { type VerbExerciseProps } from '@exercises/logic';
+import { type VerbFormRow, buildVerbForms } from '@workspace/webtypes';
 
+import { VerbRow } from '../Renderer/VerbCardText';
 import { VerbCardLayout } from '../Layouts/VerbCardLayout';
-import type { Pronoun } from '@workspace/dtotypes';
 
 export function VerbClickTest({ exercise, onSubmit }: VerbExerciseProps) {
-  const pronouns = Object.keys(exercise.verb.forms);
+  const pronouns = Object.keys(exercise.forms);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [wrong, setWrong] = useState<string | null>(null);
-  const [options, setOptions] = useState(() =>
-    shuffle(Object.values(exercise.verb.forms))
+
+  // Maak een lijst met alle gegevens van vervoegingen
+  const [vervoeging, setVervoeging] = useState(
+    shuffle(buildVerbForms(exercise)),
   );
 
+  // Bepaal de actieve vervoeging
   const nextPronoun = pronouns.find((p) => !answers[p]);
 
-  async function handleSelect(value: string) {
+  async function handleSelect(id: string, value: string) {
     if (!nextPronoun) return;
-
     const result = await onSubmit({
       pronounId: nextPronoun,
-      value
+      value,
     });
-
-    if (result.isCorrect) {
+    if (result.answer.isCorrect) {
       setAnswers((prev) => ({
         ...prev,
-        [nextPronoun]: value
+        [nextPronoun]: value,
       }));
-
       // verwijder gebruikte optie
-      setOptions((prev) => prev.filter((o) => o !== value));
+      setVervoeging((v) => v.filter((v) => v.id !== id));
     } else {
-      setWrong(value);
-      setTimeout(() => setWrong(null), 400);
+      setWrong(id);
+      setTimeout(() => setWrong(null), 600);
     }
   }
 
-  const isComplete = Object.keys(answers).length === pronouns.length;
+  const isComplete = vervoeging.length === 0;
 
   return (
     <VerbCardLayout
       title={exercise.title}
       description={exercise.description}
       activePronounId={nextPronoun}
-      renderField={(pronounId) => (
-        <span className='w-min-12 items-start rounded-sm p-2 transition'>
-          {answers[pronounId]}
-        </span>
+      complete={isComplete}
+      renderField={(pronounId, isActive) => (
+        <VerbRow
+          key={pronounId}
+          form={answers[pronounId] ?? ''}
+          isActive={isActive}
+        />
       )}
       footer={
         !isComplete && (
           <div className='flex flex-wrap gap-2 justify-center'>
-            {options.map((option) => (
+            {vervoeging.map((v: VerbFormRow) => (
               <AnswerButton
-                key={option}
-                onClick={() => handleSelect(option as string)}
-                state={wrong === option}
+                id={v.id}
+                key={v.id}
+                onClick={() => handleSelect(v.id, v.form)}
+                state={wrong === v.id}
               >
-                {option}
+                {v.form}
               </AnswerButton>
             ))}
           </div>

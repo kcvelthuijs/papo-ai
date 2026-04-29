@@ -1,49 +1,39 @@
 import { type ReactNode } from 'react';
-import { CardLayout } from '@workspace/ui';
+import { CardLayout, ExerciseInput, Field } from '@workspace/ui';
 import { PtPronouns } from '@workspace/webtypes';
 
 type Props = {
   title?: string;
   description?: string;
-  renderField: (pronounId: string) => ReactNode;
   activePronounId?: string;
+  renderField: (pronounId: string, isActive: boolean) => ReactNode;
+  stars?: any;
   footer?: ReactNode;
   complete?: boolean;
-  onComplete?: () => void;
+  onContinue?: () => void;
 };
 
 export function VerbCardLayout({
   title,
   description,
   renderField,
+  stars,
   activePronounId,
   footer,
   complete,
-  onComplete
+  onContinue,
 }: Props) {
   const content = (
-    <div className='flex flex-col gap-2'>
+    <div>
       {PtPronouns.map((p) => {
         const isActive = p.id === activePronounId;
-
         return (
-          <div
-            key={p.id}
-            className='my-1 grid grid-cols-[40%_30%_30%] gap-y-4 align-bottom'
-          >
-            {/* pronoun */}
-                        <span className="border-transparent m-0.5 py-1 pr-2 text-right">
-  {p.text}
+          <div key={p.id} className='my-1 grid grid-cols-2 align-bottom w-full'>
+            <span className='border-transparent m-0.5 pt-2 pr-2 text-right'>
+              {p.text}
             </span>
-
-            {/* field */}
-            <div
-              className={`
-                min-h-12 px-2 py-1 border rounded
-                ${isActive ? 'border-red-400' : 'border-gray-200'}
-              `}
-            >
-              {renderField(p.id)}
+            <div className='items-start rounded-sm px-2 py-1'>
+              {renderField(p.id, isActive)}
             </div>
           </div>
         );
@@ -58,7 +48,8 @@ export function VerbCardLayout({
       content={content}
       footer={footer}
       complete={complete}
-      onComplete={onComplete}
+      onContinue={onContinue}
+      stars={stars}
     />
   );
 }

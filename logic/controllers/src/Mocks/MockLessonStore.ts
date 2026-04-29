@@ -7,16 +7,20 @@ import type {
   CheckVerbExercise,
   VerbAnswer,
   PronounId,
+  ExerciseEvaluation,
 } from '@workspace/dtotypes';
 
 import type { CheckVerbFeedback } from '@workspace/dtotypes';
+import { executeExercise } from '@exercises/logic';
+
+import { mockExercises } from './LessonMock';
 
 type State = {
   lesson: LessonDetails;
   currentExercise: Exercise;
-  results: CheckVerbFeedback[];
+  results: ExerciseEvaluation[];
 
-  submitAnswer: (answer: VerbAnswer) => void;
+  submitAnswer: (answer: VerbAnswer) => Promise<ExerciseEvaluation>;
 };
 
 // -------------------------
@@ -29,33 +33,14 @@ const mockLesson: LessonDetails = {
   level: 'A1',
   image: 'mulher-cafe.png',
   description: 'Verb click test mock lesson',
-  exercises: [
-    {
-      id: 'verb-ser-presente',
-      type: 'verb-click-test',
-      title: 'Conjugate ser',
-      description: 'Escolha a conjugação correta',
-      verb: {
-        infinitive: 'ser',
-        tense: 'presente',
-        forms: {
-          p1ev: 'sou',
-          p2ev: 'és',
-          p3ev: 'é',
-          p1mv: 'somos',
-          p2mv: 'são',
-          p3mv: 'são',
-        },
-      },
-    },
-  ],
+  exercises: mockExercises,
 };
 const mockSummary: LessonSummary = {
   id: 'lesson-verb-1',
   type: 'grammar',
   title: 'Ser – presente',
   level: 'A1',
-  image: '',
+  image: 'mulher-cafe.png',
   description: 'Mock lesson summary',
 };
 
@@ -72,7 +57,7 @@ type LessonState = {
   currentExerciseIndex: number;
   currentExercise?: Exercise;
 
-  results: CheckVerbFeedback[];
+  results: ExerciseEvaluation[];
 
   isLoading: boolean;
   error?: string;
@@ -80,20 +65,22 @@ type LessonState = {
   fetchAllLessons: () => Promise<void>;
   getLessonByID: (id: string) => Promise<LessonDetails>;
   setCurrentLesson: (id: string) => Promise<void>;
-  startLesson: () => void;
-  submitAnswer: (answer: VerbAnswer) => void;
+  startLesson: () => Promise<void>;
+  setExercise: (exerciseId: number) => Promise<void>;
+  startExercise: () => Promise<void>;
+  submitAnswer: (answer: VerbAnswer) => Promise<ExerciseEvaluation>;
   nextExercise: () => void;
 };
 
 // -------------------------
 // CHECK LOGIC (inline mock)
 // -------------------------
-
 function checkVerb(
   exercise: CheckVerbExercise,
   answer: VerbAnswer,
 ): CheckVerbFeedback {
-  const correctValue = exercise.verb.forms[answer.pronounId as PronounId];
+  const correctValue: string =
+    exercise.forms[answer.pronounId as PronounId] ?? '';
 
   const isCorrect =
     answer.value.trim().toLowerCase() === correctValue?.trim().toLowerCase();
@@ -109,7 +96,6 @@ function checkVerb(
 // -------------------------
 // STORE
 // -------------------------
-
 export const useMockLessonStore = create<LessonState>((set, get) => ({
   lessonSummaries: {
     [mockSummary.id]: mockSummary,
@@ -183,37 +169,84 @@ export const useMockLessonStore = create<LessonState>((set, get) => ({
       currentExercise: lesson.exercises[0],
       results: [],
     });
-    console.log('currentLesson', lesson);
+    await get().startLesson();
   },
 
   // -------------------------
   // START LESSON
   // -------------------------
-  startLesson: () => {
+  startLesson: async () => {
     const lesson = get().currentLesson;
     console.log('startLesson', lesson);
     if (!lesson) return;
+    await get().setExercise(0);
+  },
 
+  // -------------------------
+  // SET EXERCISE
+  // -------------------------
+  setExercise: async (exerciseId: number) => {
+    const lesson = get().currentLesson;
+    const exercises = lesson?.exercises;
+    if (!exercises) {
+      console.log('no exercises');
+      return;
+    }
+
+    if (exerciseId < exercises.length) {
+      set({
+        currentExerciseIndex: exerciseId,
+        currentExercise: exercises[exerciseId],
+        results: [],
+      });
+      await get().startExercise();
+    }
+  },
+
+  // -------------------------
+  // START EXERCISE
+  // -------------------------
+  startExercise: async () => {
+    const currentExercise = get().currentExercise;
+    if (!currentExercise) {
+      console.log('no current exercise');
+      return;
+    }
     set({
-      currentExerciseIndex: 0,
-      currentExercise: lesson.exercises[0],
-      results: [],
+      currentExercise: {
+        ...currentExercise,
+        state: 'active',
+      },
     });
-    console.log('currentExercise', lesson.exercises[0]);
+    console.log('currentExercise', currentExercise);
   },
 
   // -------------------------
   // SUBMIT ANSWER
   // -------------------------
-  submitAnswer: (answer: VerbAnswer) => {
-    const exercise = get().currentExercise as CheckVerbExercise;
-    if (!exercise) return;
+  submitAnswer: async (answer: VerbAnswer): Promise<ExerciseEvaluation> => {
+    const exercise = get().currentExercise;
+    if (!exercise) throw 'Current exercise is undefined';
 
-    const result = checkVerb(exercise, answer);
+    try {
+      const evaluation = await executeExercise(exercise, answer);
+      set((state) => ({
+        results: [...state.results, evaluation],
+      }));
+      console.log('MockLessonStore - nextAction', evaluation.nextAction);
+      switch (evaluation.nextAction) {
+        case 'next':
+          console.log('MockLesson', 'Next exercise');
+          get().nextExercise();
+          break;
 
-    set((state) => ({
-      results: [...state.results, result],
-    }));
+        default:
+          break;
+      }
+      return evaluation;
+    } catch (err) {
+      throw 'executeExercise failed:';
+    }
   },
 
   // -------------------------
@@ -225,14 +258,10 @@ export const useMockLessonStore = create<LessonState>((set, get) => ({
 
     const nextIndex = currentExerciseIndex + 1;
 
-    if (nextIndex >= currentLesson.exercises.length) {
+    if (nextIndex < currentLesson.exercises.length) {
+      get().setExercise(nextIndex);
+    } else {
       console.log('Lesson completed');
-      return;
     }
-
-    set({
-      currentExerciseIndex: nextIndex,
-      currentExercise: currentLesson.exercises[nextIndex],
-    });
   },
 }));

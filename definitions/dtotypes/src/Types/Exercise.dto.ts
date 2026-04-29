@@ -1,10 +1,19 @@
-import type { PronounId, VerbConjugation } from '@workspace/dtotypes';
+import type { PronounId } from '@workspace/dtotypes';
+
+export type ExerciseState = 'prepare' | 'active' | 'completed';
+export type ExerciseAction = 'stay' | 'retry' | 'next';
+export type ExerciseResult = 'right' | 'wrong' | 'partial';
 
 export type BaseExercise = {
   id: string;
   type: string;
   title: string;
   description: string;
+  state: ExerciseState;
+};
+
+export type ExecuteContext = {
+  isCompleted?: boolean;
 };
 
 // -----------------------
@@ -12,13 +21,11 @@ export type BaseExercise = {
 // -----------------------
 export type Exercise = ClosedExercise | OpenExercise;
 export type ExerciseEvaluation = {
-  result: {
-    exerciseId: string;
-    type: 'right' | 'wrong' | 'partial';
-    answer: any;
-    meta?: any;
-  };
-  nextAction: 'next-exercise' | 'retry' | 'stay';
+  exerciseId: string;
+  score: ExerciseResult;
+  answer: any;
+  meta?: any;
+  nextAction: ExerciseAction;
 };
 
 // -----------------------
@@ -34,7 +41,8 @@ export type ClosedExercise =
 // -----------------------
 export type CheckVerbExercise = BaseExercise & {
   type: 'verb-click-learn' | 'verb-click-test' | 'verb-type-test';
-  verb: VerbConjugation;
+  infinitive: string;
+  forms: Record<string, string>;
 };
 export type VerbAnswer = {
   pronounId: string;
@@ -43,14 +51,14 @@ export type VerbAnswer = {
 export type CheckVerbFeedback = {
   isCorrect: boolean;
   id: string;
-  value: PronounId;
+  value: string;
   correctValue: string;
 };
 
 // -----------------------
 //  SentenceBuildExercise
 // -----------------------
-export type SentenceBuildExercise = {
+export type SentenceBuildExercise = BaseExercise & {
   type: 'sentence-build-test';
   correctOrder: string[];
 };
@@ -67,7 +75,7 @@ export type SentenceBuildFeedback = {
 // -----------------------
 //  CheckGapExercise
 // -----------------------
-export type CheckGapExercise = {
+export type CheckGapExercise = BaseExercise & {
   type: 'sentence-type-test';
   sentences: Sentence[];
 };

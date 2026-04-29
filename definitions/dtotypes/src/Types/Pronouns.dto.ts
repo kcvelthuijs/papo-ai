@@ -1,3 +1,5 @@
+import type { CheckVerbExercise } from './Exercise.dto';
+
 export type PronounId = 'p1ev' | 'p2ev' | 'p3ev' | 'p1mv' | 'p2mv' | 'p3mv';
 
 export type TenseId =
@@ -30,10 +32,20 @@ export const PtPronouns: Pronoun[] = [
   { id: 'p3mv', text: 'eles/elas' },
 ];
 
-export type VerbForms = Record<PronounId, string>;
+export type VerbForm = {
+  pronoun: PronounId;
+  verb: string;
+};
 
-export type VerbConjugation = {
+// export type VerbForms = VerbForm[];
+export type VerbFormTable = {
   infinitive: string;
   tense: TenseId;
-  forms: VerbForms;
+  forms: Record<string, string>;
+};
+
+export type VerbFormRow = {
+  id: PronounId;
+  pronoun: string;
+  form: string;
 };

@@ -1,5 +1,5 @@
 import { Popover, PopoverContent, PopoverTrigger } from '../shadcn/popover';
-import PopoverWordProps from '@workspace/webtypes';
+import { PopoverWordProps } from '@workspace/webtypes';
 
 function PopoverWord({ className, word, translation }: PopoverWordProps) {
   return (

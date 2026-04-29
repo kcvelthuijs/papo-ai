@@ -1,4 +1,6 @@
 export * from './Const/weather.const';
+export * from './Types/Exercise.dto';
+export * from './Types/Pronouns.dto';
 export * from './Interfaces/article.dto';
 export * from './Interfaces/avatar.dto';
 export * from './Interfaces/conversation.dto';
@@ -9,5 +11,3 @@ export * from './Interfaces/speech.dto';
 export * from './Interfaces/transcribe.dto';
 export * from './Interfaces/translate.dto';
 export * from './Interfaces/weather.dto';
-export * from './Types/Exercise.dto';
-export * from './Types/Pronouns.dto';

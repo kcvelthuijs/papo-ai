@@ -1,0 +1,74 @@
+
+[0m[2m[35m$[0m [2m[1mtsc -b[0m
+[96msrc/Controllers/article.controller.ts[0m:[93m4[0m:[93m44[0m - [91merror[0m[90m TS1261: [0mAlready included file name '/Users/kees/repo/papo-ai/services/api/src/schemas/article.schema.ts' differs from file name '/Users/kees/repo/papo-ai/services/api/src/Schemas/article.schema.ts' only in casing.
+  The file is in the program because:
+    Imported via "../schemas/article.schema" from file '/Users/kees/repo/papo-ai/services/api/src/Controllers/article.controller.ts'
+    Matched by default include pattern '**/*'
+
+[7m4[0m import { getArticleByCategorySchema } from "../schemas/article.schema";
+[7m [0m [91m                                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96msrc/Controllers/article.controller.ts[0m:[93m5[0m:[93m32[0m - [91merror[0m[90m TS1261: [0mAlready included file name '/Users/kees/repo/papo-ai/services/api/src/services/article.service.ts' differs from file name '/Users/kees/repo/papo-ai/services/api/src/Services/article.service.ts' only in casing.
+  The file is in the program because:
+    Imported via "../services/article.service" from file '/Users/kees/repo/papo-ai/services/api/src/Controllers/article.controller.ts'
+    Imported via '../services/article.service' from file '/Users/kees/repo/papo-ai/services/api/src/Repositories/articles.observador.ts'
+    Imported via '../services/article.service' from file '/Users/kees/repo/papo-ai/services/api/src/Repositories/articles.rtp.ts'
+    Matched by default include pattern '**/*'
+
+[7m5[0m import { articleService } from "../services/article.service";
+[7m [0m [91m                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  [96msrc/Repositories/articles.observador.ts[0m:[93m2[0m:[93m38[0m
+    [7m2[0m import type { ArticleResponse } from '../services/article.service';
+    [7m [0m [96m                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+    File is included via import here.
+  [96msrc/Repositories/articles.rtp.ts[0m:[93m2[0m:[93m38[0m
+    [7m2[0m import type { ArticleResponse } from '../services/article.service';
+    [7m [0m [96m                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+    File is included via import here.
+
+[96msrc/Controllers/lesson.controller.ts[0m:[93m4[0m:[93m31[0m - [91merror[0m[90m TS1261: [0mAlready included file name '/Users/kees/repo/papo-ai/services/api/src/services/lesson.service.ts' differs from file name '/Users/kees/repo/papo-ai/services/api/src/Services/lesson.service.ts' only in casing.
+  The file is in the program because:
+    Imported via "../services/lesson.service" from file '/Users/kees/repo/papo-ai/services/api/src/Controllers/lesson.controller.ts'
+    Matched by default include pattern '**/*'
+
+[7m4[0m import { lessonService } from "../services/lesson.service";
+[7m [0m [91m                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96msrc/Controllers/lesson.controller.ts[0m:[93m5[0m:[93m26[0m - [91merror[0m[90m TS1261: [0mAlready included file name '/Users/kees/repo/papo-ai/services/api/src/schemas/id.schema.ts' differs from file name '/Users/kees/repo/papo-ai/services/api/src/Schemas/id.schema.ts' only in casing.
+  The file is in the program because:
+    Imported via "../schemas/id.schema" from file '/Users/kees/repo/papo-ai/services/api/src/Controllers/lesson.controller.ts'
+    Matched by default include pattern '**/*'
+
+[7m5[0m import { idSchema } from "../schemas/id.schema";
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96msrc/Repositories/articles.observador.ts[0m:[93m2[0m:[93m15[0m - [91merror[0m[90m TS2305: [0mModule '"../services/article.service"' has no exported member 'ArticleResponse'.
+
+[7m2[0m import type { ArticleResponse } from '../services/article.service';
+[7m [0m [91m              ~~~~~~~~~~~~~~~[0m
+
+[96msrc/Repositories/articles.rtp.ts[0m:[93m2[0m:[93m15[0m - [91merror[0m[90m TS2305: [0mModule '"../services/article.service"' has no exported member 'ArticleResponse'.
+
+[7m2[0m import type { ArticleResponse } from '../services/article.service';
+[7m [0m [91m              ~~~~~~~~~~~~~~~[0m
+
+[96msrc/Repositories/weather.ipmx.ts[0m:[93m2[0m:[93m15[0m - [91merror[0m[90m TS2459: [0mModule '"../Services/weather.service"' declares 'DailyForecast' locally, but it is not exported.
+
+[7m2[0m import type { DailyForecast } from "../Services/weather.service";
+[7m [0m [91m              ~~~~~~~~~~~~~[0m
+
+  [96msrc/Services/weather.service.ts[0m:[93m1[0m:[93m10[0m
+    [7m1[0m import { type DailyForecast } from '@workspace/dtotypes';
+    [7m [0m [96m         ~~~~~~~~~~~~~~~~~~[0m
+    'DailyForecast' is declared here.
+
+[96msrc/services/lesson.service.ts[0m:[93m6[0m:[93m15[0m - [91merror[0m[90m TS2305: [0mModule '"@workspace/dtotypes"' has no exported member 'LessonResponse'.
+
+[7m6[0m import { type LessonResponse, type LessonSummary } from '@workspace/dtotypes';
+[7m [0m [91m              ~~~~~~~~~~~~~~[0m
+
+
+Found 8 errors.
+
+[0m[31merror[0m[2m:[0m script [1m"build"[0m exited with code 1[0m

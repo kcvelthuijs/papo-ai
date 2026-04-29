@@ -5,7 +5,8 @@ import type {
   CheckVerbExercise,
   CheckGapExercise,
   SentenceBuildExercise,
-  OpenExerciseFeedback,
+  ExerciseAction,
+  ExerciseResult,
 } from '@workspace/dtotypes';
 
 import { isOpenExercise } from '../Types/Exercise.types';
@@ -24,39 +25,45 @@ export async function executeExercise(
   if (isOpenExercise(exercise)) {
     const feedback = await evaluateOpenExercise(exercise, answer);
     return {
-      result: {
-        exerciseId: exercise.id,
-        type: feedback.score > 0.7 ? 'right' : 'wrong',
-        answer,
-        meta: {
-          feedback: feedback.feedback,
-          score: feedback.score,
-          suggestions: feedback.suggestions,
-        },
+      exerciseId: exercise.id,
+      score: feedback.score > 0.7 ? 'right' : 'wrong',
+      answer,
+      meta: {
+        feedback: feedback.feedback,
+        score: feedback.score,
+        suggestions: feedback.suggestions,
       },
-
-      nextAction: 'stay', // vaak LLM = stay (user iteratie)
+      nextAction: 'stay',
     };
-  }
+  } else {
+    // -------------------------
+    // CLOSED (deterministic)
+    // -------------------------
+    switch (exercise.type) {
+      case 'verb-click-learn':
+      case 'verb-click-test':
+      case 'verb-type-test':
+        const verbFeedback = checkVerb(exercise as CheckVerbExercise, answer);
+        const isComplete = answer.pronounId == 'p3mv' && verbFeedback.isCorrect;
+        const evaluation = {
+          exerciseId: exercise.id,
+          score: 'right' as ExerciseResult,
+          answer: verbFeedback,
+          nextAction: (!isComplete ? 'stay' : 'next') as ExerciseAction,
+        };
+        console.log('next action', evaluation.nextAction);
+        return evaluation;
 
-  // -------------------------
-  // CLOSED (deterministic)
-  // -------------------------
-  switch (exercise.type) {
-    case 'verb-click-learn':
-    case 'verb-click-test':
-    case 'verb-type-test':
-      return checkVerb(exercise as CheckVerbExercise, answer);
+      /* case 'sentence-type-test':
+        return checkGap(exercise as CheckGapExercise, answer);
 
-    case 'sentence-type-test':
-      return checkGap(exercise as CheckGapExercise, answer);
-
-    case 'sentence-build-test':
-      return checkBuild(exercise as SentenceBuildExercise, answer);
-
-    default:
-      throw new Error(
-        `Unknown exercise type: ${(exercise as ClosedExercise).type}`,
-      );
+      case 'sentence-build-test':
+        return checkBuild(exercise as SentenceBuildExercise, answer);
+*/
+      default:
+        throw new Error(
+          `Unknown exercise type: ${(exercise as ClosedExercise).type}`,
+        );
+    }
   }
 }

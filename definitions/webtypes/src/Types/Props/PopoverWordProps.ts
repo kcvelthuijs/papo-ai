@@ -1,7 +1,7 @@
-import type { DictionaryItem } from "../Interfaces/Dictionary";
+import type { DictionaryItem } from '../Interfaces/Dictionary';
 
 export default interface PopoverTextProps {
-    className?: string;
-    word: string;
-    translation: string;
+  className?: string;
+  word: string;
+  translation: string;
 }

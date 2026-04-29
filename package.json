@@ -7,11 +7,16 @@
     "dev": "turbo dev",
     "lint": "turbo lint",
     "format": "turbo format",
-    "typecheck": "turbo typecheck"
+    "typecheck": "turbo typecheck",
+    "clean": "rm -rf node_modules bun.lockb",
+    "rebuild": "bun run clean && bun install && bun run build"
   },
   "devDependencies": {
+    "autoprefixer": "^10.5.0",
+    "postcss": "^8.5.10",
     "prettier": "^3.8.1",
     "prettier-plugin-tailwindcss": "^0.7.2",
+    "tailwindcss": "^4.2.4",
     "turbo": "^2.9.6",
     "typescript": "5.9.3"
   },
@@ -28,6 +33,7 @@
     "services/*"
   ],
   "dependencies": {
+    "@tailwindcss/postcss": "^4.2.4",
     "fastify-cors": "^6.1.0",
     "fastify-static": "^4.7.0"
   }

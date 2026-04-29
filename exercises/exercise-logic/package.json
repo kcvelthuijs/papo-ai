@@ -8,6 +8,9 @@
   "peerDependencies": {
     "typescript": "^5"
   },
+  "dependencies": {
+    "@workspace/dtotypes": "workspace:*"
+  },
   "exports": {
     ".": "./src/index.ts"
   }

@@ -1,8 +1,8 @@
 import { Button, Spinner } from '@workspace/ui';
 import { useMockLessonStore } from '@workspace/controllers';
+import { ExerciseRenderer } from '@exercises/ui';
 
 import ImageComponent from '../Components/ImageComponent';
-import { ExerciseRenderer } from '@exercises/ui';
 
 type LessonProps = {
   id: string;
@@ -16,20 +16,24 @@ const Lesson = ({ id }: LessonProps) => {
     <div className='mx-3'>
       <div className='self-center mx-0 lg:mx-2 pt-3'>
         {/* IMAGE */}
-        <ImageComponent
-          name={currentLesson?.image ?? ''}
-          tree={['lessons', 'title']}
-          size='full'
-          className='flex flex-col w-full rounded-lg'
-        />
+        {!currentExercise && (
+          <>
+            <ImageComponent
+              name={currentLesson?.image ?? ''}
+              tree={['lessons', 'title']}
+              size='full'
+              className='flex flex-col w-full rounded-lg'
+            />
 
-        {/* TITLE + DESC */}
-        <div className='flex flex-col my-2 lg:mx-2'>
-          <p className='text-lg mx-0 lg:text-2xl font-bold underline lg:my-2'>
-            {currentLesson?.title}
-          </p>
-          <p className='lg:text-lg'>{currentLesson?.description}</p>
-        </div>
+            {/* TITLE + DESC */}
+            <div className='flex flex-col my-2 lg:mx-2'>
+              <p className='text-lg mx-0 lg:text-2xl font-bold underline lg:my-2'>
+                {currentLesson?.title}
+              </p>
+              <p className='lg:text-lg'>{currentLesson?.description}</p>
+            </div>
+          </>
+        )}
 
         {/* START BUTTON */}
         {!currentExercise && (

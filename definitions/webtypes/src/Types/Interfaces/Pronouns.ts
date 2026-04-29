@@ -1,8 +1,9 @@
 import type {
   PronounId as dtoPronounId,
   Pronoun as dtoPronoun,
-  VerbConjugation as dtoVerbConjugation,
-  VerbForms as dtoVerbForms,
+  VerbFormTable as dtoVerbConjugation,
+  VerbFormRow as dtoVerbFormRow,
+  CheckVerbExercise,
 } from '@workspace/dtotypes';
 import { PtPronouns as dtoPtPronouns } from '@workspace/dtotypes';
 
@@ -10,6 +11,14 @@ import { PtPronouns as dtoPtPronouns } from '@workspace/dtotypes';
 export type PronounId = dtoPronounId;
 export type Pronoun = dtoPronoun;
 export type VerbConjugation = dtoVerbConjugation;
-export type VerbForms = dtoVerbForms;
-
+export type VerbFormRow = dtoVerbFormRow;
 export const PtPronouns = dtoPtPronouns;
+
+export function buildVerbForms(exercise: CheckVerbExercise): VerbFormRow[] {
+  console.log('forms', exercise.forms);
+  return PtPronouns.map((p) => ({
+    id: p.id,
+    pronoun: p.text,
+    form: exercise.forms[p.id],
+  }));
+}

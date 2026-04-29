@@ -6,16 +6,18 @@ export function ExerciseInput({
 }) {
   const stateClass =
     state === 'wrong'
-      ? 'text-red-500 border-red-500'
+      ? 'text-red-500 border-red-500 bg-red-300'
       : state === 'correct'
         ? 'font-semibold text-gray-800 border-gray-300'
-        : 'text-gray-800 border-gray-300';
+        : state === 'input'
+          ? 'text-gray-800 border-blue-400'
+          : 'text-gray-800 border-gray-300';
 
   return (
     <input
       {...props}
       size={size}
-      className={`bg-transparent text-center outline-none border py-1 rounded-md ${stateClass} ${className}`}
+      className={`bg-transparent outline-none border py-1 px-2 rounded-md ${stateClass} ${className}`}
     />
   );
 }

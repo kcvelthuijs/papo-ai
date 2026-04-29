@@ -1,4 +1,8 @@
-import type { OpenExercise, CheckVerbExercise } from '@workspace/dtotypes';
+import type {
+  OpenExercise,
+  CheckVerbExercise,
+  ExecuteContext,
+} from '@workspace/dtotypes';
 
 export function isOpenExercise(ex: any): ex is OpenExercise {
   return (

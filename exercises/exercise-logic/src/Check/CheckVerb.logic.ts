@@ -1,14 +1,16 @@
-import type {
-  CheckVerbExercise,
-  VerbAnswer,
-  CheckVerbFeedback
+import {
+  type CheckVerbExercise,
+  type VerbAnswer,
+  type CheckVerbFeedback,
+  type ExecuteContext,
 } from '@workspace/dtotypes';
 
 export function checkVerb(
   exercise: CheckVerbExercise,
-  answer: VerbAnswer
+  answer: VerbAnswer,
+  context?: ExecuteContext,
 ): CheckVerbFeedback {
-  const correctValue = exercise.verb.forms[answer.pronounId];
+  const correctValue = exercise.forms[answer.pronounId] ?? '';
   const normalizedUser = answer.value.trim().toLowerCase();
   const normalizedCorrect = correctValue?.trim().toLowerCase();
   const isCorrect = normalizedUser === normalizedCorrect;
@@ -17,6 +19,6 @@ export function checkVerb(
     isCorrect,
     id: answer.pronounId,
     value: answer.value,
-    correctValue
+    correctValue,
   };
 }

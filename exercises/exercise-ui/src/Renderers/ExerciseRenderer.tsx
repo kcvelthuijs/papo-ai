@@ -1,6 +1,8 @@
 import { executeExercise } from '@exercises/logic';
+import { useMockLessonStore } from '@workspace/controllers';
 
-import { VerbRenderer } from './VerbRenderer';
+import { CheckVerbRenderer } from '../Exercises/CheckVerbExercise/Renderer/CheckVerbRenderer';
+import type { ExerciseEvaluation } from '@workspace/dtotypes';
 // import { SentenceGapRenderer } from './renderers/SentenceGapRenderer';
 // import { SentenceBuildRenderer } from './renderers/SentenceBuildRenderer';
 // import { OpenExerciseRenderer } from './renderers/OpenExerciseRenderer';
@@ -10,8 +12,9 @@ type Props = {
 };
 
 export function ExerciseRenderer({ exercise }: Props) {
-  const handleSubmit = async (answer: any) => {
-    return await executeExercise(exercise, answer);
+  const submitAnswer = useMockLessonStore((s) => s.submitAnswer);
+  const handleSubmit = async (answer: any): Promise<ExerciseEvaluation> => {
+    return await submitAnswer(answer);
   };
 
   switch (exercise.type) {
@@ -21,7 +24,7 @@ export function ExerciseRenderer({ exercise }: Props) {
     case 'verb-click-learn':
     case 'verb-click-test':
     case 'verb-type-test':
-      return <VerbRenderer exercise={exercise} onSubmit={handleSubmit} />;
+      return <CheckVerbRenderer exercise={exercise} onSubmit={handleSubmit} />;
 
     /*   // -------------------------
     // GAP
