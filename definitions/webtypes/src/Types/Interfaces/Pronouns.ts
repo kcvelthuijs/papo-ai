@@ -19,6 +19,7 @@ export function buildVerbForms(exercise: CheckVerbExercise): VerbFormRow[] {
   return PtPronouns.map((p) => ({
     id: p.id,
     pronoun: p.text,
-    form: exercise.forms[p.id],
+    tense: exercise.tense,
+    form: exercise.forms[p.id] ?? '',
   }));
 }

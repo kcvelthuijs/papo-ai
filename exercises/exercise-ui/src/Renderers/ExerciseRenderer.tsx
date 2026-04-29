@@ -1,9 +1,9 @@
-import { executeExercise } from '@exercises/logic';
 import { useMockLessonStore } from '@workspace/controllers';
+import type { ExerciseEvaluation } from '@workspace/dtotypes';
 
 import { CheckVerbRenderer } from '../Exercises/CheckVerbExercise/Renderer/CheckVerbRenderer';
-import type { ExerciseEvaluation } from '@workspace/dtotypes';
-// import { SentenceGapRenderer } from './renderers/SentenceGapRenderer';
+import { CheckSentenceRenderer } from '../Exercises/CheckSentenceExercise/Renderers/CheckSentenceRenderer';
+
 // import { SentenceBuildRenderer } from './renderers/SentenceBuildRenderer';
 // import { OpenExerciseRenderer } from './renderers/OpenExerciseRenderer';
 
@@ -26,14 +26,16 @@ export function ExerciseRenderer({ exercise }: Props) {
     case 'verb-type-test':
       return <CheckVerbRenderer exercise={exercise} onSubmit={handleSubmit} />;
 
-    /*   // -------------------------
+    // -------------------------
     // GAP
     // -------------------------
     case 'sentence-type-test':
+    case 'sentence-build-test':
       return (
-        <SentenceGapRenderer exercise={exercise} onSubmit={handleSubmit} />
+        <CheckSentenceRenderer exercise={exercise} onSubmit={handleSubmit} />
       );
 
+    /*
     // -------------------------
     // BUILD
     // -------------------------

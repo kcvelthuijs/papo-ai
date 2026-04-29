@@ -1,4 +1,4 @@
-import type { PronounId } from '@workspace/dtotypes';
+import type { PronounId, TenseId } from '@workspace/dtotypes';
 
 export type ExerciseState = 'prepare' | 'active' | 'completed';
 export type ExerciseAction = 'stay' | 'retry' | 'next';
@@ -42,6 +42,7 @@ export type ClosedExercise =
 export type CheckVerbExercise = BaseExercise & {
   type: 'verb-click-learn' | 'verb-click-test' | 'verb-type-test';
   infinitive: string;
+  tense: TenseId;
   forms: Record<string, string>;
 };
 export type VerbAnswer = {

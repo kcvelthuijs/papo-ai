@@ -1,7 +1,9 @@
 import { useState, useRef, useEffect } from 'react';
 
 import { type Gap } from '@workspace/dtotypes';
-import { Button, CardLayout, ExerciseInput } from '@workspace/ui';
+import { Button, CardLayout } from '@workspace/ui';
+
+import { ExerciseInputBox } from '../../../components/atoms/ExerciseTextBoxes';
 
 type Props = {
   exercise: any;
@@ -133,7 +135,7 @@ export function SentenceTypeTest({
                   <span>{part}</span>
 
                   {gap && (
-                    <ExerciseInput
+                    <ExerciseInputBox
                       ref={(el: HTMLInputElement | null) => {
                         if (el) inputRefs.current[gap.id] = el;
                       }}

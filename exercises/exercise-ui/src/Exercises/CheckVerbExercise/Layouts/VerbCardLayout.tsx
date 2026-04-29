@@ -1,5 +1,5 @@
 import { type ReactNode } from 'react';
-import { CardLayout, ExerciseInput, Field } from '@workspace/ui';
+import { CardLayout } from '@workspace/ui';
 import { PtPronouns } from '@workspace/webtypes';
 
 type Props = {

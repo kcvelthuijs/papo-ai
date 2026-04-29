@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { shuffle, CardLayout, AnswerButton } from '@workspace/ui';
-import { type SentencePiece } from '../Exercises/SentenceClickTest';
+import { type SentencePiece } from '../Exercises/CheckSentenceExercise/Tests/SentenceClickTest';
 
 type SentenceClickTestProps = {
   title?: string;

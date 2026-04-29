@@ -2,29 +2,42 @@ import { useState } from 'react';
 
 import { AnswerButton } from '@workspace/ui';
 import type { VerbExerciseProps } from '@exercises/logic';
+import type { ExerciseInputState, PronounId } from '@workspace/webtypes';
 
 import { VerbCardLayout } from '../Layouts/VerbCardLayout';
-import { VerbRow } from '../Renderer/VerbCardText';
+import { ExerciseTextbox } from '../../../components/atoms/ExerciseTextBoxes';
 
 export function VerbClickLearn({ exercise, onSubmit }: VerbExerciseProps) {
   const pronouns = Object.keys(exercise.forms);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [wrong, setWrong] = useState<string | null>(null);
 
-  const nextPronounId = pronouns.find((p) => !answers[p]);
-  const nextForm = exercise.forms[nextPronounId ?? 0];
-  const isComplete = nextPronounId === undefined;
+  const nextPronoun = pronouns.find((p) => !answers[p]);
+  const nextForm = exercise.forms[nextPronoun ?? 0];
+  const isComplete = nextPronoun === undefined;
+
+  function getState(pronounId: PronounId): ExerciseInputState {
+    switch (answers[pronounId]) {
+      case 'wrong':
+        return 'wrong';
+      case 'correct':
+        return 'correct';
+      default:
+        if (pronounId === nextPronoun) return 'input';
+        else return 'idle';
+    }
+  }
 
   async function handleSelect(id: string, value: string) {
-    if (!nextPronounId) return;
+    if (!nextPronoun) return;
     const result = await onSubmit({
-      pronounId: nextPronounId,
+      pronounId: nextPronoun,
       value,
     });
     if (result.answer.isCorrect) {
       setAnswers((prev) => ({
         ...prev,
-        [nextPronounId]: value,
+        [nextPronoun]: value,
       }));
     } else {
       setWrong(id);
@@ -36,13 +49,13 @@ export function VerbClickLearn({ exercise, onSubmit }: VerbExerciseProps) {
     <VerbCardLayout
       title={exercise.title + ' clicklearn'}
       description={exercise.description}
-      activePronounId={nextPronounId}
+      activePronounId={nextPronoun}
       complete={isComplete}
       renderField={(pronounId, isActive) => (
-        <VerbRow
+        <ExerciseTextbox
           key={pronounId}
           form={answers[pronounId] ?? ''}
-          isActive={isActive}
+          state={getState(pronounId as PronounId)}
         />
       )}
       footer={
@@ -50,9 +63,9 @@ export function VerbClickLearn({ exercise, onSubmit }: VerbExerciseProps) {
           <div className='flex flex-col items-center'>
             <AnswerButton
               id={1}
-              key={nextPronounId}
-              onClick={() => handleSelect(nextPronounId ?? '', nextForm ?? '')}
-              state={wrong === nextPronounId}
+              key={nextPronoun}
+              onClick={() => handleSelect(nextPronoun ?? '', nextForm ?? '')}
+              state={wrong === nextPronoun}
             >
               {nextForm}
             </AnswerButton>

@@ -3,9 +3,14 @@ import { useState } from 'react';
 import { shuffle } from '@workspace/ui/lib/shuffle';
 import { AnswerButton } from '@workspace/ui';
 import { type VerbExerciseProps } from '@exercises/logic';
-import { type VerbFormRow, buildVerbForms } from '@workspace/webtypes';
+import {
+  type ExerciseInputState,
+  type PronounId,
+  type VerbFormRow,
+  buildVerbForms,
+} from '@workspace/webtypes';
 
-import { VerbRow } from '../Renderer/VerbCardText';
+import { ExerciseTextbox } from '@workspace/ui/components/atoms/ExerciseTextBoxes';
 import { VerbCardLayout } from '../Layouts/VerbCardLayout';
 
 export function VerbClickTest({ exercise, onSubmit }: VerbExerciseProps) {
@@ -20,6 +25,18 @@ export function VerbClickTest({ exercise, onSubmit }: VerbExerciseProps) {
 
   // Bepaal de actieve vervoeging
   const nextPronoun = pronouns.find((p) => !answers[p]);
+
+  function getState(pronounId: PronounId): ExerciseInputState {
+    switch (answers[pronounId]) {
+      case 'wrong':
+        return 'wrong';
+      case 'correct':
+        return 'correct';
+      default:
+        if (pronounId === nextPronoun) return 'input';
+        else return 'idle';
+    }
+  }
 
   async function handleSelect(id: string, value: string) {
     if (!nextPronoun) return;
@@ -49,10 +66,10 @@ export function VerbClickTest({ exercise, onSubmit }: VerbExerciseProps) {
       activePronounId={nextPronoun}
       complete={isComplete}
       renderField={(pronounId, isActive) => (
-        <VerbRow
+        <ExerciseTextbox
           key={pronounId}
           form={answers[pronounId] ?? ''}
-          isActive={isActive}
+          state={getState(pronounId as PronounId)}
         />
       )}
       footer={

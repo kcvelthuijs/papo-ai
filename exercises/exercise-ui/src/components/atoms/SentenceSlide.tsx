@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ExerciseInput } from '@workspace/ui';
+import { ExerciseInputBox } from './ExerciseTextBoxes';
 import type { Sentence } from '@workspace/webtypes';
 
 type Props = {
@@ -23,7 +23,7 @@ export function SentenceSlide({ sentence, answers, setAnswers, wrong }: Props) {
               <span>{part}</span>
 
               {gap && (
-                <ExerciseInput
+                <ExerciseInputBox
                   value={answers[gap.id] || ''}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     setAnswers((prev) => ({

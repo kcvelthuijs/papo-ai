@@ -1,17 +1,16 @@
 import { useState, useRef, useEffect } from 'react';
 
-import { ExerciseInput } from '@workspace/ui';
+import { ExerciseInputBox } from '@workspace/ui';
+import type { VerbExerciseProps } from '@exercises/logic';
 import {
   PtPronouns,
   type PronounId,
-  type VerbLearnExercise,
+  type ExerciseInputState,
 } from '@workspace/webtypes';
 
 import { VerbCardLayout } from '../Layouts/VerbCardLayout';
 
-type ExerciseInputState = 'idle' | 'input' | 'correct' | 'wrong';
-
-export function VerbTypeTest({ exercise, onSubmit }: VerbLearnExercise) {
+export function VerbTypeTest({ exercise, onSubmit }: VerbExerciseProps) {
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const inputRefs = useRef<Record<string, HTMLInputElement>>({});
 
@@ -107,7 +106,7 @@ export function VerbTypeTest({ exercise, onSubmit }: VerbLearnExercise) {
       activePronounId={nextPronoun}
       stars={stars}
       renderField={(pronounId: string, isActive) => (
-        <ExerciseInput
+        <ExerciseInputBox
           ref={(el: HTMLInputElement | null) => {
             if (el) inputRefs.current[pronounId] = el;
           }}

@@ -1,12 +1,14 @@
 import type {
-  VerbLearnExercise as dtoVerbLearnExercise,
+  CheckVerbExercise as dtoCheckVerbExercise,
   Sentence as dtoSentence,
   Gap as dtoGap,
 } from '@workspace/dtotypes';
 
-export type VerbLearnExercise = dtoVerbLearnExercise;
+export type CheckVerbExercise = dtoCheckVerbExercise;
 export type Sentence = dtoSentence;
 export type Gap = dtoGap;
+
+export type ExerciseInputState = 'idle' | 'input' | 'correct' | 'wrong';
 
 export type ExerciseResult =
   | ExerciseRightResult
