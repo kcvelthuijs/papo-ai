@@ -1,22 +1,22 @@
 import React from 'react';
 
 import { ExerciseInputBox } from './ExerciseTextBoxes';
-import type { Sentence } from '@workspace/webtypes';
+import type { Phrase } from '@workspace/webtypes';
 
 type Props = {
-  sentence: Sentence;
+  Phrase: Phrase;
   answers: Record<string, string>;
   setAnswers: React.Dispatch<React.SetStateAction<Record<string, string>>>;
   wrong: boolean;
 };
 
-export function SentenceSlide({ sentence, answers, setAnswers, wrong }: Props) {
+export function PhraseSlide({ Phrase, answers, setAnswers, wrong }: Props) {
   return (
     <div className='flex flex-col gap-4'>
-      {/* sentence */}
+      {/* Phrase */}
       <div className='flex flex-wrap items-center gap-2 text-lg'>
-        {sentence.textParts.map((part, index) => {
-          const gap = sentence.gaps[index];
+        {Phrase.textParts.map((part, index) => {
+          const gap = Phrase.gaps[index];
 
           return (
             <span key={index} className='flex items-center gap-2'>
@@ -28,7 +28,7 @@ export function SentenceSlide({ sentence, answers, setAnswers, wrong }: Props) {
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     setAnswers((prev) => ({
                       ...prev,
-                      [gap.id]: e.target.value,
+                      [gap.id]: e.target.value
                     }))
                   }
                   state={wrong ? 'wrong' : 'idle'}
@@ -41,8 +41,8 @@ export function SentenceSlide({ sentence, answers, setAnswers, wrong }: Props) {
       </div>
 
       {/* translation (content-level, NOT footer) */}
-      {sentence.translation && (
-        <div className='text-sm text-gray-400'>{sentence.translation}</div>
+      {Phrase.translation && (
+        <div className='text-sm text-gray-400'>{Phrase.translation}</div>
       )}
     </div>
   );

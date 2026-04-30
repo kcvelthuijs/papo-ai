@@ -32,18 +32,21 @@ export function ExerciseInputBox({
 }
 
 type Props = {
+  key: string;
   form: string;
   state?: ExerciseInputState;
   className?: string;
 };
 export function ExerciseTextbox({
+  key,
   form,
   state = 'idle',
-  className = '',
+  className = ''
 }: Props) {
   const stateClass = getStateClassSpecification(state as ExerciseInputState);
   return (
     <input
+      aria-label={key}
       size={9}
       value={form}
       disabled={true}

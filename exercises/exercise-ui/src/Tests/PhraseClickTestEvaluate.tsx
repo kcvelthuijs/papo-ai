@@ -1,38 +1,34 @@
 import { useState } from 'react';
-import { AnswerButton, CardLayout, shuffle } from '@workspace/ui'; // ../../lib/shuffle';
+import { shuffle, CardLayout, AnswerButton } from '@workspace/ui';
+import { type PhrasePiece } from '../Exercises/CheckPhraseExercise/Tests/PhraseClickTest';
 
-export type SentencePiece = {
-  id: string;
-  text: string;
-};
-
-type SentenceClickTestProps = {
+type PhraseClickTestProps = {
   title?: string;
   description?: string;
-  sentence: string[]; // zin in juiste volgorde, gesplitst
+  Phrase: string[]; // zin in juiste volgorde, gesplitst
   onComplete?: () => void;
 };
 
-export function SentenceClickTest({
+export function PhraseClickTestEvaluate({
   title,
   description,
-  sentence,
-  onComplete,
-}: SentenceClickTestProps) {
+  Phrase,
+  onComplete
+}: PhraseClickTestProps) {
   // maak automatisch unieke ids
-  const pieces: SentencePiece[] = sentence.map((text, index) => ({
+  const pieces: PhrasePiece[] = Phrase.map((text, index) => ({
     id: `piece-${index}`,
-    text,
+    text
   }));
 
   const [available, setAvailable] = useState(() => shuffle(pieces));
-  const [selected, setSelected] = useState<SentencePiece[]>([]);
+  const [selected, setSelected] = useState<PhrasePiece[]>([]);
   const [wrong, setWrong] = useState<string | null>(null);
 
   const nextPiece = pieces[selected.length]; // volgende correct te kiezen stuk
   const complete = selected.length === pieces.length;
 
-  function handleSelect(piece: SentencePiece) {
+  function handleSelect(piece: PhrasePiece) {
     if (piece.id === nextPiece.id) {
       const newSelected = [...selected, piece];
 

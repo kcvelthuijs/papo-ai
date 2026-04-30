@@ -4,20 +4,20 @@ import type {
   OpenExercise,
   CheckVerbExercise,
   CheckGapExercise,
-  SentenceBuildExercise,
+  PhraseBuildExercise,
   ExerciseAction,
-  ExerciseResult,
+  ExerciseResult
 } from '@workspace/dtotypes';
 
 import { isOpenExercise } from '../Types/Exercise.types';
 import { checkGap } from '../Check/CheckGap.logic';
 import { checkVerb } from '../Check/CheckVerb.logic';
-import { checkBuild } from '../Check/SentenceBuild.logic';
+import { checkBuild } from '../Check/PhraseBuild.logic';
 import { evaluateOpenExercise } from '../Check/OpenExercise.logic';
 
 export async function executeExercise(
   exercise: ClosedExercise | OpenExercise,
-  answer: any,
+  answer: any
 ): Promise<ExerciseEvaluation> {
   // -------------------------
   // OPEN (LLM)
@@ -31,9 +31,9 @@ export async function executeExercise(
       meta: {
         feedback: feedback.feedback,
         score: feedback.score,
-        suggestions: feedback.suggestions,
+        suggestions: feedback.suggestions
       },
-      nextAction: 'stay',
+      nextAction: 'stay'
     };
   } else {
     // -------------------------
@@ -49,20 +49,20 @@ export async function executeExercise(
           exerciseId: exercise.id,
           score: 'right' as ExerciseResult,
           answer: verbFeedback,
-          nextAction: (!isComplete ? 'stay' : 'next') as ExerciseAction,
+          nextAction: (!isComplete ? 'stay' : 'next') as ExerciseAction
         };
         console.log('next action', evaluation.nextAction);
         return evaluation;
 
-      /* case 'sentence-type-test':
+      /* case 'Phrase-type-test':
         return checkGap(exercise as CheckGapExercise, answer);
 
-      case 'sentence-build-test':
-        return checkBuild(exercise as SentenceBuildExercise, answer);
+      case 'Phrase-build-test':
+        return checkBuild(exercise as PhraseBuildExercise, answer);
 */
       default:
         throw new Error(
-          `Unknown exercise type: ${(exercise as ClosedExercise).type}`,
+          `Unknown exercise type: ${(exercise as ClosedExercise).type}`
         );
     }
   }

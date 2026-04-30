@@ -1,11 +1,11 @@
 import type {
   CheckVerbExercise as dtoCheckVerbExercise,
-  Sentence as dtoSentence,
-  Gap as dtoGap,
+  Phrase as dtoPhrase,
+  Gap as dtoGap
 } from '@workspace/dtotypes';
 
 export type CheckVerbExercise = dtoCheckVerbExercise;
-export type Sentence = dtoSentence;
+export type Phrase = dtoPhrase;
 export type Gap = dtoGap;
 
 export type ExerciseInputState = 'idle' | 'input' | 'correct' | 'wrong';

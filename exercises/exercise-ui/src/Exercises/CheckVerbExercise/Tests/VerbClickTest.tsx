@@ -7,10 +7,10 @@ import {
   type ExerciseInputState,
   type PronounId,
   type VerbFormRow,
-  buildVerbForms,
+  buildVerbForms
 } from '@workspace/webtypes';
 
-import { ExerciseTextbox } from '@workspace/ui/components/atoms/ExerciseTextBoxes';
+import { ExerciseTextbox } from '../../../Components/Atoms/ExerciseTextBoxes';
 import { VerbCardLayout } from '../Layouts/VerbCardLayout';
 
 export function VerbClickTest({ exercise, onSubmit }: VerbExerciseProps) {
@@ -20,7 +20,7 @@ export function VerbClickTest({ exercise, onSubmit }: VerbExerciseProps) {
 
   // Maak een lijst met alle gegevens van vervoegingen
   const [vervoeging, setVervoeging] = useState(
-    shuffle(buildVerbForms(exercise)),
+    shuffle(buildVerbForms(exercise))
   );
 
   // Bepaal de actieve vervoeging
@@ -42,12 +42,12 @@ export function VerbClickTest({ exercise, onSubmit }: VerbExerciseProps) {
     if (!nextPronoun) return;
     const result = await onSubmit({
       pronounId: nextPronoun,
-      value,
+      value
     });
     if (result.answer.isCorrect) {
       setAnswers((prev) => ({
         ...prev,
-        [nextPronoun]: value,
+        [nextPronoun]: value
       }));
       // verwijder gebruikte optie
       setVervoeging((v) => v.filter((v) => v.id !== id));

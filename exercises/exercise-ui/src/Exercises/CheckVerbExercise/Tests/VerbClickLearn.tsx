@@ -5,7 +5,7 @@ import type { VerbExerciseProps } from '@exercises/logic';
 import type { ExerciseInputState, PronounId } from '@workspace/webtypes';
 
 import { VerbCardLayout } from '../Layouts/VerbCardLayout';
-import { ExerciseTextbox } from '../../../components/atoms/ExerciseTextBoxes';
+import { ExerciseTextbox } from '../../../Components/Atoms/ExerciseTextBoxes';
 
 export function VerbClickLearn({ exercise, onSubmit }: VerbExerciseProps) {
   const pronouns = Object.keys(exercise.forms);
@@ -32,12 +32,12 @@ export function VerbClickLearn({ exercise, onSubmit }: VerbExerciseProps) {
     if (!nextPronoun) return;
     const result = await onSubmit({
       pronounId: nextPronoun,
-      value,
+      value
     });
     if (result.answer.isCorrect) {
       setAnswers((prev) => ({
         ...prev,
-        [nextPronoun]: value,
+        [nextPronoun]: value
       }));
     } else {
       setWrong(id);

@@ -9,7 +9,6 @@ export type BaseExercise = {
   type: string;
   title: string;
   description: string;
-  state: ExerciseState;
 };
 
 export type ExecuteContext = {
@@ -34,7 +33,7 @@ export type ExerciseEvaluation = {
 export type ClosedExercise =
   | BaseExercise
   | CheckVerbExercise
-  | SentenceBuildExercise;
+  | CheckGapExercise;
 
 // -----------------------
 //  CheckVerbExercise
@@ -57,16 +56,18 @@ export type CheckVerbFeedback = {
 };
 
 // -----------------------
-//  SentenceBuildExercise
+//  BuildPhraseExercise
 // -----------------------
-export type SentenceBuildExercise = BaseExercise & {
-  type: 'sentence-build-test';
+export type BuildPhraseExercise = BaseExercise & {
+  type: 'phrase-build-test';
   correctOrder: string[];
+  translation: string;
+  image: string;
 };
-export type SentenceBuildAnswer = {
+export type PhraseBuildAnswer = {
   value: string[];
 };
-export type SentenceBuildFeedback = {
+export type PhraseBuildFeedback = {
   isCorrectSoFar: boolean;
   isComplete: boolean;
   value: string;
@@ -77,10 +78,10 @@ export type SentenceBuildFeedback = {
 //  CheckGapExercise
 // -----------------------
 export type CheckGapExercise = BaseExercise & {
-  type: 'sentence-type-test';
-  sentences: Sentence[];
+  type: 'phrase-type-test';
+  phrases: Phrase[];
 };
-export type Sentence = {
+export type Phrase = {
   id: string;
   textParts: string[];
   gaps: Gap[];
@@ -99,7 +100,7 @@ export type CheckGapFeedback = {
   isCorrect: boolean;
   gapId: string;
   value: string;
-  correctValue: string;
+  correctValue: string | null;
 };
 
 // -----------------------

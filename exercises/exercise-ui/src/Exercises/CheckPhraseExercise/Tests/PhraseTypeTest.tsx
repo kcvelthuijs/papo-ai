@@ -2,26 +2,12 @@ import { useState, useRef, useEffect } from 'react';
 
 import { type Gap } from '@workspace/dtotypes';
 import { Button, CardLayout } from '@workspace/ui';
+import type { PhraseGapProps } from '@exercises/logic';
 
-import { ExerciseInputBox } from '../../../components/atoms/ExerciseTextBoxes';
+import { ExerciseInputBox } from '../../../Components/Atoms/ExerciseTextBoxes';
 
-type Props = {
-  exercise: any;
-  description?: string;
-  onRight?: (data: any) => void;
-  onWrong?: (data: any) => void;
-  onComplete?: () => void;
-};
-
-export function SentenceTypeTest({
-  exercise,
-  description,
-  onRight,
-  onWrong,
-  onComplete,
-}: Props) {
+export function PhraseTypeTest({ exercise, onSubmit }: PhraseGapProps) {
   const [index, setIndex] = useState(0);
-
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [matches, setMatches] = useState<Record<string, string>>({});
   const [wrong, setWrong] = useState<string | null>(null);
@@ -30,12 +16,14 @@ export function SentenceTypeTest({
   const starIdRef = useRef(0);
   const inputRefs = useRef<Record<string, HTMLInputElement>>({});
 
-  const sentence = exercise.sentences[index];
-  const isLast = index === exercise.sentences.length - 1;
+  const Phrase = exercise.phrases[index];
+  const isLast = index === exercise.phrases.length - 1;
 
-  const gaps = sentence.gaps;
+  const gaps = Phrase ? Phrase.gaps : null;
 
   useEffect(() => {
+    if (!gaps) return;
+
     const next = gaps.find((g: Gap) => !matches[g.id]);
     if (next?.id) {
       const el = inputRefs.current[next.id];
@@ -53,7 +41,6 @@ export function SentenceTypeTest({
   function spawnStars(gapId: string, count = 3, delay = 100) {
     const rect = inputRefs.current[gapId]?.getBoundingClientRect();
     if (!rect) return;
-
     for (let i = 0; i < count; i++) {
       setTimeout(() => {
         const star = {
@@ -61,11 +48,9 @@ export function SentenceTypeTest({
           x: rect.left + Math.random() * rect.width,
           y: rect.top + (Math.random() * rect.height) / 2,
           rotation: Math.random() * 360,
-          scale: 0.4 + Math.random() * 0.4,
+          scale: 0.4 + Math.random() * 0.4
         };
-
         setStars((s) => [...s, star]);
-
         setTimeout(() => {
           setStars((s) => s.filter((x) => x.id !== star.id));
         }, 600);
@@ -74,61 +59,56 @@ export function SentenceTypeTest({
   }
 
   function allCorrect(): boolean {
-    return gaps.every((g: any) => matches[g.id]);
+    if (!gaps) return true;
+    else return gaps.every((g: any) => matches[g.id]);
   }
 
   // -------------------------
   // CheckGap
   // -------------------------
-  function checkGap(gap: any) {
+  async function checkGap(gap: any) {
     const value = answers[gap.id]?.trim().toLowerCase();
     if (!value) return;
 
-    const correct = gap.correct.toLowerCase();
-    if (value === correct) {
-      onRight?.({ id: gap.id, text: value });
+    const correct = await onSubmit({ gapId: gap.id, value });
+    if (correct) {
       const newMatches = {
         ...matches,
-        [gap.id]: value,
+        [gap.id]: value
       };
       setMatches(newMatches);
       spawnStars(gap.id);
       return;
+    } else {
+      setWrong(gap.id);
+      setTimeout(() => setWrong(null), 400);
     }
-
-    onWrong?.({ id: gap.id, text: value });
-    setWrong(gap.id);
-    setTimeout(() => setWrong(null), 400);
   }
 
   // -------------------------
-  // NEXT SENTENCE (carousel control)
+  // NEXT Phrase (carousel control)
   // -------------------------
-  function nextSentence() {
+  function nextPhrase() {
     const correct = allCorrect();
     if (!correct) return;
-    if (isLast) {
-      onComplete?.();
-      return;
-    }
     setIndex((i) => i + 1);
   }
 
   // -------------------------
-  // RENDER SINGLE SENTENCE
+  // RENDER SINGLE Phrase
   // -------------------------
   return (
     <CardLayout
-      title='Complete the sentences'
-      description={description}
+      title={exercise.title}
+      description={exercise.description}
       stars={stars}
-      complete={isLast && gaps.every((g: any) => matches[g.id])}
+      complete={isLast && gaps?.every((g: any) => matches[g.id])}
       content={
         <div className='flex flex-col gap-6'>
-          {/* SENTENCE */}
+          {/* Phrase */}
           <div className='flex flex-wrap items-center gap-2 text-lg'>
-            {sentence.textParts.map((part: string, index: number) => {
-              const gap = sentence.gaps[index];
+            {Phrase?.textParts.map((part: string, index: number) => {
+              const gap = Phrase.gaps[index];
 
               return (
                 <span key={index} className='flex items-center gap-2'>
@@ -152,7 +132,7 @@ export function SentenceTypeTest({
                       onChange={(e: any) =>
                         setAnswers((prev) => ({
                           ...prev,
-                          [gap.id]: e.target.value,
+                          [gap.id]: e.target.value
                         }))
                       }
                       onKeyDown={(e: any) => {
@@ -168,7 +148,7 @@ export function SentenceTypeTest({
           </div>
 
           {/* TRANSLATION */}
-          <div className='text-sm text-gray-400'>{sentence.translation}</div>
+          <div className='text-sm text-gray-400'>{Phrase?.translation}</div>
         </div>
       }
       footer={
@@ -177,7 +157,7 @@ export function SentenceTypeTest({
           <div className='flex justify-end gap-2'>
             <Button
               onClick={() => {
-                nextSentence();
+                nextPhrase();
               }}
             >
               Continuar

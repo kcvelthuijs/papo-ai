@@ -2,9 +2,9 @@ import { useMockLessonStore } from '@workspace/controllers';
 import type { ExerciseEvaluation } from '@workspace/dtotypes';
 
 import { CheckVerbRenderer } from '../Exercises/CheckVerbExercise/Renderer/CheckVerbRenderer';
-import { CheckSentenceRenderer } from '../Exercises/CheckSentenceExercise/Renderers/CheckSentenceRenderer';
+import { CheckPhraseRenderer } from '../Exercises/CheckPhraseExercise/Renderers/CheckPhraseRenderer';
 
-// import { SentenceBuildRenderer } from './renderers/SentenceBuildRenderer';
+// import { PhraseBuildRenderer } from './renderers/PhraseBuildRenderer';
 // import { OpenExerciseRenderer } from './renderers/OpenExerciseRenderer';
 
 type Props = {
@@ -29,19 +29,18 @@ export function ExerciseRenderer({ exercise }: Props) {
     // -------------------------
     // GAP
     // -------------------------
-    case 'sentence-type-test':
-    case 'sentence-build-test':
+    case 'phrase-type-test':
       return (
-        <CheckSentenceRenderer exercise={exercise} onSubmit={handleSubmit} />
+        <CheckPhraseRenderer exercise={exercise} onSubmit={handleSubmit} />
       );
 
     /*
     // -------------------------
     // BUILD
     // -------------------------
-    case 'sentence-build-test':
+    case 'Phrase-build-test':
       return (
-        <SentenceBuildRenderer exercise={exercise} onSubmit={handleSubmit} />
+        <PhraseBuildRenderer exercise={exercise} onSubmit={handleSubmit} />
       );
 
     // -------------------------

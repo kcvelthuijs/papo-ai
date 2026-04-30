@@ -1,18 +1,18 @@
 import type {
-  SentenceBuildExercise,
-  SentenceBuildAnswer,
-  SentenceBuildFeedback,
+  PhraseBuildExercise,
+  PhraseBuildAnswer,
+  PhraseBuildFeedback
 } from '@workspace/dtotypes';
 
 export function checkBuild(
-  exercise: SentenceBuildExercise,
-  answer: SentenceBuildAnswer,
-): SentenceBuildFeedback {
+  exercise: PhraseBuildExercise,
+  answer: PhraseBuildAnswer
+): PhraseBuildFeedback {
   const correct: string[] = exercise.correctOrder;
   const current = answer.value;
 
   const isCorrectSoFar = current.every(
-    (word: string, index: number) => word === correct[index],
+    (word: string, index: number) => word === correct[index]
   );
 
   const isComplete = current.length === correct.length && isCorrectSoFar;
@@ -21,6 +21,6 @@ export function checkBuild(
     isCorrectSoFar,
     isComplete,
     value: current,
-    correctOrder: correct,
+    correctOrder: correct
   };
 }

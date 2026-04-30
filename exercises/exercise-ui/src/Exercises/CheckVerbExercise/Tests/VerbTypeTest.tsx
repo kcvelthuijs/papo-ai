@@ -1,11 +1,11 @@
 import { useState, useRef, useEffect } from 'react';
 
-import { ExerciseInputBox } from '@workspace/ui';
+import { ExerciseInputBox } from '../../../Components/Atoms/ExerciseTextBoxes';
 import type { VerbExerciseProps } from '@exercises/logic';
 import {
   PtPronouns,
   type PronounId,
-  type ExerciseInputState,
+  type ExerciseInputState
 } from '@workspace/webtypes';
 
 import { VerbCardLayout } from '../Layouts/VerbCardLayout';
@@ -50,7 +50,7 @@ export function VerbTypeTest({ exercise, onSubmit }: VerbExerciseProps) {
           x: rect.left + Math.random() * 2 * rect.width - rect.width / 2,
           y: rect.top + (Math.random() * rect.height) / 2,
           rotation: Math.random() * 360,
-          scale: 0.4 + Math.random() * 0.4,
+          scale: 0.4 + Math.random() * 0.4
         };
         setStars((s) => [...s, star]);
         setTimeout(() => {
@@ -63,7 +63,7 @@ export function VerbTypeTest({ exercise, onSubmit }: VerbExerciseProps) {
   function handleChange(pronounId: string, value: string) {
     setAnswers((prev) => ({
       ...prev,
-      [pronounId]: value,
+      [pronounId]: value
     }));
   }
 
@@ -74,14 +74,14 @@ export function VerbTypeTest({ exercise, onSubmit }: VerbExerciseProps) {
     // bepaal de score
     const result = await onSubmit({
       pronounId,
-      value,
+      value
     });
 
     // Pas de status aan
     const isCorrect = result.answer.isCorrect;
     setStatus((prev) => ({
       ...prev,
-      [pronounId]: isCorrect ? 'correct' : 'wrong',
+      [pronounId]: isCorrect ? 'correct' : 'wrong'
     }));
 
     if (isCorrect) {
@@ -92,9 +92,9 @@ export function VerbTypeTest({ exercise, onSubmit }: VerbExerciseProps) {
         () =>
           setStatus((prev) => ({
             ...prev,
-            [pronounId]: 'input',
+            [pronounId]: 'input'
           })),
-        600,
+        600
       );
     }
   }
@@ -115,7 +115,7 @@ export function VerbTypeTest({ exercise, onSubmit }: VerbExerciseProps) {
           value={answers[pronounId] || ''}
           disabled={pronounId != nextPronoun}
           size={Math.max(
-            ...Object.values(exercise.forms).map((v: any) => v.length),
+            ...Object.values(exercise.forms).map((v: any) => v.length)
           )}
           state={getState(pronounId as PronounId)}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
