@@ -6,7 +6,7 @@ import type {
   CheckGapExercise,
   PhraseBuildExercise,
   ExerciseAction,
-  ExerciseResult
+  ExerciseResult,
 } from '@workspace/dtotypes';
 
 import { isOpenExercise } from '../Types/Exercise.types';
@@ -17,7 +17,7 @@ import { evaluateOpenExercise } from '../Check/OpenExercise.logic';
 
 export async function executeExercise(
   exercise: ClosedExercise | OpenExercise,
-  answer: any
+  answer: any,
 ): Promise<ExerciseEvaluation> {
   // -------------------------
   // OPEN (LLM)
@@ -27,13 +27,12 @@ export async function executeExercise(
     return {
       exerciseId: exercise.id,
       score: feedback.score > 0.7 ? 'right' : 'wrong',
-      answer,
       meta: {
         feedback: feedback.feedback,
         score: feedback.score,
-        suggestions: feedback.suggestions
+        suggestions: feedback.suggestions,
       },
-      nextAction: 'stay'
+      nextAction: 'next',
     };
   } else {
     // -------------------------
@@ -44,15 +43,9 @@ export async function executeExercise(
       case 'verb-click-test':
       case 'verb-type-test':
         const verbFeedback = checkVerb(exercise as CheckVerbExercise, answer);
-        const isComplete = answer.pronounId == 'p3mv' && verbFeedback.isCorrect;
-        const evaluation = {
-          exerciseId: exercise.id,
-          score: 'right' as ExerciseResult,
-          answer: verbFeedback,
-          nextAction: (!isComplete ? 'stay' : 'next') as ExerciseAction
-        };
-        console.log('next action', evaluation.nextAction);
-        return evaluation;
+        const isComplete =
+          answer.pronounId == 'p3mv' && verbFeedback.score == 'right';
+        return verbFeedback;
 
       /* case 'Phrase-type-test':
         return checkGap(exercise as CheckGapExercise, answer);
@@ -62,7 +55,7 @@ export async function executeExercise(
 */
       default:
         throw new Error(
-          `Unknown exercise type: ${(exercise as ClosedExercise).type}`
+          `Unknown exercise type: ${(exercise as ClosedExercise).type}`,
         );
     }
   }

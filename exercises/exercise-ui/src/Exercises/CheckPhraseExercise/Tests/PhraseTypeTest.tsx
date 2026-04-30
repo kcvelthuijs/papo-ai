@@ -4,7 +4,7 @@ import { type Gap } from '@workspace/dtotypes';
 import { Button, CardLayout } from '@workspace/ui';
 import type { PhraseGapProps } from '@exercises/logic';
 
-import { ExerciseInputBox } from '../../../Components/Atoms/ExerciseTextBoxes';
+import { ExerciseInputBox } from '../../../components/atoms/ExerciseInputBox';
 
 export function PhraseTypeTest({ exercise, onSubmit }: PhraseGapProps) {
   const [index, setIndex] = useState(0);
@@ -48,7 +48,7 @@ export function PhraseTypeTest({ exercise, onSubmit }: PhraseGapProps) {
           x: rect.left + Math.random() * rect.width,
           y: rect.top + (Math.random() * rect.height) / 2,
           rotation: Math.random() * 360,
-          scale: 0.4 + Math.random() * 0.4
+          scale: 0.4 + Math.random() * 0.4,
         };
         setStars((s) => [...s, star]);
         setTimeout(() => {
@@ -74,7 +74,7 @@ export function PhraseTypeTest({ exercise, onSubmit }: PhraseGapProps) {
     if (correct) {
       const newMatches = {
         ...matches,
-        [gap.id]: value
+        [gap.id]: value,
       };
       setMatches(newMatches);
       spawnStars(gap.id);
@@ -132,7 +132,7 @@ export function PhraseTypeTest({ exercise, onSubmit }: PhraseGapProps) {
                       onChange={(e: any) =>
                         setAnswers((prev) => ({
                           ...prev,
-                          [gap.id]: e.target.value
+                          [gap.id]: e.target.value,
                         }))
                       }
                       onKeyDown={(e: any) => {

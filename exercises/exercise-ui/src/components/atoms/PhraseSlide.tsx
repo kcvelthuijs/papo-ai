@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ExerciseInputBox } from './ExerciseTextBoxes';
+import { ExerciseInputBox } from './ExerciseInputBox';
 import type { Phrase } from '@workspace/webtypes';
 
 type Props = {
@@ -28,7 +28,7 @@ export function PhraseSlide({ Phrase, answers, setAnswers, wrong }: Props) {
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     setAnswers((prev) => ({
                       ...prev,
-                      [gap.id]: e.target.value
+                      [gap.id]: e.target.value,
                     }))
                   }
                   state={wrong ? 'wrong' : 'idle'}

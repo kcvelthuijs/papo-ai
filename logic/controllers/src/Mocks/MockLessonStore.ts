@@ -7,7 +7,7 @@ import type {
   CheckVerbExercise,
   VerbAnswer,
   PronounId,
-  ExerciseEvaluation
+  ExerciseEvaluation,
 } from '@workspace/dtotypes';
 
 import type { CheckVerbFeedback } from '@workspace/dtotypes';
@@ -33,7 +33,7 @@ const mockVerbLesson: LessonDetails = {
   level: 'A1',
   image: 'mulher-cafe.png',
   description: 'Verb click test mock lesson',
-  exercises: mockVerbExercises
+  exercises: mockVerbExercises,
 };
 const mockVerbSummary: LessonSummary = {
   id: 'lesson-verb-1',
@@ -41,7 +41,7 @@ const mockVerbSummary: LessonSummary = {
   title: 'Ser – presente',
   level: 'A1',
   image: 'mulher-cafe.png',
-  description: 'Mock lesson summary'
+  description: 'Mock lesson summary',
 };
 const mockGapLesson: LessonDetails = {
   id: 'lesson-gap-1',
@@ -50,7 +50,7 @@ const mockGapLesson: LessonDetails = {
   level: 'A1',
   image: 'mulher-cafe.png',
   description: 'Select the correct verb',
-  exercises: mockGapExercises
+  exercises: mockGapExercises,
 };
 const mockGapSummary: LessonSummary = {
   id: 'lesson-gap-1',
@@ -58,7 +58,7 @@ const mockGapSummary: LessonSummary = {
   title: 'Ser ou estar?',
   level: 'A1',
   image: 'mulher-cafe.png',
-  description: 'Select the correct verb'
+  description: 'Select the correct verb',
 };
 
 // -------------------------
@@ -94,7 +94,7 @@ type LessonState = {
 // -------------------------
 function checkVerb(
   exercise: CheckVerbExercise,
-  answer: VerbAnswer
+  answer: VerbAnswer,
 ): CheckVerbFeedback {
   const correctValue: string =
     exercise.forms[answer.pronounId as PronounId] ?? '';
@@ -106,7 +106,7 @@ function checkVerb(
     isCorrect,
     id: answer.pronounId,
     value: answer.value as any,
-    correctValue
+    correctValue,
   };
 }
 
@@ -116,11 +116,11 @@ function checkVerb(
 export const useMockLessonStore = create<LessonState>((set, get) => ({
   lessonSummaries: {
     [mockVerbSummary.id]: mockVerbSummary,
-    [mockGapSummary.id]: mockGapSummary
+    [mockGapSummary.id]: mockGapSummary,
   },
   lessonDetails: {
     [mockVerbLesson.id]: mockVerbLesson,
-    [mockGapLesson.id]: mockGapLesson
+    [mockGapLesson.id]: mockGapLesson,
   },
 
   currentLessonID: undefined,
@@ -143,9 +143,9 @@ export const useMockLessonStore = create<LessonState>((set, get) => ({
     set({
       lessonSummaries: {
         [mockVerbSummary.id]: mockVerbSummary,
-        [mockGapSummary.id]: mockGapSummary
+        [mockGapSummary.id]: mockGapSummary,
       },
-      isLoading: false
+      isLoading: false,
     });
   },
 
@@ -167,11 +167,11 @@ export const useMockLessonStore = create<LessonState>((set, get) => ({
     set((state) => ({
       lessonDetails: {
         ...state.lessonDetails,
-        [id]: selectedLesson
+        [id]: selectedLesson,
       },
       currentLesson: selectedLesson,
       currentLessonID: id,
-      isLoading: false
+      isLoading: false,
     }));
     get().startLesson();
     return selectedLesson;
@@ -189,7 +189,7 @@ export const useMockLessonStore = create<LessonState>((set, get) => ({
       currentLesson: lesson,
       currentExerciseIndex: 0,
       currentExercise: lesson.exercises[0],
-      results: []
+      results: [],
     });
     await get().startLesson();
   },
@@ -219,7 +219,7 @@ export const useMockLessonStore = create<LessonState>((set, get) => ({
       set({
         currentExerciseIndex: exerciseId,
         currentExercise: exercises[exerciseId],
-        results: []
+        results: [],
       });
       await get().startExercise();
     }
@@ -237,8 +237,8 @@ export const useMockLessonStore = create<LessonState>((set, get) => ({
     set({
       currentExercise: {
         ...currentExercise,
-        state: 'active'
-      }
+        state: 'active',
+      },
     });
     console.log('currentExercise', currentExercise);
   },
@@ -253,11 +253,11 @@ export const useMockLessonStore = create<LessonState>((set, get) => ({
     try {
       const evaluation = await executeExercise(exercise, answer);
       set((state) => ({
-        results: [...state.results, evaluation]
+        results: [...state.results, evaluation],
       }));
       console.log('MockLessonStore - nextAction', evaluation.nextAction);
       switch (evaluation.nextAction) {
-        case 'next':
+        case 'next exercise':
           console.log('MockLesson', 'Next exercise');
           get().nextExercise();
           break;
@@ -286,8 +286,8 @@ export const useMockLessonStore = create<LessonState>((set, get) => ({
       console.log('Lesson completed');
       set({
         currentLesson: undefined,
-        currentLessonID: ''
+        currentLessonID: '',
       });
     }
-  }
+  },
 }));

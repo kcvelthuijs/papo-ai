@@ -1,8 +1,8 @@
 import type { PronounId, TenseId } from '@workspace/dtotypes';
 
 export type ExerciseState = 'prepare' | 'active' | 'completed';
-export type ExerciseAction = 'stay' | 'retry' | 'next';
-export type ExerciseResult = 'right' | 'wrong' | 'partial';
+export type ExerciseAction = 'retry' | 'next' | 'next exercise';
+export type ExerciseScore = 'right' | 'wrong' | 'partial' | undefined;
 
 export type BaseExercise = {
   id: string;
@@ -11,19 +11,13 @@ export type BaseExercise = {
   description: string;
 };
 
-export type ExecuteContext = {
-  isCompleted?: boolean;
-};
-
 // -----------------------
 //  COLLECTION OF EXERCISES
 // -----------------------
 export type Exercise = ClosedExercise | OpenExercise;
 export type ExerciseEvaluation = {
   exerciseId: string;
-  score: ExerciseResult;
-  answer: any;
-  meta?: any;
+  score: ExerciseScore;
   nextAction: ExerciseAction;
 };
 
@@ -48,10 +42,8 @@ export type VerbAnswer = {
   pronounId: string;
   value: string;
 };
-export type CheckVerbFeedback = {
-  isCorrect: boolean;
-  id: string;
-  value: string;
+export type CheckVerbFeedback = ExerciseEvaluation & {
+  answer: VerbAnswer;
   correctValue: string;
 };
 

@@ -2,7 +2,7 @@ export * from './components/utils';
 export * from './hooks/use-mobile';
 export * from './components/animations/starburst';
 export * from './lib/shuffle';
-export * from './components/atoms/AnswerButton';
+export * from '../../../exercises/exercise-ui/src/components/atoms/AnswerButton';
 export * from './components/atoms/CardLayout';
 export * from './components/atoms/PhraseSlide';
 export * from './components/atoms/PopoverText';
