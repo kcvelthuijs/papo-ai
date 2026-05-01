@@ -4,9 +4,6 @@ import type {
   OpenExercise,
   CheckVerbExercise,
   CheckGapExercise,
-  PhraseBuildExercise,
-  ExerciseAction,
-  ExerciseResult,
 } from '@workspace/dtotypes';
 
 import { isOpenExercise } from '../Types/Exercise.types';
@@ -42,14 +39,12 @@ export async function executeExercise(
       case 'verb-click-learn':
       case 'verb-click-test':
       case 'verb-type-test':
-        const verbFeedback = checkVerb(exercise as CheckVerbExercise, answer);
-        const isComplete =
-          answer.pronounId == 'p3mv' && verbFeedback.score == 'right';
-        return verbFeedback;
+        return checkVerb(exercise as CheckVerbExercise, answer);
 
-      /* case 'Phrase-type-test':
+      case 'Phrase-type-test':
         return checkGap(exercise as CheckGapExercise, answer);
 
+      /*
       case 'Phrase-build-test':
         return checkBuild(exercise as PhraseBuildExercise, answer);
 */

@@ -1,5 +1,6 @@
 import type { ExerciseScore } from '@workspace/dtotypes';
-import { Button } from '@workspace/ui/components/shadcn/button';
+import { Button } from '@workspace/ui';
+
 import { getButtonScoreClassName } from '../helpers/ExerciseScoreClassName';
 
 type AnswerButtonProps = {

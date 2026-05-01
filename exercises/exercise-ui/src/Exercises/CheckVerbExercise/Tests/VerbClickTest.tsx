@@ -1,109 +1,62 @@
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 
 import { shuffle } from '@workspace/ui/lib/shuffle';
 import { AnswerButton } from '@workspace/ui';
 import { type VerbExerciseProps } from '@exercises/logic';
 import {
   EXERCISE_FEEDBACK_TIME,
-  type ExerciseInputState,
-  type PronounId,
   type VerbFormRow,
   buildVerbForms,
 } from '@workspace/webtypes';
+import type { ExerciseScore, PronounId } from '@workspace/dtotypes';
 
-import { ExerciseTextbox } from '../../../components/atoms/ExerciseTextBox';
 import { VerbCardLayout } from '../Layouts/VerbCardLayout';
-import {
-  PtPronouns,
-  type CheckVerbFeedback,
-  type ExerciseScore,
-} from '@workspace/dtotypes';
+import { useVerbExercise } from '../Hooks/VerbExerciseHook';
+import { ExerciseTextbox } from '../../../components/atoms/ExerciseTextBox';
+
+type ButtonFeedBack = {
+  id: string;
+  score: ExerciseScore;
+};
 
 export function VerbClickTest({ exercise, onSubmit }: VerbExerciseProps) {
-  const [answers, setAnswers] = useState<Record<string, string>>({});
-  const inputRefs = useRef<Record<string, HTMLInputElement>>({});
-
-  const [status, setStatus] = useState<Record<string, ExerciseInputState>>({});
-  const [score, setScore] = useState<Record<string, ExerciseScore>>({});
-  const [queue, setQueue] = useState<PronounId[]>(PtPronouns.map((p) => p.id));
-
-  const inputPronoun = queue[0];
-
-  // Maak een lijst met alle gegevens van vervoegingen
-  const [vervoeging, setVervoeging] = useState(
+  const { active, answers, score, getState, submit, isComplete } =
+    useVerbExercise({ onSubmit });
+  const [vervoeging, setVervoeging] = useState<VerbFormRow[]>(
     shuffle(buildVerbForms(exercise)),
   );
+  const [feedback, setFeedback] = useState<ButtonFeedBack>();
 
-  useEffect(() => {
-    if (!queue.length) return;
-    const active = queue[0];
-    setStatus((prev) => ({
-      ...prev,
-      [active as string]: 'input',
-    }));
-    if (active) inputRefs.current[active]?.focus();
-  }, [queue]);
+  // -------------------------
+  // SUBMIT HANDLER
+  // -------------------------
+  async function handleSelect(item: VerbFormRow) {
+    if (!active) return;
 
-  function getState(pronounId: PronounId): ExerciseInputState {
-    if (inputPronoun === pronounId) return 'input';
-    if (!answers[pronounId]) return 'idle';
-    else return 'ready';
-  }
-
-  async function handleAnswer(id: string, value: string) {
-    if (!inputPronoun) return;
-
-    // request feedback on the answer
-    const result: CheckVerbFeedback = await onSubmit({
-      pronounId: inputPronoun,
-      value,
-    });
-
-    // verwerk de score
-    setScore((prev) => ({
-      ...prev,
-      [inputPronoun]: result.score,
-    }));
-
-    // process the answer
-    if (result.score === 'right') {
-      setAnswers((prev) => ({
-        ...prev,
-        [inputPronoun as string]: value,
-      }));
-
-      // verwijder gebruikte optie
-      setVervoeging((v) => v.filter((v) => v.id !== id));
-
-      // verwijder deze input van de queue
-      setQueue((prev) => prev.slice(1));
+    const result = await submit(item.form);
+    if (result?.score === 'right') {
+      setVervoeging((prev) => prev.filter((v) => v.id !== item.id));
     }
 
-    // Feedback is tijdelijk als je de exercise opnieuw doet
+    // pas de buttonState tijdelijk aan
+    setFeedback({ id: item.id, score: result?.score });
     setTimeout(() => {
-      (setStatus((prev) => ({
-        ...prev,
-        [inputPronoun]: result.nextAction === 'next' ? 'ready' : 'input',
-      })),
-        setScore((prev) => ({
-          ...prev,
-          [inputPronoun]: undefined,
-        })));
+      setFeedback({ id: item.id, score: undefined });
     }, EXERCISE_FEEDBACK_TIME);
   }
 
-  const isComplete = vervoeging.length === 0;
-
+  // -------------------------
+  // RENDER
+  // -------------------------
   return (
     <VerbCardLayout
       title={exercise.title}
       description={exercise.description}
-      activePronounId={inputPronoun}
+      activePronounId={active}
       complete={isComplete}
-      renderField={(pronounId, isActive) => (
+      renderField={(pronounId) => (
         <ExerciseTextbox
           key={pronounId}
-          aria-label={`label-${pronounId}`}
           form={answers[pronounId] ?? ''}
           state={getState(pronounId as PronounId)}
           score={score[pronounId]}
@@ -112,12 +65,12 @@ export function VerbClickTest({ exercise, onSubmit }: VerbExerciseProps) {
       footer={
         !isComplete && (
           <div className='flex flex-wrap gap-2 justify-center'>
-            {vervoeging.map((v: VerbFormRow) => (
+            {vervoeging.map((v) => (
               <AnswerButton
-                id={v.id}
                 key={v.id}
-                onClick={() => handleAnswer(v.id, v.form)}
-                score={inputPronoun ? score[inputPronoun] : undefined}
+                id={v.id}
+                onClick={() => handleSelect(v)}
+                score={feedback?.id === v.id ? feedback.score : undefined}
               >
                 {v.form}
               </AnswerButton>
@@ -125,6 +78,6 @@ export function VerbClickTest({ exercise, onSubmit }: VerbExerciseProps) {
           </div>
         )
       }
-    ></VerbCardLayout>
+    />
   );
 }

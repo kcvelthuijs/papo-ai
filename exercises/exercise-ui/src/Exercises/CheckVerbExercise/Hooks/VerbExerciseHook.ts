@@ -25,6 +25,7 @@ export function useVerbExercise({ onSubmit }: UseVerbExerciseParams) {
   // -------------------------
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [score, setScore] = useState<Record<string, ExerciseScore>>({});
+  const [status, setStatus] = useState<Record<string, ExerciseInputState>>({});
   const [queue, setQueue] = useState<PronounId[]>(PtPronouns.map((p) => p.id));
 
   // refs voor focus (alleen nodig bij input-based exercises)
@@ -39,7 +40,9 @@ export function useVerbExercise({ onSubmit }: UseVerbExerciseParams) {
   useEffect(() => {
     if (!active) return;
     const el = inputRefs.current[active];
-    if (el) el.focus();
+    if (el) {
+      el.focus();
+    }
   }, [active]);
 
   // -------------------------
@@ -58,7 +61,6 @@ export function useVerbExercise({ onSubmit }: UseVerbExerciseParams) {
     if (!active) return;
 
     const current = active;
-
     const result: CheckVerbFeedback = await onSubmit({
       pronounId: current,
       value,
@@ -76,10 +78,6 @@ export function useVerbExercise({ onSubmit }: UseVerbExerciseParams) {
         ...prev,
         [current]: value,
       }));
-
-      if (result.nextAction === 'next') {
-        setQueue((prev) => prev.slice(1));
-      }
     }
 
     // tijdelijke feedback resetten
@@ -90,6 +88,12 @@ export function useVerbExercise({ onSubmit }: UseVerbExerciseParams) {
       }));
     }, EXERCISE_FEEDBACK_TIME);
 
+    if (result.nextAction === 'next') {
+      setQueue((prev) => prev.slice(1));
+    }
+    if (result.nextAction == 'restart') {
+      reset();
+    }
     return result;
   }
 

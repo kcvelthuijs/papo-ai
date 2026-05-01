@@ -23,7 +23,6 @@ export function ExerciseTextbox({
       aria-label={key}
       size={9}
       value={form}
-      disabled={true}
       className={`outline-none border px-2 py-1 rounded-md  ${stateClass} ${className}`}
     />
   );

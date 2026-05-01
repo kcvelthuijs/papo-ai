@@ -1,34 +1,50 @@
 import type {
   CheckGapExercise,
   CheckGapFeedback,
+  ExerciseAction,
+  ExerciseScore,
   Gap,
-  GapAnswer
+  GapAnswer,
+  Phrase,
 } from '@workspace/dtotypes';
 
 export function checkGap(
   exercise: CheckGapExercise,
-  answer: GapAnswer
+  answer: GapAnswer,
 ): CheckGapFeedback {
-  const Phrase = exercise.Phrases.find((s) =>
-    s.gaps.some((g: Gap) => g.id === answer.gapId)
-  );
-  const gap = Phrase?.gaps.find((g: Gap) => g.id === answer.gapId);
-  if (!gap) {
-    return {
-      isCorrect: false,
-      gapId: answer.gapId,
-      value: answer.value,
-      correctValue: null
-    };
-  } else {
-    const normalizedUser = answer.value.trim().toLowerCase();
-    const normalizedCorrect = gap.correct.trim().toLowerCase();
-    const isCorrect = normalizedUser === normalizedCorrect;
-    return {
-      isCorrect,
-      gapId: answer.gapId,
-      value: answer.value,
-      correctValue: gap.correct
-    };
+  // check the phrase
+  const phrase: Phrase | undefined = exercise.phrases[exercise.phraseIndex];
+  if (phrase) {
+    const gap = phrase.gaps[answer.gapIndex];
+    if (gap) {
+      // bepaal de uitslag
+      const answerUser = answer.value.trim().toLowerCase();
+      const answerCorrect = gap?.correct.trim().toLowerCase();
+      const isCorrect = answerUser === answerCorrect;
+
+      // zet de score
+      const score: ExerciseScore = isCorrect ? 'right' : 'wrong';
+
+      // bepaal de volgende actie
+      const nextAction: ExerciseAction = score !== 'right' ? 'retry' : 'next';
+
+      return {
+        exerciseId: exercise.id,
+        gapId: answer.gapId,
+        value: answer.value,
+        correctValue: gap?.correct ?? '',
+        score,
+        nextAction,
+      };
+    }
   }
+  // Error!!
+  return {
+    exerciseId: exercise.id,
+    gapId: answer.gapId,
+    value: answer.value,
+    correctValue: '',
+    score: 'wrong',
+    nextAction: 'quit',
+  };
 }

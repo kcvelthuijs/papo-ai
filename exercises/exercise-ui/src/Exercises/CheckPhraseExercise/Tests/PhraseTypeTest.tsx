@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 
-import { type Gap } from '@workspace/dtotypes';
+import { type CheckGapFeedback, type Gap } from '@workspace/dtotypes';
 import { Button, CardLayout } from '@workspace/ui';
 import type { PhraseGapProps } from '@exercises/logic';
 
@@ -17,7 +17,6 @@ export function PhraseTypeTest({ exercise, onSubmit }: PhraseGapProps) {
   const inputRefs = useRef<Record<string, HTMLInputElement>>({});
 
   const Phrase = exercise.phrases[index];
-  const isLast = index === exercise.phrases.length - 1;
 
   const gaps = Phrase ? Phrase.gaps : null;
 
@@ -70,7 +69,7 @@ export function PhraseTypeTest({ exercise, onSubmit }: PhraseGapProps) {
     const value = answers[gap.id]?.trim().toLowerCase();
     if (!value) return;
 
-    const correct = await onSubmit({ gapId: gap.id, value });
+    const correct: CheckGapFeedback = await onSubmit({ gapId: gap.id, value });
     if (correct) {
       const newMatches = {
         ...matches,
@@ -102,7 +101,6 @@ export function PhraseTypeTest({ exercise, onSubmit }: PhraseGapProps) {
       title={exercise.title}
       description={exercise.description}
       stars={stars}
-      complete={isLast && gaps?.every((g: any) => matches[g.id])}
       content={
         <div className='flex flex-col gap-6'>
           {/* Phrase */}

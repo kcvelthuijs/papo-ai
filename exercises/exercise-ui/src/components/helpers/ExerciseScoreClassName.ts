@@ -27,12 +27,12 @@ export function getButtonScoreClassName(score: ExerciseScore) {
   const base = 'rounded-lg border px-3 py-2 transition';
   switch (score) {
     case 'wrong':
-      return `${base} animate-shake border-red-400 hover:bg-red-100 hover:text-red-800 bg-red-100 text-red-800`;
+      return `${base} animate-shake border-red-400 bg-red-100 text-red-800 hover:bg-red-100 hover:text-red-800 `;
 
     case 'right':
-      return `${base} 'border-gray-600 text-black bg-white hover:border-gray-800 hover:bg-gray-400 hover:text-white`;
+      return `${base} border-gray-600 text-black bg-white hover:border-gray-800 hover:bg-gray-400 hover:text-white`;
 
     default:
-      return base;
+      return `${base} border-gray-600 text-black bg-white hover:border-gray-800 hover:bg-gray-400 hover:text-white`;
   }
 }

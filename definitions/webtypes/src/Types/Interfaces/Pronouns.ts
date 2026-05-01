@@ -15,7 +15,6 @@ export type VerbFormRow = dtoVerbFormRow;
 export const PtPronouns = dtoPtPronouns;
 
 export function buildVerbForms(exercise: CheckVerbExercise): VerbFormRow[] {
-  console.log('forms', exercise.forms);
   return PtPronouns.map((p) => ({
     id: p.id,
     pronoun: p.text,
