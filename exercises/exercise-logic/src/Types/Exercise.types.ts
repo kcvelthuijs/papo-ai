@@ -18,8 +18,9 @@ export type VerbExerciseProps = {
   onSubmit: (answer: { pronounId: string; value: string }) => Promise<any>;
 };
 
-export type PhraseGapProps = {
+export type GapExerciseProps = {
   exercise: CheckGapExercise;
+  phraseIndex?: number;
   onSubmit: (answer: GapAnswer) => Promise<any>;
 };
 

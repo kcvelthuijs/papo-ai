@@ -5,7 +5,7 @@ import { type PronounId } from '@workspace/webtypes';
 
 import { VerbCardLayout } from '../Layouts/VerbCardLayout';
 import { useVerbExercise } from '../Hooks/VerbExerciseHook';
-import { ExerciseInputBox } from '../../../components/atoms/ExerciseInputBox';
+import { ExerciseInputBox } from '../../../Components/Atoms/ExerciseInputBox';
 
 export function VerbTypeTest({ exercise, onSubmit }: VerbExerciseProps) {
   const {
