@@ -35,13 +35,13 @@ export async function executeExercise(
     // -------------------------
     // CLOSED (deterministic)
     // -------------------------
-    switch (exercise.type) {
+    switch (exercise.type.toLowerCase()) {
       case 'verb-click-learn':
       case 'verb-click-test':
       case 'verb-type-test':
         return checkVerb(exercise as CheckVerbExercise, answer);
 
-      case 'Phrase-type-test':
+      case 'phrase-type-test':
         return checkGap(exercise as CheckGapExercise, answer);
 
       /*

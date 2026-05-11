@@ -9,7 +9,7 @@ type Props = {
   renderField: (pronounId: string, isActive: boolean) => ReactNode;
   stars?: any;
   footer?: ReactNode;
-  complete?: boolean;
+  isComplete?: boolean;
   onContinue?: () => void;
 };
 
@@ -20,7 +20,7 @@ export function VerbCardLayout({
   stars,
   activePronounId,
   footer,
-  complete,
+  isComplete,
   onContinue,
 }: Props) {
   const content = (
@@ -47,7 +47,7 @@ export function VerbCardLayout({
       description={description}
       content={content}
       footer={footer}
-      complete={complete}
+      isComplete={isComplete}
       onContinue={onContinue}
       stars={stars}
     />

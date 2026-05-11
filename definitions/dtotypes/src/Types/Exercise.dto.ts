@@ -4,6 +4,7 @@ export type ExerciseState = 'prepare' | 'active' | 'completed';
 export type ExerciseAction =
   | 'retry'
   | 'next'
+  | 'next step'
   | 'next exercise'
   | 'restart'
   | 'quit';
@@ -14,6 +15,7 @@ export type BaseExercise = {
   type: string;
   title: string;
   description: string;
+  state: ExerciseState;
 };
 
 // -----------------------

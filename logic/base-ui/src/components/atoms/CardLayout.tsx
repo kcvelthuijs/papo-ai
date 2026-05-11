@@ -17,7 +17,7 @@ type CardLayoutProps = {
   content?: ReactNode; // componenten voor CardContent
   footer?: ReactNode; // voor content in CardFooter of extra knoppen
   stars?: any; // optioneel voor animaties zoals StarBurst
-  complete?: boolean;
+  isComplete?: boolean;
   onContinue?: () => void;
 };
 
@@ -26,7 +26,7 @@ export function CardLayout({
   description,
   footer,
   stars,
-  complete,
+  isComplete,
   onContinue,
   content,
 }: CardLayoutProps) {
@@ -51,7 +51,7 @@ export function CardLayout({
 
           <CardFooter className='flex justify-center border-t border-gray-600 min-h-16 pt-2'>
             {footer && <div className='mx-1'>{footer}</div>}
-            {complete && (
+            {isComplete && (
               <CardAction className='mx-1'>
                 <Button onClick={onContinue}>Continuar</Button>
               </CardAction>

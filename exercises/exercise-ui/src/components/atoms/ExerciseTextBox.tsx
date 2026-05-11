@@ -21,8 +21,9 @@ export function ExerciseTextbox({
   return (
     <input
       aria-label={key}
-      size={9}
+      size={Math.max(form.length, 4)}
       value={form}
+      readOnly={true}
       className={`outline-none border px-2 py-1 rounded-md  ${stateClass} ${className}`}
     />
   );

@@ -6,14 +6,12 @@ import {
   type ExerciseScore,
   type Gap,
   type GapAnswer,
-  type Phrase
+  type Phrase,
 } from '@workspace/dtotypes';
-
-import type { GapExerciseProps } from '@exercises/logic';
 
 import {
   EXERCISE_FEEDBACK_TIME,
-  type ExerciseInputState
+  type ExerciseInputState,
 } from '@workspace/webtypes';
 
 type useGapExercise = {
@@ -22,29 +20,36 @@ type useGapExercise = {
   onSubmit: (input: GapAnswer) => Promise<CheckGapFeedback>;
 };
 
-export function useGapExercise({ onSubmit }: useGapExercise) {
+export function useGapExercise({ exercise, onSubmit }: useGapExercise) {
   const [score, setScore] = useState<Record<string, ExerciseScore>>({});
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const inputRefs = useRef<Record<string, HTMLInputElement | null>>({});
 
-  const [phrase, setPhrase] = useState<Phrase | undefined>(undefined);
+  const [phraseIndex, setPhraseIndex] = useState(0);
   const [gapIndex, setGapIndex] = useState<number>(0);
+  const [isComplete, setComplete] = useState<boolean>(false);
   const [active, setActive] = useState<Gap | undefined>(undefined);
-  const [phraseIndex, setPhraseIndex] = useState<Number | undefined>();
+  const phrase = exercise.phrases[phraseIndex];
 
   useEffect(() => {
     setGapIndex(0);
+    setComplete(false);
   }, [phrase]);
 
   useEffect(() => {
-    const newGap = phrase?.gaps[gapIndex];
-    if (!newGap) return;
-    setActive(newGap);
-    const gapInput = inputRefs.current[newGap.id];
-    if (gapInput) {
-      gapInput.focus();
-    }
+    if (phrase) setActive(phrase.gaps[gapIndex]);
   }, [gapIndex]);
+
+  useEffect(() => {
+    if (isComplete) return;
+    if (!active) return;
+
+    requestAnimationFrame(() => {
+      console.log('requestAnimationFrame');
+      const el = inputRefs.current[active.id];
+      el?.focus();
+    });
+  }, [active]);
 
   // -------------------------
   // DERIVED STATE
@@ -63,23 +68,23 @@ export function useGapExercise({ onSubmit }: useGapExercise) {
 
     const current = active;
     const result: CheckGapFeedback = await onSubmit({
-      phraseIndex: 0,
+      phraseIndex,
       gapIndex,
       gapId: active.id,
-      value
+      value,
     });
 
     // score zetten (voor feedback kleur)
     setScore((prev) => ({
       ...prev,
-      [current.id]: result.score
+      [current.id]: result.score,
     }));
 
     // bij goed antwoord
     if (result.score === 'right') {
       setAnswers((prev) => ({
         ...prev,
-        [current.id]: value
+        [current.id]: value,
       }));
     }
 
@@ -87,14 +92,23 @@ export function useGapExercise({ onSubmit }: useGapExercise) {
     setTimeout(() => {
       setScore((prev) => ({
         ...prev,
-        [current.id]: undefined
+        [current.id]: undefined,
       }));
     }, EXERCISE_FEEDBACK_TIME);
 
-    if (result.nextAction === 'next') {
-      setGapIndex(gapIndex + 1);
+    switch (result.nextAction) {
+      case 'next':
+        setGapIndex(gapIndex + 1);
+        break;
+      case 'next step':
+        setComplete(true);
+        break;
     }
     return result;
+  }
+
+  function nextStep() {
+    setPhraseIndex(phraseIndex + 1);
   }
 
   // -------------------------
@@ -124,6 +138,7 @@ export function useGapExercise({ onSubmit }: useGapExercise) {
     phrase,
     phraseIndex,
     gapIndex,
+    isComplete,
 
     // helpers
     getState,
@@ -134,6 +149,6 @@ export function useGapExercise({ onSubmit }: useGapExercise) {
     // setters (optioneel)
     setAnswers,
     setScore,
-    setPhrase
+    nextStep,
   };
 }

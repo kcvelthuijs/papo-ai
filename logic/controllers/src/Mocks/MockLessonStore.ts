@@ -90,27 +90,6 @@ type LessonState = {
 };
 
 // -------------------------
-// CHECK LOGIC (inline mock)
-// -------------------------
-function checkVerb(
-  exercise: CheckVerbExercise,
-  answer: VerbAnswer,
-): CheckVerbFeedback {
-  const correctValue: string =
-    exercise.forms[answer.pronounId as PronounId] ?? '';
-
-  const isCorrect =
-    answer.value.trim().toLowerCase() === correctValue?.trim().toLowerCase();
-
-  return {
-    isCorrect,
-    id: answer.pronounId,
-    value: answer.value as any,
-    correctValue,
-  };
-}
-
-// -------------------------
 // STORE
 // -------------------------
 export const useMockLessonStore = create<LessonState>((set, get) => ({
@@ -246,29 +225,19 @@ export const useMockLessonStore = create<LessonState>((set, get) => ({
   // -------------------------
   // SUBMIT ANSWER
   // -------------------------
-  submitAnswer: async (answer: VerbAnswer): Promise<ExerciseEvaluation> => {
+  submitAnswer: async (answer: any): Promise<ExerciseEvaluation> => {
     const exercise = get().currentExercise;
     if (!exercise) throw 'Current exercise is undefined';
 
-    try {
-      const evaluation = await executeExercise(exercise, answer);
-      set((state) => ({
-        results: [...state.results, evaluation],
-      }));
-      console.log('MockLessonStore - nextAction', evaluation.nextAction);
-      switch (evaluation.nextAction) {
-        case 'next exercise':
-          console.log('MockLesson', 'Next exercise');
-          get().nextExercise();
-          break;
+    const evaluation = await executeExercise(exercise, answer);
+    set((state) => ({
+      results: [...state.results, evaluation],
+    }));
 
-        default:
-          break;
-      }
-      return evaluation;
-    } catch (err) {
-      throw 'executeExercise failed:';
+    if (evaluation.nextAction === 'next exercise') {
+      get().nextExercise();
     }
+    return evaluation;
   },
 
   // -------------------------
