@@ -41,7 +41,6 @@ export function CardLayout({
         behavior: 'smooth',
       });
       continueRef.current?.focus();
-      console.log('focus button', continueRef.current);
     });
   }, [isComplete]);
 
