@@ -8,6 +8,6 @@ export type CheckVerbExercise = dtoCheckVerbExercise;
 export type Phrase = dtoPhrase;
 export type Gap = dtoGap;
 
-export type ExerciseInputState = 'idle' | 'input' | 'ready';
+export type ExerciseInputState = 'idle' | 'input' | 'ready' | 'temp';
 
 export const EXERCISE_FEEDBACK_TIME = 800;

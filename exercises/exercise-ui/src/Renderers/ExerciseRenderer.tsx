@@ -43,6 +43,7 @@ export function ExerciseRenderer({ exercise }: Props) {
     // -------------------------
     // GAP
     // -------------------------
+    case 'gap-click-test':
     case 'gap-type-test':
       return (
         <CheckGapRenderer

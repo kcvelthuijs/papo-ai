@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 
-import { AnswerButton } from '@workspace/ui';
 import type { VerbExerciseProps } from '@exercises/logic';
 import {
   EXERCISE_FEEDBACK_TIME,
@@ -9,6 +8,7 @@ import {
 } from '@workspace/webtypes';
 
 import { VerbCardLayout } from '../Layouts/VerbCardLayout';
+import { AnswerButton } from '../../../Components/Atoms/AnswerButton';
 import { ExerciseTextbox } from '../../../Components/Atoms/ExerciseTextBox';
 import {
   PtPronouns,

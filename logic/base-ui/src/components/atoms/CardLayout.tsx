@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, useEffect, useRef } from 'react';
 import {
   Card,
   CardHeader,
@@ -8,8 +8,9 @@ import {
   CardFooter,
   CardAction,
 } from '../shadcn/card';
-import { Button } from '../shadcn/button';
+// import { Button } from '../shadcn/button';
 import StarBurst from '../animations/starburst';
+import { ContinueButton } from './ContinueButton';
 
 type CardLayoutProps = {
   title?: string;
@@ -30,6 +31,20 @@ export function CardLayout({
   onContinue,
   content,
 }: CardLayoutProps) {
+  const continueRef = useRef<HTMLButtonElement | null>(null);
+
+  useEffect(() => {
+    if (!isComplete) return;
+    setTimeout(() => {
+      continueRef.current?.scrollIntoView({
+        block: 'center',
+        behavior: 'smooth',
+      });
+      continueRef.current?.focus();
+      console.log('focus button', continueRef.current);
+    });
+  }, [isComplete]);
+
   return (
     <>
       <div className='flex flex-row justify-center'>
@@ -52,8 +67,10 @@ export function CardLayout({
           <CardFooter className='flex justify-center border-t border-gray-600 min-h-16 pt-2'>
             {footer && <div className='mx-1'>{footer}</div>}
             {isComplete && (
-              <CardAction className='mx-1'>
-                <Button onClick={onContinue}>Continuar</Button>
+              <CardAction className='mx-1 pt-2'>
+                <ContinueButton ref={continueRef} onClick={onContinue}>
+                  Continuar
+                </ContinueButton>
               </CardAction>
             )}
           </CardFooter>

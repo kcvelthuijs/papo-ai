@@ -15,9 +15,9 @@ export function GapTypeTest({
   const {
     active,
     answers,
-    score,
     phrase,
     isComplete,
+    tempFocus,
     getState,
     submit,
     registerInputRef,
@@ -71,7 +71,7 @@ export function GapTypeTest({
               const gap = phrase.gaps[index];
               const gapId = gap?.id ?? 'unknown';
               const isActive = active?.id === gapId;
-              const isAnswered = !!answers[gapId];
+              const isAnswered = answers[gapId]?.score === 'right';
               return (
                 <span key={index} className='flex items-center gap-2'>
                   <span>{part}</span>
@@ -87,10 +87,10 @@ export function GapTypeTest({
                         value={
                           active?.id === gapId
                             ? (localInput[gapId] ?? '')
-                            : (answers[gapId] ?? '')
+                            : (answers[gapId]?.answer ?? '')
                         }
-                        state={getState(gapId)}
-                        score={score[gapId]}
+                        state={getState(gapId, tempFocus)}
+                        score={answers[gapId]?.score}
                         className='text-center'
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                           handleChange(gapId, e.target.value)
@@ -106,9 +106,9 @@ export function GapTypeTest({
                     ) : (
                       gap && (
                         <ExerciseTextbox
-                          key={gapId}
-                          form={answers[gapId] ?? ''}
-                          className='text-center'
+                          textValue={answers[gapId]?.answer ?? ''}
+                          state={getState(gap.id, tempFocus)}
+                          score={answers[gap.id]?.score}
                         />
                       )
                     ))}

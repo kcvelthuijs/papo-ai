@@ -94,7 +94,7 @@ export type Gap = {
   id: string;
   correct: string;
   hint?: string;
-  options?: string[];
+  alt?: string[];
 };
 export type GapAnswer = {
   phraseIndex: number;

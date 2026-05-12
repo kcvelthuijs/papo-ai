@@ -1,6 +1,6 @@
 import {
   Badge,
-  Button,
+  ContinueButton,
   Card,
   CardAction,
   CardHeader,
@@ -57,8 +57,7 @@ export const LessonCard = ({ lesson, onSelectLesson }: LessonCardProps) => {
 
       <CardHeader className='px-2 m-0'>
         <CardAction>
-          <Button
-            variant='default'
+          <ContinueButton
             className='cursor-pointer'
             onClick={(e: any) => {
               e.stopPropagation();
@@ -66,7 +65,7 @@ export const LessonCard = ({ lesson, onSelectLesson }: LessonCardProps) => {
             }}
           >
             Start
-          </Button>
+          </ContinueButton>
         </CardAction>
         <CardTitle className='text-lg pt-1'>{lesson.title}</CardTitle>
       </CardHeader>

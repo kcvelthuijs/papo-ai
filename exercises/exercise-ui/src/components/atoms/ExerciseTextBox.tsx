@@ -3,8 +3,7 @@ import { type ExerciseInputState } from '@workspace/webtypes';
 import { getTextBoxScoreClassName } from '../Helpers/ExerciseScoreClassName';
 
 type Props = {
-  key: string;
-  form: string;
+  textValue: string;
   state?: ExerciseInputState;
   score?: ExerciseScore;
   hint?: string;
@@ -12,8 +11,7 @@ type Props = {
 };
 
 export function ExerciseTextbox({
-  key,
-  form,
+  textValue,
   state = 'idle',
   score = undefined,
   className = '',
@@ -22,10 +20,10 @@ export function ExerciseTextbox({
   const stateClass = getTextBoxScoreClassName(state, score);
   return (
     <span
-      className={`inline-flex items-center justify-center border-2 rounded-md px-2 py-1 min-w-[6ch] text-center ${stateClass} ${className}`}
+      className={`inline-flex outline-none justify-center border-2 px-2 py-1 rounded-md ${stateClass} ${className}`}
       style={{ minWidth: `${Math.max(hint.length ?? 12, 6)}ch` }}
     >
-      {form || '\u00A0'}
+      {textValue || '\u00A0'}
     </span>
   );
 }

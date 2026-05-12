@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { shuffle, CardLayout, AnswerButton } from '@workspace/ui';
+import { shuffle, CardLayout } from '@workspace/ui';
 import { type PhrasePiece } from '../Exercises/CheckPhraseExercise/Tests/GapClickTest';
+import { AnswerButton } from '../Components/Atoms/AnswerButton';
 
 type PhraseClickTestProps = {
   title?: string;

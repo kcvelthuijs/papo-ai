@@ -1,7 +1,6 @@
 import { useState } from 'react';
 
 import { shuffle } from '@workspace/ui/lib/shuffle';
-import { AnswerButton } from '@workspace/ui';
 import { type VerbExerciseProps } from '@exercises/logic';
 import {
   EXERCISE_FEEDBACK_TIME,
@@ -12,6 +11,7 @@ import type { ExerciseScore, PronounId } from '@workspace/dtotypes';
 
 import { VerbCardLayout } from '../Layouts/VerbCardLayout';
 import { useVerbExercise } from '../Hooks/VerbExerciseHook';
+import { AnswerButton } from '../../../Components/Atoms/AnswerButton';
 import { ExerciseTextbox } from '../../../Components/Atoms/ExerciseTextBox';
 
 type ButtonFeedBack = {
@@ -70,8 +70,7 @@ export function VerbClickTest({
       onComplete={handleComplete}
       renderField={(pronounId) => (
         <ExerciseTextbox
-          key={pronounId}
-          form={answers[pronounId] ?? ''}
+          textValue={answers[pronounId] ?? ''}
           state={getState(pronounId as PronounId)}
           score={score[pronounId]}
         />

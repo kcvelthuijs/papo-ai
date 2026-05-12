@@ -1,90 +1,118 @@
-import { useState } from 'react';
-import { AnswerButton, CardLayout, shuffle } from '@workspace/ui'; // ../../lib/shuffle';
+import { useEffect, useMemo, useState } from 'react';
 
-export type PhrasePiece = {
-  id: string;
-  text: string;
-};
+import { type GapExerciseProps } from '@exercises/logic';
+import { type ExerciseScore } from '@workspace/dtotypes';
+import { CardLayout, shuffle } from '@workspace/ui';
 
-type GapClickTestProps = {
-  title?: string;
-  description?: string;
-  Phrase: string[]; // zin in juiste volgorde, gesplitst
-  onComplete?: () => void;
-};
+import { useGapExercise } from '../Hooks/GapExerciseHook';
+import { AnswerButton } from '../../../Components/Atoms/AnswerButton';
+import { ExerciseTextbox } from '../../../Components/Atoms/ExerciseTextBox';
+import { EXERCISE_FEEDBACK_TIME } from '@workspace/webtypes';
 
-export function PhraseClickTest({
-  title,
-  description,
-  Phrase,
+export function GapClickTest({
+  exercise,
+  onSubmit,
   onComplete,
-}: GapClickTestProps) {
-  // maak automatisch unieke ids
-  const pieces: PhrasePiece[] = Phrase.map((text, index) => ({
-    id: `piece-${index}`,
-    text,
-  }));
+}: GapExerciseProps) {
+  const {
+    active,
+    answers,
+    phrase,
+    gapIndex,
+    isComplete,
+    tempFocus,
+    getState,
+    submit,
+    next,
+  } = useGapExercise({
+    exercise,
+    onSubmit,
+    onComplete,
+  });
 
-  const [available, setAvailable] = useState(() => shuffle(pieces));
-  const [selected, setSelected] = useState<PhrasePiece[]>([]);
-  const [wrong, setWrong] = useState<string | null>(null);
+  const [options, setOptions] = useState<string[]>([]);
 
-  const nextPiece = pieces[selected.length]; // volgende correct te kiezen stuk
-  const complete = selected.length === pieces.length;
-
-  function handleSelect(piece: PhrasePiece) {
-    if (piece.id === nextPiece.id) {
-      const newSelected = [...selected, piece];
-
-      setSelected(newSelected);
-      setAvailable(available.filter((p) => p.id !== piece.id));
-
-      if (newSelected.length === pieces.length) {
-        onComplete?.();
-      }
-    } else {
-      setWrong(piece.id);
-      setTimeout(() => setWrong(null), 400);
+  // ---------------------------------------------------
+  // SHUFFLE OPTIONS
+  // ---------------------------------------------------
+  useEffect(() => {
+    if (!phrase?.gaps[gapIndex]) return;
+    else {
+      const values = [
+        ...(phrase?.gaps[gapIndex ?? '']?.alt ?? []),
+        phrase.gaps[gapIndex].correct,
+      ];
+      const unique = [...new Set(values)];
+      setOptions(shuffle(unique));
     }
+  }, [active, phrase, gapIndex, active?.id]);
+
+  // ---------------------------------------------------
+  // HANDLE CLICK
+  // ---------------------------------------------------
+  async function handleSelect(value: string) {
+    if (!active) return;
+    await submit(value);
   }
 
-  // content voor CardContent
-  const content = (
-    <div className='flex flex-wrap gap-2 min-h-8 mb-4 justify-center'>
-      {selected.map((piece) => (
-        <span
-          key={piece.id}
-          className='px-3 py-1 bg-green-200 text-green-800 rounded'
-        >
-          {piece.text}
-        </span>
-      ))}
-    </div>
-  );
-
-  // children voor CardFooter: beschikbare stukken
-  const children = (
-    <div className='flex flex-wrap gap-2 justify-center'>
-      {available.map((piece) => (
-        <AnswerButton
-          id={piece.id}
-          state={wrong === piece.id}
-          onClick={() => handleSelect(piece)}
-        >
-          {piece.text}
-        </AnswerButton>
-      ))}
-    </div>
-  );
-
+  // ---------------------------------------------------
+  // RENDER
+  // ---------------------------------------------------
   return (
     <CardLayout
-      title={title ?? 'Title'}
-      description={description ?? 'Description'}
-      content={content}
-      footer={children}
-      complete={complete}
-      onComplete={onComplete}
+      title={exercise.title}
+      description={exercise.description}
+      isComplete={isComplete}
+      onContinue={next}
+      content={
+        <div className='flex flex-col gap-6'>
+          {/* Phrase */}
+          <div className='flex flex-wrap items-center gap-2 text-lg'>
+            {phrase?.textParts.map((part: string, index: number) => {
+              const gap = phrase.gaps[index];
+              const gapId = gap?.id ?? 'unknown';
+              const isActive = active?.id === gapId;
+              const answer = answers[gapId];
+              return (
+                <span key={index} className='flex items-center gap-2'>
+                  <span>{part}</span>
+                  {gap && (
+                    <ExerciseTextbox
+                      textValue={
+                        answer?.answer
+                          ? answer.answer
+                          : isActive
+                            ? (gap.hint ?? '')
+                            : ''
+                      }
+                      state={getState(gap.id, tempFocus)}
+                      score={answers[gap.id]?.score}
+                    />
+                  )}
+                </span>
+              );
+            })}
+          </div>
+
+          {/* Translation */}
+          <div className='text-sm text-gray-400'>{phrase?.translation}</div>
+        </div>
+      }
+      footer={
+        <div className='flex flex-wrap gap-2 justify-center'>
+          {!isComplete &&
+            options.map((option) => (
+              <AnswerButton
+                key={option}
+                id={option}
+                onClick={() => handleSelect(option)}
+                score={answers[gapIndex]?.score}
+              >
+                {option}
+              </AnswerButton>
+            ))}
+        </div>
+      }
     />
   );
 }

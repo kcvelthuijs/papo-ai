@@ -61,9 +61,42 @@ export const mockLesson = {
 
 export const mockGapExercises: Exercise[] = [
   {
+    id: 'ex-5',
+    type: 'gap-click-test',
+    title: 'Ser ou Estar',
+    description: 'Select the correct verb',
+    phraseIndex: 0,
+    phrases: [
+      {
+        id: 's3',
+        textParts: ['O quadro da sala', 'limpo'],
+        translation: 'Het bord in de klas is schoon',
+        gaps: [{ id: 'g1', correct: 'é', alt: ['está'] }],
+      },
+      {
+        id: 's4',
+        textParts: ['O pai', 'em casa.'],
+        translation: 'Vader is thuis.',
+        gaps: [{ id: 'g2', correct: 'está', alt: ['é'] }],
+      },
+      {
+        id: 's5',
+        textParts: ['Os prédios', 'altos'],
+        translation: 'De gebouwen zijn hoog.',
+        gaps: [{ id: 'g3', correct: 'são', alt: ['estão'] }],
+      },
+      {
+        id: 's6',
+        textParts: ['O Banco', 'fechado.'],
+        translation: 'De bank is gesloten.',
+        gaps: [{ id: 'g4', correct: 'está', alt: ['é'] }],
+      },
+    ],
+  } as CheckGapExercise,
+  {
     id: 'ex-4',
     type: 'gap-type-test',
-    title: 'Ser ou Estar',
+    title: 'Verbos regulares -er',
     description: 'Select the correct verb',
     phraseIndex: 0,
     phrases: [

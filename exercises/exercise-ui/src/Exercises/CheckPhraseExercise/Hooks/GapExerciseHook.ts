@@ -14,6 +14,11 @@ import {
   type ExerciseInputState,
 } from '@workspace/webtypes';
 
+type GapFeedback = {
+  answer: string;
+  score: ExerciseScore;
+};
+
 type useGapExercise = {
   exercise: CheckGapExercise;
   onSubmit: (input: GapAnswer) => Promise<CheckGapFeedback>;
@@ -25,8 +30,7 @@ export function useGapExercise({
   onSubmit,
   onComplete,
 }: useGapExercise) {
-  const [score, setScore] = useState<Record<string, ExerciseScore>>({});
-  const [answers, setAnswers] = useState<Record<string, string>>({});
+  const [answers, setAnswers] = useState<Record<string, GapFeedback>>({});
   const inputRefs = useRef<Record<string, HTMLInputElement | null>>({});
 
   const [phraseIndex, setPhraseIndex] = useState(0);
@@ -34,15 +38,18 @@ export function useGapExercise({
   const [isComplete, setComplete] = useState<boolean>(false);
   const [active, setActive] = useState<Gap | undefined>(undefined);
   const phrase = exercise.phrases[phraseIndex];
+  const [tempFocus, setFocus] = useState<string | null>(null);
 
   useEffect(() => {
     setGapIndex(0);
     setComplete(false);
+    setActive(undefined);
   }, [phrase]);
 
   useEffect(() => {
-    if (phrase) setActive(phrase.gaps[gapIndex]);
-  }, [gapIndex]);
+    const gap = phrase?.gaps?.[gapIndex];
+    setActive(gap);
+  }, [gapIndex, phraseIndex]);
 
   useEffect(() => {
     if (isComplete) return;
@@ -57,10 +64,14 @@ export function useGapExercise({
   // -------------------------
   // DERIVED STATE
   // -------------------------
-  function getState(gapId: string): ExerciseInputState {
-    if (gapId === active?.id) return 'input';
-    if (!answers[gapId]) return 'idle';
-    return 'ready';
+  function getState(
+    gapId: string,
+    tempFocus: string | null,
+  ): ExerciseInputState {
+    const baseState =
+      gapId === active?.id ? 'input' : !answers[gapId] ? 'idle' : 'ready';
+    if (tempFocus === gapId) return 'temp';
+    else return baseState;
   }
 
   // -------------------------
@@ -77,36 +88,28 @@ export function useGapExercise({
       value,
     });
 
-    // score zetten (voor feedback kleur)
-    setScore((prev) => ({
+    // vul het antwoord in met de score
+    setAnswers((prev) => ({
       ...prev,
-      [current.id]: result.score,
+      [current.id]: {
+        answer: value,
+        score: result.score,
+      },
     }));
-
-    // bij goed antwoord
-    if (result.score === 'right') {
-      setAnswers((prev) => ({
-        ...prev,
-        [current.id]: value,
-      }));
-    }
-
-    // tijdelijke feedback resetten
-    setTimeout(() => {
-      setScore((prev) => ({
-        ...prev,
-        [current.id]: undefined,
-      }));
-    }, EXERCISE_FEEDBACK_TIME);
 
     switch (result.nextAction) {
       case 'next':
-        setGapIndex(gapIndex + 1);
+        setGapIndex((prev) => prev + 1);
         break;
       case 'next step':
         setComplete(true);
         break;
     }
+
+    setFocus(active.id);
+    setTimeout(() => {
+      setFocus(null);
+    }, EXERCISE_FEEDBACK_TIME);
     return result;
   }
 
@@ -116,7 +119,7 @@ export function useGapExercise({
   async function next() {
     if (phraseIndex < exercise.phrases.length - 1)
       // next phrase
-      setPhraseIndex(phraseIndex + 1);
+      setPhraseIndex((prev) => prev + 1);
     else
       // next exercise
       await onComplete('end');
@@ -134,7 +137,6 @@ export function useGapExercise({
   // -------------------------
   function reset() {
     setAnswers({});
-    setScore({});
     setGapIndex(0);
   }
 
@@ -145,11 +147,11 @@ export function useGapExercise({
     // state
     active,
     answers,
-    score,
     phrase,
     phraseIndex,
     gapIndex,
     isComplete,
+    tempFocus,
 
     // helpers
     getState,
@@ -159,7 +161,6 @@ export function useGapExercise({
 
     // setters (optioneel)
     setAnswers,
-    setScore,
     next,
   };
 }

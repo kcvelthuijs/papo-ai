@@ -8,19 +8,21 @@ export function getTextBoxScoreClassName(
   const base =
     state === 'input' ? 'border-blue-400 border-2' : 'border-gray-400';
 
-  switch (score) {
-    case 'wrong':
-      return `${base} text-red-800 border-red-500 bg-red-200`;
+  if (state === 'temp') {
+    switch (score) {
+      case 'wrong':
+        return `${base} text-red-800 border-red-500 bg-red-200`;
 
-    case 'partial':
-      return `${base} text-orange-800 border-orange-400 bg-orange-200`;
+      case 'partial':
+        return `${base} text-orange-800 border-orange-400 bg-orange-200`;
 
-    case 'right':
-      return `${base} font-semibold border-green-500 bg-green-100`;
+      case 'right':
+        return `${base} font-semibold border-green-500 bg-green-100`;
 
-    default:
-      return base;
-  }
+      default:
+        return base;
+    }
+  } else return base;
 }
 
 export function getButtonScoreClassName(score: ExerciseScore) {
