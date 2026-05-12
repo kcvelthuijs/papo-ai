@@ -9,20 +9,25 @@ import {
 } from '@workspace/webtypes';
 
 import { VerbCardLayout } from '../Layouts/VerbCardLayout';
-import { ExerciseTextbox } from '../../../components/atoms/ExerciseTextBox';
+import { ExerciseTextbox } from '../../../Components/Atoms/ExerciseTextBox';
 import {
   PtPronouns,
   type CheckVerbFeedback,
   type ExerciseScore,
 } from '@workspace/dtotypes';
 
-export function VerbClickLearn({ exercise, onSubmit }: VerbExerciseProps) {
+export function VerbClickLearn({
+  exercise,
+  onSubmit,
+  onComplete,
+}: VerbExerciseProps) {
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const inputRefs = useRef<Record<string, HTMLInputElement>>({});
 
   const [status, setStatus] = useState<Record<string, ExerciseInputState>>({});
   const [score, setScore] = useState<Record<string, ExerciseScore>>({});
   const [queue, setQueue] = useState<PronounId[]>(PtPronouns.map((p) => p.id));
+  const [isComplete, setComplete] = useState<boolean>(false);
 
   const inputPronoun = queue[0];
   const inputValue = inputPronoun ? exercise.forms[inputPronoun] : '';
@@ -77,9 +82,19 @@ export function VerbClickLearn({ exercise, onSubmit }: VerbExerciseProps) {
         })));
     }, EXERCISE_FEEDBACK_TIME);
 
-    if (result.nextAction === 'next')
-      // verwijder deze van de queue
-      setQueue((prev) => prev.slice(1));
+    switch (result.nextAction) {
+      case 'next':
+        setQueue((prev) => prev.slice(1));
+        break;
+      case 'next exercise':
+        setQueue([]);
+        setComplete(true);
+        break;
+    }
+  }
+
+  async function handleComplete() {
+    if (onComplete) await onComplete('end');
   }
 
   return (
@@ -87,6 +102,8 @@ export function VerbClickLearn({ exercise, onSubmit }: VerbExerciseProps) {
       title={exercise.title + ' clicklearn'}
       description={exercise.description}
       activePronounId={inputPronoun}
+      isComplete={isComplete}
+      onComplete={handleComplete}
       renderField={(pronounId, isActive) => (
         <ExerciseTextbox
           key={pronounId}
@@ -96,14 +113,16 @@ export function VerbClickLearn({ exercise, onSubmit }: VerbExerciseProps) {
         />
       )}
       footer=<div className='flex flex-col items-center'>
-        <AnswerButton
-          id={1}
-          key={inputPronoun}
-          onClick={() => handleAnswer(inputPronoun ?? '', inputValue ?? '')}
-          score={inputPronoun ? score[inputPronoun] : undefined}
-        >
-          {inputValue}
-        </AnswerButton>
+        {!isComplete && (
+          <AnswerButton
+            id={1}
+            key={inputPronoun}
+            onClick={() => handleAnswer(inputPronoun ?? '', inputValue ?? '')}
+            score={inputPronoun ? score[inputPronoun] : undefined}
+          >
+            {inputValue}
+          </AnswerButton>
+        )}
       </div>
     ></VerbCardLayout>
   );

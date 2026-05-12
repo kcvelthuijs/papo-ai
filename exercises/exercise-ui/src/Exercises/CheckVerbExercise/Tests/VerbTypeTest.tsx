@@ -7,18 +7,16 @@ import { VerbCardLayout } from '../Layouts/VerbCardLayout';
 import { useVerbExercise } from '../Hooks/VerbExerciseHook';
 import { ExerciseInputBox } from '../../../Components/Atoms/ExerciseInputBox';
 
-export function VerbTypeTest({ exercise, onSubmit }: VerbExerciseProps) {
-  const {
-    active,
-    answers,
-    score,
-    getState,
-    submit,
-    registerInputRef,
-    isComplete,
-  } = useVerbExercise({ onSubmit });
+export function VerbTypeTest({
+  exercise,
+  onSubmit,
+  onComplete,
+}: VerbExerciseProps) {
+  const { active, answers, score, getState, submit, registerInputRef } =
+    useVerbExercise({ onSubmit, onComplete });
 
   const [localInput, setLocalInput] = useState<Record<string, string>>({});
+  const [isComplete, setComplete] = useState<boolean>(false);
 
   // -------------------------
   // INPUT CHANGE
@@ -46,6 +44,11 @@ export function VerbTypeTest({ exercise, onSubmit }: VerbExerciseProps) {
         [pronounId]: '',
       }));
     }
+    if (result?.nextAction === 'next exercise') setComplete(true);
+  }
+
+  async function handleComplete() {
+    if (onComplete) await onComplete('end');
   }
 
   // -------------------------
@@ -56,7 +59,8 @@ export function VerbTypeTest({ exercise, onSubmit }: VerbExerciseProps) {
       title={exercise.title}
       description={exercise.description}
       activePronounId={active}
-      complete={isComplete}
+      isComplete={isComplete}
+      onComplete={handleComplete}
       renderField={(pronounId) => {
         const value = answers[pronounId] ?? localInput[pronounId] ?? '';
 

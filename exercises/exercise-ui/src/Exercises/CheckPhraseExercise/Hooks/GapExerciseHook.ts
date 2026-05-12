@@ -3,10 +3,10 @@ import { useState, useRef, useEffect } from 'react';
 import {
   type CheckGapExercise,
   type CheckGapFeedback,
+  type ExerciseExitReason,
   type ExerciseScore,
   type Gap,
   type GapAnswer,
-  type Phrase,
 } from '@workspace/dtotypes';
 
 import {
@@ -16,11 +16,15 @@ import {
 
 type useGapExercise = {
   exercise: CheckGapExercise;
-  phraseIndex: number;
   onSubmit: (input: GapAnswer) => Promise<CheckGapFeedback>;
+  onComplete: (reason: ExerciseExitReason) => Promise<void>;
 };
 
-export function useGapExercise({ exercise, onSubmit }: useGapExercise) {
+export function useGapExercise({
+  exercise,
+  onSubmit,
+  onComplete,
+}: useGapExercise) {
   const [score, setScore] = useState<Record<string, ExerciseScore>>({});
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const inputRefs = useRef<Record<string, HTMLInputElement | null>>({});
@@ -45,7 +49,6 @@ export function useGapExercise({ exercise, onSubmit }: useGapExercise) {
     if (!active) return;
 
     requestAnimationFrame(() => {
-      console.log('requestAnimationFrame');
       const el = inputRefs.current[active.id];
       el?.focus();
     });
@@ -61,7 +64,7 @@ export function useGapExercise({ exercise, onSubmit }: useGapExercise) {
   }
 
   // -------------------------
-  // CORE SUBMIT LOGIC
+  // SUBMIT LOGIC
   // -------------------------
   async function submit(value: string) {
     if (!active) return;
@@ -107,8 +110,16 @@ export function useGapExercise({ exercise, onSubmit }: useGapExercise) {
     return result;
   }
 
-  function nextStep() {
-    setPhraseIndex(phraseIndex + 1);
+  // -------------------------
+  // CONTINUE TO NEXT
+  // -------------------------
+  async function next() {
+    if (phraseIndex < exercise.phrases.length - 1)
+      // next phrase
+      setPhraseIndex(phraseIndex + 1);
+    else
+      // next exercise
+      await onComplete('end');
   }
 
   // -------------------------
@@ -149,6 +160,6 @@ export function useGapExercise({ exercise, onSubmit }: useGapExercise) {
     // setters (optioneel)
     setAnswers,
     setScore,
-    nextStep,
+    next,
   };
 }

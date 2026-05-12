@@ -6,7 +6,7 @@ export type PhrasePiece = {
   text: string;
 };
 
-type PhraseClickTestProps = {
+type GapClickTestProps = {
   title?: string;
   description?: string;
   Phrase: string[]; // zin in juiste volgorde, gesplitst
@@ -17,12 +17,12 @@ export function PhraseClickTest({
   title,
   description,
   Phrase,
-  onComplete
-}: PhraseClickTestProps) {
+  onComplete,
+}: GapClickTestProps) {
   // maak automatisch unieke ids
   const pieces: PhrasePiece[] = Phrase.map((text, index) => ({
     id: `piece-${index}`,
-    text
+    text,
   }));
 
   const [available, setAvailable] = useState(() => shuffle(pieces));

@@ -12,20 +12,27 @@ import type { ExerciseScore, PronounId } from '@workspace/dtotypes';
 
 import { VerbCardLayout } from '../Layouts/VerbCardLayout';
 import { useVerbExercise } from '../Hooks/VerbExerciseHook';
-import { ExerciseTextbox } from '../../../components/atoms/ExerciseTextBox';
+import { ExerciseTextbox } from '../../../Components/Atoms/ExerciseTextBox';
 
 type ButtonFeedBack = {
   id: string;
   score: ExerciseScore;
 };
 
-export function VerbClickTest({ exercise, onSubmit }: VerbExerciseProps) {
-  const { active, answers, score, getState, submit, isComplete } =
-    useVerbExercise({ onSubmit });
+export function VerbClickTest({
+  exercise,
+  onSubmit,
+  onComplete,
+}: VerbExerciseProps) {
+  const { active, answers, score, getState, submit } = useVerbExercise({
+    onSubmit,
+    onComplete,
+  });
   const [vervoeging, setVervoeging] = useState<VerbFormRow[]>(
     shuffle(buildVerbForms(exercise)),
   );
   const [feedback, setFeedback] = useState<ButtonFeedBack>();
+  const [isComplete, setComplete] = useState<boolean>(false);
 
   // -------------------------
   // SUBMIT HANDLER
@@ -43,6 +50,12 @@ export function VerbClickTest({ exercise, onSubmit }: VerbExerciseProps) {
     setTimeout(() => {
       setFeedback({ id: item.id, score: undefined });
     }, EXERCISE_FEEDBACK_TIME);
+
+    if (result?.nextAction === 'next exercise') setComplete(true);
+  }
+
+  async function handleComplete() {
+    if (onComplete) await onComplete('end');
   }
 
   // -------------------------
@@ -53,7 +66,8 @@ export function VerbClickTest({ exercise, onSubmit }: VerbExerciseProps) {
       title={exercise.title}
       description={exercise.description}
       activePronounId={active}
-      complete={isComplete}
+      isComplete={isComplete}
+      onComplete={handleComplete}
       renderField={(pronounId) => (
         <ExerciseTextbox
           key={pronounId}

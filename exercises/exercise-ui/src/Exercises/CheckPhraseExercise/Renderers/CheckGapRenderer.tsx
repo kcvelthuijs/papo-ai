@@ -2,18 +2,18 @@ import type { GapExerciseProps } from '@exercises/logic';
 
 import { GapTypeTest } from '../Tests/GapTypeTest';
 
-export function CheckPhraseRenderer({
+export function CheckGapRenderer({
   exercise,
-  phraseIndex = 0,
-  onSubmit
+  onSubmit,
+  onComplete,
 }: GapExerciseProps) {
   switch (exercise.type) {
-    case 'phrase-type-test':
+    case 'gap-type-test':
       return (
         <GapTypeTest
           exercise={exercise}
-          phraseIndex={phraseIndex}
           onSubmit={onSubmit}
+          onComplete={onComplete}
         />
       );
 

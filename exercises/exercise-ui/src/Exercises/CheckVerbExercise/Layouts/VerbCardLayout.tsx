@@ -1,6 +1,7 @@
 import { type ReactNode } from 'react';
 import { CardLayout } from '@workspace/ui';
 import { PtPronouns } from '@workspace/webtypes';
+import type { ExerciseExitReason } from '@workspace/dtotypes';
 
 type Props = {
   title?: string;
@@ -10,7 +11,7 @@ type Props = {
   stars?: any;
   footer?: ReactNode;
   isComplete?: boolean;
-  onContinue?: () => void;
+  onComplete?: () => Promise<void>;
 };
 
 export function VerbCardLayout({
@@ -21,7 +22,7 @@ export function VerbCardLayout({
   activePronounId,
   footer,
   isComplete,
-  onContinue,
+  onComplete,
 }: Props) {
   const content = (
     <div>
@@ -48,7 +49,7 @@ export function VerbCardLayout({
       content={content}
       footer={footer}
       isComplete={isComplete}
-      onContinue={onContinue}
+      onContinue={onComplete}
       stars={stars}
     />
   );

@@ -1,6 +1,6 @@
 import type { ExerciseScore } from '@workspace/dtotypes';
 import { type ExerciseInputState } from '@workspace/webtypes';
-import { getTextBoxScoreClassName } from '../helpers/ExerciseScoreClassName';
+import { getTextBoxScoreClassName } from '../Helpers/ExerciseScoreClassName';
 
 type Props = {
   key: string;

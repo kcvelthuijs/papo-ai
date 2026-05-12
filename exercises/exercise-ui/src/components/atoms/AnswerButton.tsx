@@ -1,7 +1,7 @@
 import type { ExerciseScore } from '@workspace/dtotypes';
 import { Button } from '@workspace/ui';
 
-import { getButtonScoreClassName } from '../helpers/ExerciseScoreClassName';
+import { getButtonScoreClassName } from '../Helpers/ExerciseScoreClassName';
 
 type AnswerButtonProps = {
   id: string | number;

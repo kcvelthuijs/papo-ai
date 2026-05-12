@@ -27,17 +27,10 @@ export function checkGap(
 
       // kijk of het antwoord de laatste in de tekst is
       const isLastGap = answer.gapIndex >= phrase.gaps.length - 1;
-      const isLastPhrase = answer.phraseIndex >= exercise.phrases.length - 1;
 
       // bepaal de volgende actie
       const nextAction: ExerciseAction =
-        score !== 'right'
-          ? 'retry'
-          : !isLastGap
-            ? 'next'
-            : !isLastPhrase
-              ? 'next step'
-              : 'next exercise';
+        score !== 'right' ? 'retry' : !isLastGap ? 'next' : 'next step';
 
       return {
         exerciseId: exercise.id,

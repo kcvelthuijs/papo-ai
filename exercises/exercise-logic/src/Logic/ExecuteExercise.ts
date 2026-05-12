@@ -41,7 +41,7 @@ export async function executeExercise(
       case 'verb-type-test':
         return checkVerb(exercise as CheckVerbExercise, answer);
 
-      case 'phrase-type-test':
+      case 'gap-type-test':
         return checkGap(exercise as CheckGapExercise, answer);
 
       /*

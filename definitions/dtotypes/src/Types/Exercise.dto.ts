@@ -1,6 +1,7 @@
 import type { PronounId, TenseId } from '@workspace/dtotypes';
 
 export type ExerciseState = 'prepare' | 'active' | 'completed';
+
 export type ExerciseAction =
   | 'retry'
   | 'next'
@@ -9,6 +10,8 @@ export type ExerciseAction =
   | 'restart'
   | 'quit';
 export type ExerciseScore = 'right' | 'wrong' | 'partial' | undefined;
+
+export type ExerciseExitReason = 'end' | 'quit';
 
 export type BaseExercise = {
   id: string;
@@ -77,7 +80,7 @@ export type PhraseBuildFeedback = {
 //  CheckGapExercise
 // -----------------------
 export type CheckGapExercise = BaseExercise & {
-  type: 'phrase-type-test';
+  type: 'gap-type-test' | 'gap-click-test';
   phrases: Phrase[];
   phraseIndex: number;
 };
@@ -91,6 +94,7 @@ export type Gap = {
   id: string;
   correct: string;
   hint?: string;
+  options?: string[];
 };
 export type GapAnswer = {
   phraseIndex: number;

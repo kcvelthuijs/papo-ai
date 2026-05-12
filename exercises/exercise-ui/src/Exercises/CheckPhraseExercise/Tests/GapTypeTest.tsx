@@ -5,9 +5,13 @@ import { CardLayout } from '@workspace/ui';
 
 import { useGapExercise } from '../Hooks/GapExerciseHook';
 import { ExerciseInputBox } from '../../../Components/Atoms/ExerciseInputBox';
-import { ExerciseTextbox } from '../../../components/atoms/ExerciseTextBox';
+import { ExerciseTextbox } from '../../../Components/Atoms/ExerciseTextBox';
 
-export function GapTypeTest({ exercise, onSubmit }: GapExerciseProps) {
+export function GapTypeTest({
+  exercise,
+  onSubmit,
+  onComplete,
+}: GapExerciseProps) {
   const {
     active,
     answers,
@@ -17,8 +21,8 @@ export function GapTypeTest({ exercise, onSubmit }: GapExerciseProps) {
     getState,
     submit,
     registerInputRef,
-    nextStep,
-  } = useGapExercise({ exercise, phraseIndex: 0, onSubmit });
+    next,
+  } = useGapExercise({ exercise, onSubmit, onComplete });
 
   const [localInput, setLocalInput] = useState<Record<string, string>>({});
 
@@ -58,7 +62,7 @@ export function GapTypeTest({ exercise, onSubmit }: GapExerciseProps) {
       title={exercise.title}
       description={exercise.description}
       isComplete={isComplete}
-      onContinue={nextStep}
+      onContinue={next}
       content={
         <div className='flex flex-col gap-6'>
           {/* Phrase */}
@@ -74,6 +78,7 @@ export function GapTypeTest({ exercise, onSubmit }: GapExerciseProps) {
                   {gap &&
                     (isActive && !isAnswered ? (
                       <ExerciseInputBox
+                        key={`gap${gapId}`}
                         ref={(el: HTMLInputElement | null) => {
                           registerInputRef(gapId, el);
                         }}
@@ -86,6 +91,7 @@ export function GapTypeTest({ exercise, onSubmit }: GapExerciseProps) {
                         }
                         state={getState(gapId)}
                         score={score[gapId]}
+                        className='text-center'
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                           handleChange(gapId, e.target.value)
                         }
@@ -102,6 +108,7 @@ export function GapTypeTest({ exercise, onSubmit }: GapExerciseProps) {
                         <ExerciseTextbox
                           key={gapId}
                           form={answers[gapId] ?? ''}
+                          className='text-center'
                         />
                       )
                     ))}

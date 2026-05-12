@@ -8,6 +8,7 @@ import type {
   VerbAnswer,
   PronounId,
   ExerciseEvaluation,
+  ExerciseExitReason,
 } from '@workspace/dtotypes';
 
 import type { CheckVerbFeedback } from '@workspace/dtotypes';
@@ -86,6 +87,7 @@ type LessonState = {
   setExercise: (exerciseId: number) => Promise<void>;
   startExercise: () => Promise<void>;
   submitAnswer: (answer: VerbAnswer) => Promise<ExerciseEvaluation>;
+  completeExercise: (reason: ExerciseExitReason) => Promise<void>;
   nextExercise: () => void;
 };
 
@@ -233,11 +235,24 @@ export const useMockLessonStore = create<LessonState>((set, get) => ({
     set((state) => ({
       results: [...state.results, evaluation],
     }));
-
-    if (evaluation.nextAction === 'next exercise') {
-      get().nextExercise();
-    }
     return evaluation;
+  },
+
+  // -------------------------
+  // COMPLETE EXERCISE
+  // -------------------------
+  completeExercise: async (reason: ExerciseExitReason): Promise<void> => {
+    const exercise = get().currentExercise;
+    if (!exercise) throw 'Current exercise is undefined';
+
+    if (true) {
+      get().nextExercise();
+    } else {
+      set({
+        currentLesson: undefined,
+        currentLessonID: '',
+      });
+    }
   },
 
   // -------------------------

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { shuffle, CardLayout, AnswerButton } from '@workspace/ui';
-import { type PhrasePiece } from '../Exercises/CheckPhraseExercise/Tests/PhraseClickTest';
+import { type PhrasePiece } from '../Exercises/CheckPhraseExercise/Tests/GapClickTest';
 
 type PhraseClickTestProps = {
   title?: string;
@@ -13,12 +13,12 @@ export function PhraseClickTestEvaluate({
   title,
   description,
   Phrase,
-  onComplete
+  onComplete,
 }: PhraseClickTestProps) {
   // maak automatisch unieke ids
   const pieces: PhrasePiece[] = Phrase.map((text, index) => ({
     id: `piece-${index}`,
-    text
+    text,
   }));
 
   const [available, setAvailable] = useState(() => shuffle(pieces));

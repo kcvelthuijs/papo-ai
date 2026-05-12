@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import {
   PtPronouns,
   type CheckVerbFeedback,
+  type ExerciseExitReason,
   type ExerciseScore,
 } from '@workspace/dtotypes';
 
@@ -17,9 +18,13 @@ type UseVerbExerciseParams = {
     pronounId: PronounId;
     value: string;
   }) => Promise<CheckVerbFeedback>;
+  onComplete: (readon: ExerciseExitReason) => Promise<void>;
 };
 
-export function useVerbExercise({ onSubmit }: UseVerbExerciseParams) {
+export function useVerbExercise({
+  onSubmit,
+  onComplete,
+}: UseVerbExerciseParams) {
   // -------------------------
   // STATE
   // -------------------------
@@ -27,17 +32,18 @@ export function useVerbExercise({ onSubmit }: UseVerbExerciseParams) {
   const [score, setScore] = useState<Record<string, ExerciseScore>>({});
   const [status, setStatus] = useState<Record<string, ExerciseInputState>>({});
   const [queue, setQueue] = useState<PronounId[]>(PtPronouns.map((p) => p.id));
+  const [isComplete, setComplete] = useState<boolean>(false);
 
   // refs voor focus (alleen nodig bij input-based exercises)
   const inputRefs = useRef<Record<string, HTMLInputElement | null>>({});
 
   const active = queue[0];
-  const isComplete = queue.length === 0;
 
   // -------------------------
   // FOCUS HANDLING
   // -------------------------
   useEffect(() => {
+    setComplete(queue.length === 0);
     if (!active) return;
     const el = inputRefs.current[active];
     if (el) {
@@ -88,11 +94,13 @@ export function useVerbExercise({ onSubmit }: UseVerbExerciseParams) {
       }));
     }, EXERCISE_FEEDBACK_TIME);
 
-    if (result.nextAction === 'next') {
-      setQueue((prev) => prev.slice(1));
-    }
-    if (result.nextAction == 'restart') {
-      reset();
+    switch (result.nextAction) {
+      case 'next':
+        setQueue((prev) => prev.slice(1));
+        break;
+      case 'restart':
+        reset();
+        break;
     }
     return result;
   }

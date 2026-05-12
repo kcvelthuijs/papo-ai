@@ -1,8 +1,11 @@
 import { useMockLessonStore } from '@workspace/controllers';
-import type { ExerciseEvaluation } from '@workspace/dtotypes';
+import type {
+  ExerciseEvaluation,
+  ExerciseExitReason,
+} from '@workspace/dtotypes';
 
 import { CheckVerbRenderer } from '../Exercises/CheckVerbExercise/Renderer/CheckVerbRenderer';
-import { CheckPhraseRenderer } from '../Exercises/CheckPhraseExercise/Renderers/CheckPhraseRenderer';
+import { CheckGapRenderer } from '../Exercises/CheckPhraseExercise/Renderers/CheckGapRenderer';
 
 // import { PhraseBuildRenderer } from './renderers/PhraseBuildRenderer';
 // import { OpenExerciseRenderer } from './renderers/OpenExerciseRenderer';
@@ -17,6 +20,11 @@ export function ExerciseRenderer({ exercise }: Props) {
     return await submitAnswer(answer);
   };
 
+  const completeExercise = useMockLessonStore((s) => s.completeExercise);
+  const handleComplete = async (reason: ExerciseExitReason): Promise<void> => {
+    await completeExercise(reason);
+  };
+
   switch (exercise.type) {
     // -------------------------
     // VERB
@@ -24,14 +32,24 @@ export function ExerciseRenderer({ exercise }: Props) {
     case 'verb-click-learn':
     case 'verb-click-test':
     case 'verb-type-test':
-      return <CheckVerbRenderer exercise={exercise} onSubmit={handleSubmit} />;
+      return (
+        <CheckVerbRenderer
+          exercise={exercise}
+          onSubmit={handleSubmit}
+          onComplete={handleComplete}
+        />
+      );
 
     // -------------------------
     // GAP
     // -------------------------
-    case 'phrase-type-test':
+    case 'gap-type-test':
       return (
-        <CheckPhraseRenderer exercise={exercise} onSubmit={handleSubmit} />
+        <CheckGapRenderer
+          exercise={exercise}
+          onSubmit={handleSubmit}
+          onComplete={handleComplete}
+        />
       );
 
     /*

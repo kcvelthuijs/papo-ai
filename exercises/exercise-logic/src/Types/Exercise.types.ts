@@ -2,7 +2,8 @@ import type {
   OpenExercise,
   CheckVerbExercise,
   CheckGapExercise,
-  GapAnswer
+  GapAnswer,
+  ExerciseExitReason,
 } from '@workspace/dtotypes';
 
 export function isOpenExercise(ex: any): ex is OpenExercise {
@@ -16,12 +17,13 @@ export function isOpenExercise(ex: any): ex is OpenExercise {
 export type VerbExerciseProps = {
   exercise: CheckVerbExercise;
   onSubmit: (answer: { pronounId: string; value: string }) => Promise<any>;
+  onComplete: (reason: ExerciseExitReason) => Promise<void>;
 };
 
 export type GapExerciseProps = {
   exercise: CheckGapExercise;
-  phraseIndex?: number;
   onSubmit: (answer: GapAnswer) => Promise<any>;
+  onComplete: (reason: ExerciseExitReason) => Promise<void>;
 };
 
 export type QuizQuestionProps = {
