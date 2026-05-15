@@ -4,25 +4,13 @@ import type {
   LessonDetails,
   LessonSummary,
   Exercise,
-  CheckVerbExercise,
   VerbAnswer,
-  PronounId,
   ExerciseEvaluation,
   ExerciseExitReason,
 } from '@workspace/dtotypes';
 
-import type { CheckVerbFeedback } from '@workspace/dtotypes';
 import { executeExercise } from '@exercises/logic';
-
 import { mockGapExercises, mockVerbExercises } from './LessonMock';
-
-type State = {
-  lesson: LessonDetails;
-  currentExercise: Exercise;
-  results: ExerciseEvaluation[];
-
-  submitAnswer: (answer: VerbAnswer) => Promise<ExerciseEvaluation>;
-};
 
 // -------------------------
 // MOCK LESSON (gebruik LessonDetails type)
@@ -39,7 +27,7 @@ const mockVerbLesson: LessonDetails = {
 const mockVerbSummary: LessonSummary = {
   id: 'lesson-verb-1',
   type: 'grammar',
-  title: 'Ser – presente',
+  title: 'Ser - presente',
   level: 'A1',
   image: 'mulher-cafe.png',
   description: 'Mock lesson summary',

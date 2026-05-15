@@ -6,17 +6,25 @@ import { type PronounId } from '@workspace/webtypes';
 import { VerbCardLayout } from '../Layouts/VerbCardLayout';
 import { useVerbExercise } from '../Hooks/VerbExerciseHook';
 import { ExerciseInputBox } from '../../../Components/Atoms/ExerciseInputBox';
+import { useExerciseStars } from '../../../Components/Hooks/useExerciseEffects';
 
 export function VerbTypeTest({
   exercise,
   onSubmit,
   onComplete,
 }: VerbExerciseProps) {
-  const { active, answers, score, getState, submit, registerInputRef } =
-    useVerbExercise({ onSubmit, onComplete });
+  const {
+    active,
+    answers,
+    tempFocus,
+    isComplete,
+    getState,
+    submit,
+    registerInputRef,
+  } = useVerbExercise({ onSubmit, onComplete });
 
+  const { stars, spawnStars, registerStarRef } = useExerciseStars();
   const [localInput, setLocalInput] = useState<Record<string, string>>({});
-  const [isComplete, setComplete] = useState<boolean>(false);
 
   // -------------------------
   // INPUT CHANGE
@@ -38,13 +46,15 @@ export function VerbTypeTest({
     const result = await submit(value);
 
     if (result?.score === 'right') {
+      // laat zien dat het antwoord goed is
+      spawnStars(pronounId);
+
       // input leegmaken voor volgende ronde
       setLocalInput((prev) => ({
         ...prev,
         [pronounId]: '',
       }));
     }
-    if (result?.nextAction === 'next exercise') setComplete(true);
   }
 
   async function handleComplete() {
@@ -59,21 +69,23 @@ export function VerbTypeTest({
       title={exercise.title}
       description={exercise.description}
       activePronounId={active}
+      stars={stars}
       isComplete={isComplete}
       onComplete={handleComplete}
       renderField={(pronounId) => {
-        const value = answers[pronounId] ?? localInput[pronounId] ?? '';
+        const value = answers[pronounId]?.answer ?? localInput[pronounId] ?? '';
 
         return (
           <ExerciseInputBox
             key={pronounId}
-            ref={(el: HTMLInputElement | null) =>
-              registerInputRef(pronounId as PronounId, el)
-            }
+            ref={(el: HTMLInputElement | null) => {
+              registerInputRef(pronounId as PronounId, el);
+              registerStarRef(pronounId, el);
+            }}
             value={value}
             // disabled={!(getState(pronounId as PronounId) == 'input')}
-            state={getState(pronounId as PronounId)}
-            score={score[pronounId]}
+            state={getState(pronounId as PronounId, tempFocus)}
+            score={answers[pronounId]?.score}
             size={Math.max(
               ...Object.values(exercise.forms).map((v: any) => v.length),
             )}

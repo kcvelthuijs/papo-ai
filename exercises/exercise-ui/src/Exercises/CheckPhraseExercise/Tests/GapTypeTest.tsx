@@ -4,6 +4,8 @@ import { type GapExerciseProps } from '@exercises/logic';
 import { CardLayout } from '@workspace/ui';
 
 import { useGapExercise } from '../Hooks/GapExerciseHook';
+import { useExerciseStars } from '../../../Components/Hooks/useExerciseEffects';
+
 import { ExerciseInputBox } from '../../../Components/Atoms/ExerciseInputBox';
 import { ExerciseTextbox } from '../../../Components/Atoms/ExerciseTextBox';
 
@@ -24,6 +26,7 @@ export function GapTypeTest({
     next,
   } = useGapExercise({ exercise, onSubmit, onComplete });
 
+  const { stars, spawnStars, registerStarRef } = useExerciseStars();
   const [localInput, setLocalInput] = useState<Record<string, string>>({});
 
   // -------------------------
@@ -46,6 +49,9 @@ export function GapTypeTest({
     const result = await submit(value);
 
     if (result?.score === 'right') {
+      // laat zien dat het antwoord goed is
+      spawnStars(gapId);
+
       // input leegmaken voor volgende ronde
       setLocalInput((prev) => ({
         ...prev,
@@ -63,6 +69,7 @@ export function GapTypeTest({
       description={exercise.description}
       isComplete={isComplete}
       onContinue={next}
+      stars={stars}
       content={
         <div className='flex flex-col gap-6'>
           {/* Phrase */}
@@ -75,43 +82,46 @@ export function GapTypeTest({
               return (
                 <span key={index} className='flex items-center gap-2'>
                   <span>{part}</span>
-                  {gap &&
-                    (isActive && !isAnswered ? (
-                      <ExerciseInputBox
-                        key={`gap${gapId}`}
-                        ref={(el: HTMLInputElement | null) => {
-                          registerInputRef(gapId, el);
-                        }}
-                        hint={gap.hint}
-                        size={gap.hint?.length ?? 1}
-                        value={
-                          active?.id === gapId
-                            ? (localInput[gapId] ?? '')
-                            : (answers[gapId]?.answer ?? '')
-                        }
-                        state={getState(gapId, tempFocus)}
-                        score={answers[gapId]?.score}
-                        className='text-center'
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                          handleChange(gapId, e.target.value)
-                        }
-                        onKeyDown={(
-                          e: React.KeyboardEvent<HTMLInputElement>,
-                        ) => {
-                          if (e.key === 'Enter') {
-                            handleSubmit(gapId);
+                  <span ref={(el) => registerStarRef(gapId, el)}>
+                    {gap &&
+                      (isActive && !isAnswered ? (
+                        <ExerciseInputBox
+                          key={`gap${gapId}`}
+                          ref={(el: HTMLInputElement | null) => {
+                            registerInputRef(gapId, el);
+                            registerStarRef(gapId, el);
+                          }}
+                          hint={gap.hint}
+                          size={gap.hint?.length ?? 1}
+                          value={
+                            active?.id === gapId
+                              ? (localInput[gapId] ?? '')
+                              : (answers[gapId]?.answer ?? '')
                           }
-                        }}
-                      />
-                    ) : (
-                      gap && (
-                        <ExerciseTextbox
-                          textValue={answers[gapId]?.answer ?? ''}
-                          state={getState(gap.id, tempFocus)}
-                          score={answers[gap.id]?.score}
+                          state={getState(gapId, tempFocus)}
+                          score={answers[gapId]?.score}
+                          className='text-center'
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                            handleChange(gapId, e.target.value)
+                          }
+                          onKeyDown={(
+                            e: React.KeyboardEvent<HTMLInputElement>,
+                          ) => {
+                            if (e.key === 'Enter') {
+                              handleSubmit(gapId);
+                            }
+                          }}
                         />
-                      )
-                    ))}
+                      ) : (
+                        gap && (
+                          <ExerciseTextbox
+                            textValue={answers[gapId]?.answer ?? ''}
+                            state={getState(gap.id, tempFocus)}
+                            score={answers[gap.id]?.score}
+                          />
+                        )
+                      ))}
+                  </span>
                 </span>
               );
             })}

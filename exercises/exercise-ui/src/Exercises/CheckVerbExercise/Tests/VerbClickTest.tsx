@@ -24,15 +24,15 @@ export function VerbClickTest({
   onSubmit,
   onComplete,
 }: VerbExerciseProps) {
-  const { active, answers, score, getState, submit } = useVerbExercise({
-    onSubmit,
-    onComplete,
-  });
+  const { active, answers, tempFocus, isComplete, getState, submit, next } =
+    useVerbExercise({
+      onSubmit,
+      onComplete,
+    });
   const [vervoeging, setVervoeging] = useState<VerbFormRow[]>(
     shuffle(buildVerbForms(exercise)),
   );
   const [feedback, setFeedback] = useState<ButtonFeedBack>();
-  const [isComplete, setComplete] = useState<boolean>(false);
 
   // -------------------------
   // SUBMIT HANDLER
@@ -50,8 +50,6 @@ export function VerbClickTest({
     setTimeout(() => {
       setFeedback({ id: item.id, score: undefined });
     }, EXERCISE_FEEDBACK_TIME);
-
-    if (result?.nextAction === 'next exercise') setComplete(true);
   }
 
   async function handleComplete() {
@@ -70,9 +68,9 @@ export function VerbClickTest({
       onComplete={handleComplete}
       renderField={(pronounId) => (
         <ExerciseTextbox
-          textValue={answers[pronounId] ?? ''}
-          state={getState(pronounId as PronounId)}
-          score={score[pronounId]}
+          textValue={answers[pronounId]?.answer ?? ''}
+          state={getState(pronounId as PronounId, tempFocus)}
+          score={answers[pronounId]?.score}
         />
       )}
       footer={

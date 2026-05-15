@@ -1,13 +1,11 @@
 import { useEffect, useMemo, useState } from 'react';
 
 import { type GapExerciseProps } from '@exercises/logic';
-import { type ExerciseScore } from '@workspace/dtotypes';
 import { CardLayout, shuffle } from '@workspace/ui';
 
 import { useGapExercise } from '../Hooks/GapExerciseHook';
 import { AnswerButton } from '../../../Components/Atoms/AnswerButton';
 import { ExerciseTextbox } from '../../../Components/Atoms/ExerciseTextBox';
-import { EXERCISE_FEEDBACK_TIME } from '@workspace/webtypes';
 
 export function GapClickTest({
   exercise,

@@ -1,96 +1,50 @@
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 
 import type { VerbExerciseProps } from '@exercises/logic';
 import {
+  buildVerbForms,
   EXERCISE_FEEDBACK_TIME,
-  type ExerciseInputState,
   type PronounId,
 } from '@workspace/webtypes';
 
 import { VerbCardLayout } from '../Layouts/VerbCardLayout';
 import { AnswerButton } from '../../../Components/Atoms/AnswerButton';
 import { ExerciseTextbox } from '../../../Components/Atoms/ExerciseTextBox';
-import {
-  PtPronouns,
-  type CheckVerbFeedback,
-  type ExerciseScore,
-} from '@workspace/dtotypes';
+import { type ExerciseScore, type VerbFormRow } from '@workspace/dtotypes';
+import { useVerbExercise } from '../Hooks/VerbExerciseHook';
+
+type ButtonFeedBack = {
+  id: string;
+  score: ExerciseScore;
+};
 
 export function VerbClickLearn({
   exercise,
   onSubmit,
   onComplete,
 }: VerbExerciseProps) {
-  const [answers, setAnswers] = useState<Record<string, string>>({});
-  const inputRefs = useRef<Record<string, HTMLInputElement>>({});
+  const { active, answers, tempFocus, isComplete, getState, submit, next } =
+    useVerbExercise({ onSubmit, onComplete });
+  const [vervoeging, setVervoeging] = useState<VerbFormRow[]>(
+    buildVerbForms(exercise),
+  );
+  const [feedback, setFeedback] = useState<ButtonFeedBack>();
 
-  const [status, setStatus] = useState<Record<string, ExerciseInputState>>({});
-  const [score, setScore] = useState<Record<string, ExerciseScore>>({});
-  const [queue, setQueue] = useState<PronounId[]>(PtPronouns.map((p) => p.id));
-  const [isComplete, setComplete] = useState<boolean>(false);
+  // -------------------------
+  // SUBMIT HANDLER
+  // -------------------------
+  async function handleSelect(item: VerbFormRow) {
+    if (!active) return;
 
-  const inputPronoun = queue[0];
-  const inputValue = inputPronoun ? exercise.forms[inputPronoun] : '';
-
-  useEffect(() => {
-    if (!queue.length) return;
-    const active = queue[0];
-    setStatus((prev) => ({
-      ...prev,
-      [active as string]: 'input',
-    }));
-    if (active) inputRefs.current[active]?.focus();
-  }, [queue]);
-
-  function getState(pronounId: PronounId): ExerciseInputState {
-    if (inputPronoun === pronounId) return 'input';
-    if (!answers[pronounId]) return 'idle';
-    else return 'ready';
-  }
-
-  async function handleAnswer(id: string, value: string) {
-    if (!inputPronoun) return;
-
-    // bepaal de score
-    const result: CheckVerbFeedback = await onSubmit({
-      pronounId: inputPronoun,
-      value,
-    });
-
-    // pas de status aan aan de hand van de score
-    setScore((prev) => ({
-      ...prev,
-      [inputPronoun]: result.score,
-    }));
-
-    if (result.score === 'right') {
-      setAnswers((prev) => ({
-        ...prev,
-        [inputPronoun]: value,
-      }));
+    const result = await submit(item.form);
+    if (result?.score == 'right') {
+      setVervoeging((prev) => prev.filter((v) => v.id !== item.id));
     }
-
-    // Feedback is tijdelijk als je de exercise opnieuw doet
+    // pas de buttonState tijdelijk aan
+    setFeedback({ id: item.id, score: result?.score });
     setTimeout(() => {
-      (setStatus((prev) => ({
-        ...prev,
-        [inputPronoun]: result.nextAction === 'next' ? 'ready' : 'input',
-      })),
-        setScore((prev) => ({
-          ...prev,
-          [inputPronoun]: undefined,
-        })));
+      setFeedback({ id: item.id, score: undefined });
     }, EXERCISE_FEEDBACK_TIME);
-
-    switch (result.nextAction) {
-      case 'next':
-        setQueue((prev) => prev.slice(1));
-        break;
-      case 'next exercise':
-        setQueue([]);
-        setComplete(true);
-        break;
-    }
   }
 
   async function handleComplete() {
@@ -101,26 +55,28 @@ export function VerbClickLearn({
     <VerbCardLayout
       title={exercise.title + ' clicklearn'}
       description={exercise.description}
-      activePronounId={inputPronoun}
+      activePronounId={active}
       isComplete={isComplete}
       onComplete={handleComplete}
-      renderField={(pronounId, isActive) => (
+      renderField={(pronounId) => (
         <ExerciseTextbox
           key={pronounId}
-          form={answers[pronounId] ?? ''}
-          state={getState(pronounId as PronounId)}
-          score={score[pronounId]}
+          textValue={answers[pronounId]?.answer ?? ''}
+          state={getState(pronounId as PronounId, tempFocus)}
+          score={answers[pronounId]?.score}
         />
       )}
       footer=<div className='flex flex-col items-center'>
         {!isComplete && (
           <AnswerButton
             id={1}
-            key={inputPronoun}
-            onClick={() => handleAnswer(inputPronoun ?? '', inputValue ?? '')}
-            score={inputPronoun ? score[inputPronoun] : undefined}
+            key={active}
+            onClick={() =>
+              vervoeging[0] ? handleSelect(vervoeging[0]) : undefined
+            }
+            score={active ? answers[active]?.score : undefined}
           >
-            {inputValue}
+            {vervoeging[0]?.form}
           </AnswerButton>
         )}
       </div>

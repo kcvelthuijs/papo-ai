@@ -15,6 +15,7 @@ const classesByType: { [type: string]: string } = {
   diálogo: 'bg-blue-600 border-blue-900 text-white font-semibold',
   notícias: 'bg-red-700 border-red-900 text-white font-semibold',
   previsão: 'bg-red-700 border-red-900 text-white font-semibold',
+  grammar: 'bg-green-500 border-yellow-900 text-green-800 font-semibold',
 };
 
 export const LessonCardSkeleton = () => {

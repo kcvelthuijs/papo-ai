@@ -35,22 +35,32 @@ export function useGapExercise({
 
   const [phraseIndex, setPhraseIndex] = useState(0);
   const [gapIndex, setGapIndex] = useState<number>(0);
-  const [isComplete, setComplete] = useState<boolean>(false);
   const [active, setActive] = useState<Gap | undefined>(undefined);
-  const phrase = exercise.phrases[phraseIndex];
   const [tempFocus, setFocus] = useState<string | null>(null);
+  const [isComplete, setComplete] = useState<boolean>(false);
 
+  const phrase = exercise.phrases[phraseIndex];
+
+  // -------------------------
+  // PHRASE CHANGE HANDLING
+  // -------------------------
   useEffect(() => {
     setGapIndex(0);
     setComplete(false);
     setActive(undefined);
   }, [phrase]);
 
+  // -------------------------
+  // GAP CHANGE HANDLING
+  // -------------------------
   useEffect(() => {
     const gap = phrase?.gaps?.[gapIndex];
     setActive(gap);
   }, [gapIndex, phraseIndex]);
 
+  // -------------------------
+  // FOCUS HANDLING
+  // -------------------------
   useEffect(() => {
     if (isComplete) return;
     if (!active) return;

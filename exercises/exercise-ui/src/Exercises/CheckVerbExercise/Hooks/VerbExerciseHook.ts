@@ -13,6 +13,11 @@ import {
   type PronounId,
 } from '@workspace/webtypes';
 
+type VerbFeedback = {
+  answer: string;
+  score: ExerciseScore;
+};
+
 type UseVerbExerciseParams = {
   onSubmit: (input: {
     pronounId: PronounId;
@@ -28,40 +33,43 @@ export function useVerbExercise({
   // -------------------------
   // STATE
   // -------------------------
-  const [answers, setAnswers] = useState<Record<string, string>>({});
-  const [score, setScore] = useState<Record<string, ExerciseScore>>({});
-  const [status, setStatus] = useState<Record<string, ExerciseInputState>>({});
-  const [queue, setQueue] = useState<PronounId[]>(PtPronouns.map((p) => p.id));
-  const [isComplete, setComplete] = useState<boolean>(false);
-
-  // refs voor focus (alleen nodig bij input-based exercises)
+  const [answers, setAnswers] = useState<Record<string, VerbFeedback>>({});
   const inputRefs = useRef<Record<string, HTMLInputElement | null>>({});
 
+  const [queue, setQueue] = useState<PronounId[]>(PtPronouns.map((p) => p.id));
+  const [tempFocus, setFocus] = useState<string | null>(null);
+  const [isComplete, setComplete] = useState<boolean>(false);
   const active = queue[0];
 
   // -------------------------
   // FOCUS HANDLING
   // -------------------------
   useEffect(() => {
-    setComplete(queue.length === 0);
+    setComplete(queue.length < 1);
     if (!active) return;
     const el = inputRefs.current[active];
     if (el) {
-      el.focus();
+      requestAnimationFrame(() => {
+        inputRefs.current[active]?.focus();
+      });
     }
-  }, [active]);
+  }, [active, queue.length]);
 
   // -------------------------
   // DERIVED STATE
   // -------------------------
-  function getState(pronounId: PronounId): ExerciseInputState {
-    if (pronounId === active) return 'input';
-    if (!answers[pronounId]) return 'idle';
-    return 'ready';
+  function getState(
+    pronounId: PronounId,
+    tempFocus: string | null,
+  ): ExerciseInputState {
+    const baseState =
+      pronounId === active ? 'input' : !answers[pronounId] ? 'idle' : 'ready';
+    if (tempFocus == pronounId) return 'temp';
+    else return baseState;
   }
 
   // -------------------------
-  // CORE SUBMIT LOGIC
+  // SUBMIT LOGIC
   // -------------------------
   async function submit(value: string) {
     if (!active) return;
@@ -73,36 +81,36 @@ export function useVerbExercise({
     });
 
     // score zetten (voor feedback kleur)
-    setScore((prev) => ({
+    setAnswers((prev) => ({
       ...prev,
-      [current]: result.score,
+      [current]: { answer: value, score: result.score },
     }));
 
-    // bij goed antwoord
-    if (result.score === 'right') {
-      setAnswers((prev) => ({
-        ...prev,
-        [current]: value,
-      }));
-    }
-
-    // tijdelijke feedback resetten
+    setFocus(current);
     setTimeout(() => {
-      setScore((prev) => ({
-        ...prev,
-        [current]: undefined,
-      }));
+      setFocus(null);
     }, EXERCISE_FEEDBACK_TIME);
 
     switch (result.nextAction) {
       case 'next':
         setQueue((prev) => prev.slice(1));
         break;
+      case 'next exercise':
+        setComplete(true);
+        break;
       case 'restart':
         reset();
         break;
     }
+
     return result;
+  }
+
+  // -------------------------
+  // CONTINUE TO NEXT
+  // -------------------------
+  async function next() {
+    await onComplete('end');
   }
 
   // -------------------------
@@ -117,8 +125,8 @@ export function useVerbExercise({
   // -------------------------
   function reset() {
     setAnswers({});
-    setScore({});
     setQueue(PtPronouns.map((p) => p.id));
+    setFocus(null);
   }
 
   // -------------------------
@@ -127,10 +135,10 @@ export function useVerbExercise({
   return {
     // state
     active,
-    isComplete,
     answers,
-    score,
     queue,
+    isComplete,
+    tempFocus,
 
     // helpers
     getState,
@@ -140,7 +148,6 @@ export function useVerbExercise({
 
     // setters (optioneel)
     setAnswers,
-    setScore,
-    setQueue,
+    next,
   };
 }
