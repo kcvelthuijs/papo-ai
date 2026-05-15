@@ -73,8 +73,11 @@ export function VerbTypeTest({
       isComplete={isComplete}
       onComplete={handleComplete}
       renderField={(pronounId) => {
-        const value = answers[pronounId]?.answer ?? localInput[pronounId] ?? '';
-
+        const feedback = answers[pronounId];
+        const value =
+          feedback?.score === 'right'
+            ? feedback.answer
+            : (localInput[pronounId] ?? feedback?.answer ?? '');
         return (
           <ExerciseInputBox
             key={pronounId}
