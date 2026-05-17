@@ -5,8 +5,8 @@ import type {
 } from '@workspace/dtotypes';
 
 import { CheckVerbRenderer } from '../Exercises/CheckVerbExercise/Renderer/CheckVerbRenderer';
-import { CheckGapRenderer } from '../Exercises/CheckPhraseExercise/Renderers/CheckGapRenderer';
-
+import { CheckGapRenderer } from '../Exercises/CheckGapExercise/Renderers/CheckGapRenderer';
+import 
 // import { PhraseBuildRenderer } from './renderers/PhraseBuildRenderer';
 // import { OpenExerciseRenderer } from './renderers/OpenExerciseRenderer';
 
@@ -61,18 +61,17 @@ export function ExerciseRenderer({ exercise }: Props) {
       return (
         <PhraseBuildRenderer exercise={exercise} onSubmit={handleSubmit} />
       );
+    */
 
     // -------------------------
     // OPEN (LLM)
     // -------------------------
-    case 'open-writing':
-    case 'open-dialogue':
-    case 'open-reflection':
+    case 'open-dialog':
       return (
-        <OpenExerciseRenderer exercise={exercise} onSubmit={handleSubmit} />
+        <OpenExerciseRenderer exercise={exercise} onComplete={handleComplete} />
       );
 
     default:
-      return <div>Unknown exercise type</div>;*/
+      return <div>Unknown exercise type</div>;
   }
 }

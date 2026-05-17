@@ -1,13 +1,13 @@
-import { useRef, useState } from "react";
-import { FaMicrophone as StartRecordingIcon } from "react-icons/fa";
-import { FaMicrophone as StopRecordingIcon } from "react-icons/fa";
+import { useRef, useState } from 'react';
+import { FaMicrophone as StartRecordingIcon } from 'react-icons/fa';
+import { FaMicrophone as StopRecordingIcon } from 'react-icons/fa';
 
 type Props = {
   className?: string;
   onReady?: (audio: Blob) => void;
 };
 
-function AudioRecorder({ className, onReady }: Props) {
+export function AudioRecorder({ className, onReady }: Props) {
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
   const [isRecording, setIsRecording] = useState(false);
@@ -20,17 +20,17 @@ function AudioRecorder({ className, onReady }: Props) {
 
     // Check of browser audio ondersteunt
     if (!navigator.mediaDevices?.getUserMedia) {
-      console.error("getUserMedia wordt niet ondersteund");
+      console.error('getUserMedia wordt niet ondersteund');
       return;
     }
 
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
-        audio: true
+        audio: true,
       });
 
       const recorder = new MediaRecorder(stream, {
-        mimeType: "audio/webm;codecs=opus"
+        mimeType: 'audio/webm;codecs=opus',
       });
       mediaRecorderRef.current = recorder;
       audioChunksRef.current = [];
@@ -41,7 +41,7 @@ function AudioRecorder({ className, onReady }: Props) {
 
       recorder.onstop = () => {
         const audioBlob = new Blob(audioChunksRef.current, {
-          type: recorder.mimeType
+          type: recorder.mimeType,
         });
 
         if (onReady) onReady(audioBlob);
@@ -53,7 +53,7 @@ function AudioRecorder({ className, onReady }: Props) {
       recorder.start();
       setIsRecording(true);
     } catch (err) {
-      console.error("Microfoon toegang geweigerd of fout:", err);
+      console.error('Microfoon toegang geweigerd of fout:', err);
     }
   };
 
@@ -79,24 +79,22 @@ function AudioRecorder({ className, onReady }: Props) {
       {!isRecording ? (
         <button
           onClick={startRecording}
-          aria-label="start recording"
-          className="w-9 h-9 rounded-full flex items-center justify-center
-                  transition-colors duration-200 bg-black text-white"
+          aria-label='start recording'
+          className='w-9 h-9 rounded-full flex items-center justify-center
+                  transition-colors duration-200 bg-black text-white'
         >
-          <StartRecordingIcon className="flex-col self-center" />
+          <StartRecordingIcon className='flex-col self-center' />
         </button>
       ) : (
         <button
           onClick={stopRecording}
-          aria-label="stop recording"
-          className="w-9 h-9 rounded-full flex items-center justify-center
-                  transition-colors duration-200 bg-red-600 text-white"
+          aria-label='stop recording'
+          className='w-9 h-9 rounded-full flex items-center justify-center
+                  transition-colors duration-200 bg-red-600 text-white'
         >
-          <StopRecordingIcon className="flex-col self-center" />
+          <StopRecordingIcon className='flex-col self-center' />
         </button>
       )}
     </div>
   );
 }
-
-export default AudioRecorder;

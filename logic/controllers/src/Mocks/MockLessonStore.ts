@@ -233,14 +233,10 @@ export const useMockLessonStore = create<LessonState>((set, get) => ({
     const exercise = get().currentExercise;
     if (!exercise) throw 'Current exercise is undefined';
 
-    if (true) {
-      get().nextExercise();
-    } else {
-      set({
-        currentLesson: undefined,
-        currentLessonID: '',
-      });
-    }
+    // TO-DO: Show an overview of exercise results
+
+    // next exercise
+    get().nextExercise();
   },
 
   // -------------------------

@@ -1,8 +1,10 @@
 import type { LessonSummary as LessonSummaryDto } from '@workspace/dtotypes';
-import type { ExerciseResult } from './Exercise';
+import type { ExerciseEvaluation } from './Exercise';
 export type LessonSummary = LessonSummaryDto;
 
+/*
 export type LessonEngineEvaluation = {
-  result: ExerciseResult;
+  result: ExerciseEvaluation;
   nextAction: 'next-exercise' | 'retry' | 'stay';
 };
+*/

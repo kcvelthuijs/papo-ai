@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 import { type ResponseRole } from '@workspace/dtotypes';
-import { getRouteUrl } from './LanguageModelConnector';
+import { getRouteUrl } from '../Route/LanguageModelRouter';
 
 export const getResponse = async (
   role: ResponseRole = 'user',

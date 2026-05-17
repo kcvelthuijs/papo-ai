@@ -5,11 +5,12 @@ import type {
   GapAnswer,
   ExerciseExitReason,
 } from '@workspace/dtotypes';
+import type { PropertyNameLiteral } from 'typescript';
 
 export function isOpenExercise(ex: any): ex is OpenExercise {
   return (
     ex.type === 'open-writing' ||
-    ex.type === 'open-dialogue' ||
+    ex.type === 'open-dialog' ||
     ex.type === 'open-reflection'
   );
 }
@@ -31,4 +32,10 @@ export type QuizQuestionProps = {
   question: string;
   correct: string;
   options: string[];
+};
+
+export type OpenExerciseProps = {
+  exercise: OpenExercise;
+  onSubmit: (message: string) => Promise<any>;
+  onComplete: (reason: ExerciseExitReason) => Promise<void>;
 };

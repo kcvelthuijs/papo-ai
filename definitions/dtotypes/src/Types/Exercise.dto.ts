@@ -113,13 +113,16 @@ export type CheckGapFeedback = ExerciseEvaluation & {
 // -----------------------
 export type OpenExercise = BaseExercise & {
   id: string;
-  type: 'open-writing' | 'open-dialogue' | 'open-reflection';
+  type: 'open-writing' | 'open-dialog' | 'open-reflection';
+  introduction: string;
+  words: string[];
   prompt: string;
   feedback?: string;
   rubric?: string;
   meta?: any;
 };
 export type OpenAnswer = {
+  responseId: string;
   value: string;
 };
 export type OpenExerciseFeedback = {

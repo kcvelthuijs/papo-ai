@@ -3,7 +3,7 @@ import axios from 'axios';
 import { type SpeechOptions } from '@workspace/webtypes';
 import { type AudioTask } from '@workspace/webtypes';
 
-import { getRouteUrl } from './LanguageModelConnector';
+import { getRouteUrl } from '../Route/LanguageModelRouter';
 
 export const getSpeechAudio = async (
   text: string,
@@ -14,7 +14,7 @@ export const getSpeechAudio = async (
 
   const voice = (options?.voice ?? 'coral').toLocaleLowerCase();
   const instructions =
-    options?.instructions ?? 'Speak in a friendly, calm teachin tone.';
+    options?.instructions ?? 'Speak in a friendly, calm, teaching tone.';
   const speed = options?.speed ?? 1.0;
 
   const response = await axios.post(

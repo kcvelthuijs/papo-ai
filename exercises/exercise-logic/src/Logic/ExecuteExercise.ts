@@ -9,8 +9,7 @@ import type {
 import { isOpenExercise } from '../Types/Exercise.types';
 import { checkGap } from '../Check/CheckGap.logic';
 import { checkVerb } from '../Check/CheckVerb.logic';
-import { checkBuild } from '../Check/PhraseBuild.logic';
-import { evaluateOpenExercise } from '../Check/OpenExercise.logic';
+import { evaluateOpenDialog } from '../Check/OpenDialog.logic';
 
 export async function executeExercise(
   exercise: ClosedExercise | OpenExercise,
@@ -20,17 +19,19 @@ export async function executeExercise(
   // OPEN (LLM)
   // -------------------------
   if (isOpenExercise(exercise)) {
-    const feedback = await evaluateOpenExercise(exercise, answer);
-    return {
-      exerciseId: exercise.id,
-      score: feedback.score > 0.7 ? 'right' : 'wrong',
-      meta: {
-        feedback: feedback.feedback,
-        score: feedback.score,
-        suggestions: feedback.suggestions,
-      },
-      nextAction: 'next',
-    };
+    switch (exercise.type.toLowerCase()) {
+      case 'open-dialog':
+        const feedback = await evaluateOpenDialog(exercise, answer);
+        return {
+          exerciseId: exercise.id,
+          score: feedback.score > 0.7 ? 'right' : 'wrong',
+          nextAction: 'next',
+        };
+      default:
+        throw new Error(
+          `Unknown open exercise type: ${(exercise as ClosedExercise).type}`,
+        );
+    }
   } else {
     // -------------------------
     // CLOSED (deterministic)
@@ -51,7 +52,7 @@ export async function executeExercise(
 */
       default:
         throw new Error(
-          `Unknown exercise type: ${(exercise as ClosedExercise).type}`,
+          `Unknown closed exercise type: ${(exercise as ClosedExercise).type}`,
         );
     }
   }

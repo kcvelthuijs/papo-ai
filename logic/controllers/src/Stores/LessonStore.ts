@@ -7,7 +7,7 @@ import type {
   LessonDetails,
   Exercise,
 } from '@workspace/dtotypes';
-import type { ExerciseResult } from '@workspace/webtypes';
+import type { ExerciseEvaluation } from '@workspace/webtypes';
 import { executeExercise } from '@exercises/logic';
 
 type LessonState = {
@@ -20,7 +20,7 @@ type LessonState = {
   currentExerciseIndex: number;
   currentExercise?: Exercise;
 
-  results: ExerciseResult[];
+  results: ExerciseEvaluation[];
 
   isLoading: boolean;
   error?: string;
@@ -132,10 +132,10 @@ export const useLessonStore = create<LessonState>((set, get) => ({
       const evaluation = await executeExercise(exercise, answer);
 
       set((state) => ({
-        results: [...state.results, evaluation.result],
+        results: [...state.results, evaluation],
       }));
 
-      if (evaluation.nextAction === 'next-exercise') {
+      if (evaluation.nextAction === 'next exercise') {
         get().nextExercise();
       }
     } catch (err) {

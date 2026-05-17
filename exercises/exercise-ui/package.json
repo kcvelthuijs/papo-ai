@@ -3,10 +3,11 @@
   "type": "module",
   "dependencies": {
     "@exercises/logic": "workspace:*",
-    "@workspace/ui": "workspace:*",
+    "@workspace/controllers": "workspace:*",
     "@workspace/dtotypes": "workspace:*",
+    "@workspace/ui": "workspace:*",
     "@workspace/webtypes": "workspace:*",
-    "@workspace/controllers": "workspace:*"
+    "react-markdown": "^10.1.0"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.2.4",
