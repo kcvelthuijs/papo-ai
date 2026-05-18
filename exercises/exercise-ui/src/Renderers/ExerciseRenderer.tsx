@@ -4,9 +4,11 @@ import type {
   ExerciseExitReason,
 } from '@workspace/dtotypes';
 
+import { OpenExerciseRenderer } from '../Exercises/OpenDialogExercise/Renderer/OpenExerciseRenderer';
+
 import { CheckVerbRenderer } from '../Exercises/CheckVerbExercise/Renderer/CheckVerbRenderer';
 import { CheckGapRenderer } from '../Exercises/CheckGapExercise/Renderers/CheckGapRenderer';
-import 
+
 // import { PhraseBuildRenderer } from './renderers/PhraseBuildRenderer';
 // import { OpenExerciseRenderer } from './renderers/OpenExerciseRenderer';
 
@@ -68,7 +70,11 @@ export function ExerciseRenderer({ exercise }: Props) {
     // -------------------------
     case 'open-dialog':
       return (
-        <OpenExerciseRenderer exercise={exercise} onComplete={handleComplete} />
+        <OpenExerciseRenderer
+          exercise={exercise}
+          onSubmit={handleSubmit}
+          onComplete={handleComplete}
+        />
       );
 
     default:

@@ -10,7 +10,11 @@ import type {
 } from '@workspace/dtotypes';
 
 import { executeExercise } from '@exercises/logic';
-import { mockGapExercises, mockVerbExercises } from './LessonMock';
+import {
+  mockGapExercises,
+  mockDialogExercise,
+  mockVerbExercises,
+} from './LessonMock';
 
 // -------------------------
 // MOCK LESSON (gebruik LessonDetails type)
@@ -49,7 +53,23 @@ const mockGapSummary: LessonSummary = {
   image: 'mulher-cafe.png',
   description: 'Select the correct verb',
 };
-
+const mockDialogSummary: LessonSummary = {
+  id: 'lesson-1',
+  type: 'open-dialog',
+  title: 'Conhecer-se',
+  level: 'A1',
+  image: 'mulher-cafe.png',
+  description: '',
+};
+const MockDialogLesson: LessonDetails = {
+  id: 'lesson-1',
+  type: 'open-dialog',
+  title: 'Conhecer-se',
+  level: 'A1',
+  image: 'mulher-cafe.png',
+  description: '',
+  exercises: [mockDialogExercise],
+};
 // -------------------------
 // STORE
 // -------------------------
@@ -86,10 +106,12 @@ export const useMockLessonStore = create<LessonState>((set, get) => ({
   lessonSummaries: {
     [mockVerbSummary.id]: mockVerbSummary,
     [mockGapSummary.id]: mockGapSummary,
+    [mockDialogSummary.id]: mockDialogSummary,
   },
   lessonDetails: {
     [mockVerbLesson.id]: mockVerbLesson,
     [mockGapLesson.id]: mockGapLesson,
+    [MockDialogLesson.id]: MockDialogLesson,
   },
 
   currentLessonID: undefined,
@@ -113,6 +135,7 @@ export const useMockLessonStore = create<LessonState>((set, get) => ({
       lessonSummaries: {
         [mockVerbSummary.id]: mockVerbSummary,
         [mockGapSummary.id]: mockGapSummary,
+        [mockDialogSummary.id]: mockDialogSummary,
       },
       isLoading: false,
     });

@@ -2,13 +2,18 @@ import { useEffect, useState } from 'react';
 
 import type {
   OpenExercise,
+  OpenAnswer,
   OpenExerciseFeedback,
   ExerciseExitReason,
 } from '@workspace/dtotypes';
 
+import { InteractionService } from '@exercises/logic';
+
 type Message = {
+  id?: string;
   role: 'user' | 'assistant';
   content: string;
+  responseId?: string;
 };
 
 export type WordState = {
@@ -30,18 +35,11 @@ export function useOpenDialogHook({
   // -------------------------
   // STATE
   // -------------------------
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      role: 'assistant',
-      content: exercise.introduction ?? '',
-    },
-  ]);
-
-  const [isComplete, setIsComplete] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [conversationId, setConversationId] = useState<string>('');
   const [responseId, setResponseId] = useState<string>('');
-
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [isComplete, setIsComplete] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [usedWords, setUsedWords] = useState<Record<string, WordState>>({});
   const [feedback, setFeedback] = useState<OpenExerciseFeedback | null>(null);
 
@@ -49,11 +47,29 @@ export function useOpenDialogHook({
   // START CONVERSATION
   // -------------------------
   useEffect(() => {
-    const startConversation = async () => {
-      setConversationId('12345');
-    };
-    startConversation();
-  }, []);
+    async function init() {
+      let cancelled = false;
+      try {
+        const result = await InteractionService.startDialog(exercise);
+        if (!result) return;
+        setConversationId(result.conversationId);
+        setResponseId(result.responseId);
+        setMessages([
+          {
+            role: 'assistant',
+            content: result.message,
+            responseId: result.responseId,
+          },
+        ]);
+      } catch (err) {
+        console.error('Failed to start dialog', err);
+      }
+      init();
+      return () => {
+        cancelled = true;
+      };
+    }
+  }, [exercise]);
 
   // -------------------------
   // CHECK COMPLETE
@@ -163,6 +179,8 @@ export function useOpenDialogHook({
     isComplete,
     isSubmitting,
     words,
+    conversationId,
+    responseId,
 
     // actions
     submit,

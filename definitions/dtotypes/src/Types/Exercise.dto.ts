@@ -18,7 +18,7 @@ export type BaseExercise = {
   type: string;
   title: string;
   description: string;
-  state: ExerciseState;
+  state?: ExerciseState;
 };
 
 // -----------------------

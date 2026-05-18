@@ -30,5 +30,5 @@ export const AddConversationMessageSchema = z.object({
 
   prompt: z.string().trim().min(1, 'Prompt is required.'),
 
-  instructions: z.string().trim(),
+  instructions: z.string().trim().optional(),
 });

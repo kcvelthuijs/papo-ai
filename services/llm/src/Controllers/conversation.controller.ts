@@ -8,10 +8,10 @@ import {
 
 export const conversationController = {
   async create(req: Request, res: Response) {
-    console.log('conv: ', req.body);
     const parseResult = CreateConversationSchema.safeParse(req.body);
 
     if (!parseResult.success) {
+      console.log('conv - err:', parseResult.error);
       res.status(400).json(parseResult.error.format);
       return;
     }
@@ -37,10 +37,14 @@ export const conversationController = {
   },
 
   async addMessage(req: Request, res: Response) {
+    console.log('conv: ', req.body);
     const parseParams = ConversationIdSchema.safeParse(req.params);
     const parseBody = AddConversationMessageSchema.safeParse(req.body);
 
     if (!(parseParams.success && parseBody.success)) {
+      if (!parseParams.success) console.log('Params - err:', parseParams.error);
+      if (!parseBody.success) console.log('Body - err:', parseBody.error);
+
       res
         .status(400)
         .json(

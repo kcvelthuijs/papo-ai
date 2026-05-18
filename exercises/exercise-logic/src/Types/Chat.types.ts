@@ -1,4 +1,4 @@
-export type ChatRole = 'user' | 'assistant' | 'teacher';
+import type { ChatRole } from '@workspace/dtotypes';
 
 export type ChatMessage = {
   id?: string;

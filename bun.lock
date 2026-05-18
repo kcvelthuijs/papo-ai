@@ -87,6 +87,7 @@
     "exercises/exercise-logic": {
       "name": "@exercises/logic",
       "dependencies": {
+        "@workspace/connectors": "workspace:*",
         "@workspace/dtotypes": "workspace:*",
       },
       "devDependencies": {

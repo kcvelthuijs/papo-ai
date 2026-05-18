@@ -1,3 +1,4 @@
+export * from './Services/InteractionService';
 export * from './Logic/ExecuteExercise';
 export * from './Types/Chat.types';
 export * from './Types/Exercise.types';

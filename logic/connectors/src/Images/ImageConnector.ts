@@ -1,8 +1,8 @@
 import axios, { type CancelToken } from 'axios';
 
-import type { ImageProps } from '@workspaces/dtotypes';
+import type { ImageProps } from '@workspace/dtotypes';
 
-import { CDN_HOST, CDN_PORT } from '../Connector.config';
+import { CDN_HOST, CDN_PORT } from '../Config/Connector.config';
 
 const getRouteUrl = (route: string): string => {
   return `http://${CDN_HOST}:${CDN_PORT}${route}`;

@@ -2,6 +2,7 @@ import type {
   CheckGapExercise,
   LessonSummary,
   VerbFormTable,
+  OpenExercise,
 } from '@workspace/dtotypes';
 import type { Exercise } from '@workspace/dtotypes';
 
@@ -118,3 +119,72 @@ export const mockGapExercises: Exercise[] = [
     ],
   } as CheckGapExercise,
 ];
+
+export const mockDialogExercise: OpenExercise = {
+  id: 'lesson-1',
+  type: 'open-dialog',
+  title: 'Conhecer-se',
+
+  description: `
+Op het terras van een restaurant kom je een vrouw tegen. Als je gaat zitten spreekt ze je aan.
+Het is een mooie manier om kennis te maken en je eerste zinnen Portugees te oefenen.
+  `.trim(),
+
+  prompt: `
+Je heet Maria Santos da Silva, 33 jaar oud, afkomstig uit Lissabon, maar nu woonachtig in Vila do Conde bij Porto.
+Je werkt als verkoopster bij Desigual in de Porto Fashion Outlet.
+Je bent getrouwd met João (38) en hebt twee kinderen: Ana (3) en Pedro (5).
+
+Doel: Een gestructureerd gesprek voeren om iemand beter te leren kennen, op een vriendelijke, geïnteresseerde en natuurlijke manier.
+
+Gespreksstructuur:
+1. Naam - Vraag naar de naam van de ander en hou oud die is.
+2. Herkomst en thuissituatie - Vraag waar de persoon vandaan komt en waar hij/zij woont.
+3. Vraag of hij/zij getrouwd is, vrijgezel is en kinderen heeft, hoe oud de kinderen zijn en welke nationaliteit hij/zij heeft.
+4. Werk - Vraag wat de persoon doet, waar hij/zij werkt, of het een groot bedrijf is en hoe de verbinding naar het werk is.
+5. Hobby’s en vrije tijd - Vraag naar sport, uitgaan, lezen, dansen of andere hobby’s.
+6. Ervaringen in Portugal - Vraag wat de persoon leuk vindt aan Portugal, of hij/zij er eerder geweest is, waar precies en wat hij/zij daar deed.
+
+Instructies:
+- Stel steeds slechts één vraag tegelijk
+- Reageer op antwoorden
+- Maak het gesprek vloeiend
+- Begin met jezelf voorstellen en stel een eerste vraag
+  `.trim(),
+
+  introduction: `Je bent een taalcoach om te leren spreken in het Portugees.
+            Gebruik uitsluitend Português Europeu, geen ander dialect!
+            Antwoord in hele zinnen van minder dan 50 tokens.`,
+
+  words: ['nome', 'idade', 'naturalidade', 'trabalho', 'família', 'Portugal'],
+
+  rubric: `
+Beoordeel of de student:
+- zich voorstelt
+- vragen begrijpt
+- correcte eenvoudige zinnen gebruikt
+- logisch reageert in gesprek
+  `.trim(),
+
+  meta: {
+    voice: 'alloy',
+    avatar: {
+      sex: 'woman',
+      faceColor: '#F9C9B6',
+      earSize: 'small',
+      eyeStyle: 'circle',
+      noseStyle: 'short',
+      mouthStyle: 'laugh',
+      shirtStyle: 'polo',
+      glassesStyle: 'none',
+      hairColor: '#7a553e',
+      hairStyle: 'womanLong',
+      hatStyle: 'none',
+      hatColor: '#506AF4',
+      shirtColor: '#80dd66',
+      bgColor: '#cfdbcb',
+    },
+    speech: 'speak clearly, joyful, and not too fast',
+    image: 'mulher-cafe.png',
+  },
+};
