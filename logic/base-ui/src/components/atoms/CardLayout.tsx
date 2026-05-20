@@ -20,6 +20,7 @@ type CardLayoutProps = {
   stars?: any; // optioneel voor animaties zoals StarBurst
   isComplete?: boolean;
   onContinue?: () => void;
+  onSkip?: () => void;
 };
 
 export function CardLayout({
@@ -29,6 +30,7 @@ export function CardLayout({
   stars,
   isComplete,
   onContinue,
+  onSkip,
   content,
 }: CardLayoutProps) {
   const continueRef = useRef<HTMLButtonElement | null>(null);
@@ -65,12 +67,23 @@ export function CardLayout({
 
           <CardFooter className='flex justify-center border-t border-gray-600 min-h-16 pt-2'>
             {footer && <div className='mx-1'>{footer}</div>}
-            {isComplete && (
+            {isComplete ? (
               <CardAction className='mx-1 pt-2'>
                 <ContinueButton ref={continueRef} onClick={onContinue}>
                   Continuar
                 </ContinueButton>
               </CardAction>
+            ) : (
+              <>
+                {onSkip && (
+                  <button
+                    onClick={onSkip}
+                    className='mx-1 rounded-md border border-gray-400 px-3 py-1 text-sm transition hover:bg-gray-100'
+                  >
+                    Revelar
+                  </button>
+                )}
+              </>
             )}
           </CardFooter>
         </Card>

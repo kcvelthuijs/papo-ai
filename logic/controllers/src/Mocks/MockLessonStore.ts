@@ -78,7 +78,7 @@ const mockVocabularioSummary: LessonSummary = {
   level: 'A1',
   title: 'exterior da casa',
   description: 'Nomes dos elementos da casa e do que a rodeia.',
-  image: 'mulher-cafe.png',
+  image: 'casa.png',
 };
 const mockVocabularioLesson: LessonDetails = {
   id: 'flash-card-1',
@@ -86,7 +86,7 @@ const mockVocabularioLesson: LessonDetails = {
   type: 'vocabulário',
   title: 'exterior da casa',
   description: 'Nomes dos elementos da casa e do que a rodeia.',
-  image: 'mulher-cafe.png',
+  image: 'casa.png',
   exercises: mockVocabularioExercise,
 };
 // -------------------------
@@ -124,15 +124,15 @@ type LessonState = {
 export const useMockLessonStore = create<LessonState>((set, get) => ({
   lessonSummaries: {
     [mockVerbSummary.id]: mockVerbSummary,
+    [mockVocabularioSummary.id]: mockVocabularioSummary,
     [mockGapSummary.id]: mockGapSummary,
     [mockDialogSummary.id]: mockDialogSummary,
-    [mockVocabularioSummary.id]: mockVocabularioSummary,
   },
   lessonDetails: {
     [mockVerbLesson.id]: mockVerbLesson,
+    [mockVocabularioLesson.id]: mockVocabularioLesson,
     [mockGapLesson.id]: mockGapLesson,
     [mockDialogLesson.id]: mockDialogLesson,
-    [mockVocabularioLesson.id]: mockVocabularioLesson,
   },
 
   currentLessonID: undefined,

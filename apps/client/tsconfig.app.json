@@ -26,6 +26,7 @@
   "include": [
     "src",
     "src/Utilities/AudioQueue.ts",
-    "../../logic/base-ui/src/components/AudioRecorder.tsx"
+    "../../logic/base-ui/src/components/AudioRecorder.tsx",
+    "src/Components/ImageComponent.tsx"
   ]
 }

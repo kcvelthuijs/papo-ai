@@ -114,6 +114,7 @@ export type CheckGapFeedback = ExerciseEvaluation & {
 export type FlashCardExercise = BaseExercise & {
   type: 'flash-card';
   items: FlashCardItem[];
+  imageLocation?: string[];
 };
 export type FlashCardItem = {
   id: string;

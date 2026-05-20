@@ -102,6 +102,7 @@
       "name": "@exercises/ui",
       "dependencies": {
         "@exercises/logic": "workspace:*",
+        "@workspace/connectors": "workspace:*",
         "@workspace/controllers": "workspace:*",
         "@workspace/dtotypes": "workspace:*",
         "@workspace/ui": "workspace:*",

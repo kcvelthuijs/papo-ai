@@ -4,6 +4,7 @@
   "dependencies": {
     "@exercises/logic": "workspace:*",
     "@workspace/controllers": "workspace:*",
+    "@workspace/connectors": "workspace:*",
     "@workspace/dtotypes": "workspace:*",
     "@workspace/ui": "workspace:*",
     "@workspace/webtypes": "workspace:*",

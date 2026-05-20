@@ -10,6 +10,7 @@ import type { FlashCardFeedback, FlashCardItem } from '@workspace/dtotypes';
 import { useExerciseStars } from '../../../Components/Hooks/useExerciseEffects';
 import { ExerciseInputBox } from '../../../Components/Atoms/ExerciseInputBox';
 import { ExerciseTextbox } from '../../../Components/Atoms/ExerciseTextBox';
+import { ImageView } from '../../../Components/Atoms/ImageView';
 
 export function FlashCardTest({
   exercise,
@@ -70,6 +71,25 @@ export function FlashCardTest({
   }
 
   // -------------------------
+  // HANDLE REVEAL
+  // -------------------------
+  async function handleReveal() {
+    if (!active) return;
+
+    const correctAnswer = active.translation;
+    setLocalInput((prev) => ({
+      ...prev,
+      [active.id]: correctAnswer,
+    }));
+    const result = await submit(correctAnswer);
+    setLocalInput((prev) => ({
+      ...prev,
+      [active.id]: '',
+    }));
+    //next();
+  }
+
+  // -------------------------
   // RENDER SINGLE Phrase
   // -------------------------
   return (
@@ -78,6 +98,7 @@ export function FlashCardTest({
       description={exercise.description}
       isComplete={isComplete}
       onContinue={next}
+      onSkip={handleReveal}
       stars={stars}
       content={
         <div className='flex flex-col gap-6'>
@@ -85,11 +106,12 @@ export function FlashCardTest({
           <div className='flex min-h-80 w-full flex-col items-center justify-center rounded-lg border border-gray-300 p-6'>
             {/* IMAGE */}
             {active?.image && (
-              <div className='mb-6 flex w-full justify-center'>
-                <img
-                  src={active.image}
-                  alt={active.word}
-                  className='max-h-48 rounded-lg object-contain'
+              <div className='mb-2 flex w-full justify-center'>
+                <ImageView
+                  name={active.image}
+                  tree={exercise.imageLocation ?? ['flashcards']}
+                  size='none'
+                  className='max-h-64 object-contain rounded-sm'
                 />
               </div>
             )}
@@ -99,7 +121,7 @@ export function FlashCardTest({
               ref={(el) =>
                 active?.id ? registerStarRef(active.id, el) : undefined
               }
-              className='flex flex-1 items-center justify-center text-center text-4xl font-semibold'
+              className='flex flex-1 items-center justify-center text-center text-3xl font-semibold'
             >
               {active?.word}
             </div>
