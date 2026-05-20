@@ -42,7 +42,7 @@ const mockGapLesson: LessonDetails = {
   type: 'grammar',
   title: 'Ser ou estar?',
   level: 'A1',
-  image: 'mulher-cafe.png',
+  image: 'mulher-na-terraço.png',
   description: 'Select the correct verb.',
   exercises: mockGapExercises,
 };
@@ -51,7 +51,7 @@ const mockGapSummary: LessonSummary = {
   type: 'grammar',
   title: 'Ser ou estar?',
   level: 'A1',
-  image: 'mulher-cafe.png',
+  image: 'mulher-na-terraço.png',
   description: 'Select the correct verb.',
 };
 const mockDialogSummary: LessonSummary = {
@@ -59,7 +59,7 @@ const mockDialogSummary: LessonSummary = {
   type: 'diálogo',
   title: 'Conhecer-se.',
   level: 'A1',
-  image: 'mulher-cafe.png',
+  image: 'no-terraço.png',
   description: '...',
 };
 const mockDialogLesson: LessonDetails = {
@@ -67,7 +67,7 @@ const mockDialogLesson: LessonDetails = {
   type: 'diálogo',
   title: 'Conhecer-se',
   level: 'A1',
-  image: 'mulher-cafe.png',
+  image: 'no-terraço.png',
   description: '...',
   exercises: [mockDialogExercise],
 };
