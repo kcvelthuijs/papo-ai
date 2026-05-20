@@ -109,6 +109,29 @@ export type CheckGapFeedback = ExerciseEvaluation & {
 };
 
 // -----------------------
+//  FlashCardExercise
+// -----------------------
+export type FlashCardExercise = BaseExercise & {
+  type: 'flash-card';
+  items: FlashCardItem[];
+};
+export type FlashCardItem = {
+  id: string;
+  word: string;
+  translation: string;
+  hint?: string;
+  image?: string;
+};
+export type FlashCardAnswer = {
+  id: string;
+  value: string;
+};
+export type FlashCardFeedback = ExerciseEvaluation & {
+  givenAnswer: string;
+  correctAnswer: string;
+};
+
+// -----------------------
 //  OPENEXERCISES
 // -----------------------
 export type OpenExercise = BaseExercise & {

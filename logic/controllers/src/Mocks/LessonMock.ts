@@ -3,6 +3,7 @@ import type {
   LessonSummary,
   VerbFormTable,
   OpenExercise,
+  FlashCardExercise,
 } from '@workspace/dtotypes';
 import type { Exercise } from '@workspace/dtotypes';
 
@@ -118,6 +119,102 @@ export const mockGapExercises: Exercise[] = [
       },
     ],
   } as CheckGapExercise,
+];
+
+export const mockVocabularioExercise: Exercise[] = [
+  {
+    id: 'fc-1',
+    type: 'flash-card',
+    title: 'exterior da casa',
+    description: 'Nomes dos elementos da casa e do que a rodeia.',
+    items: [
+      {
+        id: 'fi-1',
+        word: 'de schoorsteen',
+        translation: 'a chaminé',
+      },
+      {
+        id: 'fi-2',
+        word: 'het dak',
+        translation: 'o teádo',
+      },
+      {
+        id: 'fi-3',
+        word: 'het raam',
+        translation: 'a janela',
+      },
+      {
+        id: 'fi-4',
+        word: 'het luik',
+        translation: 'a portada',
+      },
+      {
+        id: 'fi-5',
+        word: 'de tuin',
+        translation: 'o jardim',
+      },
+      {
+        id: 'fi-6',
+        word: 'het grasveld',
+        translation: 'o quental',
+      },
+      {
+        id: 'fi-7',
+        word: 'de fontein',
+        translation: 'a fonte',
+      },
+      {
+        id: 'fi-8',
+        word: 'de garage',
+        translation: 'o garagem',
+      },
+      {
+        id: 'fi-9',
+        word: 'het bijgebouw',
+        translation: 'o anexo',
+      },
+      {
+        id: 'fi-10',
+        word: 'het schuurtje',
+        translation: 'a arrecadação',
+      },
+      {
+        id: 'fi-11',
+        word: 'de muur (buiten',
+        translation: 'o muro',
+      },
+      {
+        id: 'fi-12',
+        word: 'het hek',
+        translation: 'o gradiamento',
+      },
+      {
+        id: 'fi-13',
+        word: 'de deur',
+        translation: 'o porta',
+      },
+      {
+        id: 'fi-14',
+        word: 'het pad',
+        translation: 'o caminho',
+      },
+      {
+        id: 'fi-15',
+        word: 'de stoep',
+        translation: 'o pavimento',
+      },
+      {
+        id: 'fi-16',
+        word: 'de gevel',
+        translation: 'a fachada',
+      },
+      {
+        id: 'fi-17',
+        word: 'de geveltegels',
+        translation: 'os azuleijos',
+      },
+    ],
+  } as FlashCardExercise,
 ];
 
 export const mockDialogExercise: OpenExercise = {

@@ -8,6 +8,7 @@ import { OpenExerciseRenderer } from '../Exercises/OpenDialogExercise/Renderer/O
 
 import { CheckVerbRenderer } from '../Exercises/CheckVerbExercise/Renderer/CheckVerbRenderer';
 import { CheckGapRenderer } from '../Exercises/CheckGapExercise/Renderers/CheckGapRenderer';
+import { FlashCardRenderer } from '../Exercises/FlashCardExercise/Renderers/FlashCardRenderer';
 
 // import { PhraseBuildRenderer } from './renderers/PhraseBuildRenderer';
 // import { OpenExerciseRenderer } from './renderers/OpenExerciseRenderer';
@@ -18,7 +19,7 @@ type Props = {
 
 export function ExerciseRenderer({ exercise }: Props) {
   const submitAnswer = useMockLessonStore((s) => s.submitAnswer);
-  const handleSubmit = async (answer: any): Promise<ExerciseEvaluation> => {
+  const handleSubmit = async (answer: any): Promise<any> => {
     return await submitAnswer(answer);
   };
 
@@ -49,6 +50,18 @@ export function ExerciseRenderer({ exercise }: Props) {
     case 'gap-type-test':
       return (
         <CheckGapRenderer
+          exercise={exercise}
+          onSubmit={handleSubmit}
+          onComplete={handleComplete}
+        />
+      );
+
+    // -------------------------
+    // FlashCards
+    // -------------------------
+    case 'flash-card':
+      return (
+        <FlashCardRenderer
           exercise={exercise}
           onSubmit={handleSubmit}
           onComplete={handleComplete}

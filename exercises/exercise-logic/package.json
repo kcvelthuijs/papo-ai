@@ -9,8 +9,9 @@
     "typescript": "^5"
   },
   "dependencies": {
+    "@workspace/connectors": "workspace:*",
     "@workspace/dtotypes": "workspace:*",
-    "@workspace/connectors": "workspace:*"
+    "normalize-text": "^2.6.0"
   },
   "exports": {
     ".": "./src/index.ts"

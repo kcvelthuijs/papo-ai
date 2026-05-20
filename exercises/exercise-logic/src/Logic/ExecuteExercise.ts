@@ -4,11 +4,14 @@ import type {
   OpenExercise,
   CheckVerbExercise,
   CheckGapExercise,
+  FlashCardExercise,
 } from '@workspace/dtotypes';
 
 import { isOpenExercise } from '../Types/Exercise.types';
+
 import { checkGap } from '../Check/CheckGap.logic';
 import { checkVerb } from '../Check/CheckVerb.logic';
+import { checkFlashCard } from '../Check/CheckFlashCard.logic';
 import { evaluateOpenDialog } from '../Check/OpenDialog.logic';
 
 export async function executeExercise(
@@ -45,6 +48,9 @@ export async function executeExercise(
       case 'gap-click-test':
       case 'gap-type-test':
         return checkGap(exercise as CheckGapExercise, answer);
+
+      case 'flash-card':
+        return checkFlashCard(exercise as FlashCardExercise, answer);
 
       /*
       case 'Phrase-build-test':

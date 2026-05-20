@@ -14,6 +14,7 @@ import {
   mockGapExercises,
   mockDialogExercise,
   mockVerbExercises,
+  mockVocabularioExercise,
 } from './LessonMock';
 
 // -------------------------
@@ -25,7 +26,7 @@ const mockVerbLesson: LessonDetails = {
   title: 'Ser - presente',
   level: 'A1',
   image: 'mulher-cafe.png',
-  description: 'Verb click test mock lesson',
+  description: 'Verb click test mock lesson.',
   exercises: mockVerbExercises,
 };
 const mockVerbSummary: LessonSummary = {
@@ -34,7 +35,7 @@ const mockVerbSummary: LessonSummary = {
   title: 'Ser - presente',
   level: 'A1',
   image: 'mulher-cafe.png',
-  description: 'Mock lesson summary',
+  description: 'Mock lesson summary.',
 };
 const mockGapLesson: LessonDetails = {
   id: 'lesson-gap-1',
@@ -42,7 +43,7 @@ const mockGapLesson: LessonDetails = {
   title: 'Ser ou estar?',
   level: 'A1',
   image: 'mulher-cafe.png',
-  description: 'Select the correct verb',
+  description: 'Select the correct verb.',
   exercises: mockGapExercises,
 };
 const mockGapSummary: LessonSummary = {
@@ -51,24 +52,42 @@ const mockGapSummary: LessonSummary = {
   title: 'Ser ou estar?',
   level: 'A1',
   image: 'mulher-cafe.png',
-  description: 'Select the correct verb',
+  description: 'Select the correct verb.',
 };
 const mockDialogSummary: LessonSummary = {
   id: 'lesson-1',
-  type: 'open-dialog',
-  title: 'Conhecer-se',
+  type: 'diálogo',
+  title: 'Conhecer-se.',
   level: 'A1',
   image: 'mulher-cafe.png',
-  description: '',
+  description: '...',
 };
-const MockDialogLesson: LessonDetails = {
+const mockDialogLesson: LessonDetails = {
   id: 'lesson-1',
-  type: 'open-dialog',
+  type: 'diálogo',
   title: 'Conhecer-se',
   level: 'A1',
   image: 'mulher-cafe.png',
-  description: '',
+  description: '...',
   exercises: [mockDialogExercise],
+};
+
+const mockVocabularioSummary: LessonSummary = {
+  id: 'flash-card-1',
+  type: 'vocabulário',
+  level: 'A1',
+  title: 'exterior da casa',
+  description: 'Nomes dos elementos da casa e do que a rodeia.',
+  image: 'mulher-cafe.png',
+};
+const mockVocabularioLesson: LessonDetails = {
+  id: 'flash-card-1',
+  level: 'A1',
+  type: 'vocabulário',
+  title: 'exterior da casa',
+  description: 'Nomes dos elementos da casa e do que a rodeia.',
+  image: 'mulher-cafe.png',
+  exercises: mockVocabularioExercise,
 };
 // -------------------------
 // STORE
@@ -107,11 +126,13 @@ export const useMockLessonStore = create<LessonState>((set, get) => ({
     [mockVerbSummary.id]: mockVerbSummary,
     [mockGapSummary.id]: mockGapSummary,
     [mockDialogSummary.id]: mockDialogSummary,
+    [mockVocabularioSummary.id]: mockVocabularioSummary,
   },
   lessonDetails: {
     [mockVerbLesson.id]: mockVerbLesson,
     [mockGapLesson.id]: mockGapLesson,
-    [MockDialogLesson.id]: MockDialogLesson,
+    [mockDialogLesson.id]: mockDialogLesson,
+    [mockVocabularioLesson.id]: mockVocabularioLesson,
   },
 
   currentLessonID: undefined,

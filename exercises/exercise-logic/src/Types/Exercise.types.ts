@@ -4,6 +4,11 @@ import type {
   CheckGapExercise,
   GapAnswer,
   ExerciseExitReason,
+  FlashCardExercise,
+  FlashCardFeedback,
+  CheckGapFeedback,
+  CheckVerbFeedback,
+  FlashCardAnswer,
 } from '@workspace/dtotypes';
 import type { PropertyNameLiteral } from 'typescript';
 
@@ -17,13 +22,22 @@ export function isOpenExercise(ex: any): ex is OpenExercise {
 
 export type VerbExerciseProps = {
   exercise: CheckVerbExercise;
-  onSubmit: (answer: { pronounId: string; value: string }) => Promise<any>;
+  onSubmit: (answer: {
+    pronounId: string;
+    value: string;
+  }) => Promise<CheckVerbFeedback>;
   onComplete: (reason: ExerciseExitReason) => Promise<void>;
 };
 
 export type GapExerciseProps = {
   exercise: CheckGapExercise;
-  onSubmit: (answer: GapAnswer) => Promise<any>;
+  onSubmit: (answer: GapAnswer) => Promise<CheckGapFeedback>;
+  onComplete: (reason: ExerciseExitReason) => Promise<void>;
+};
+
+export type FlashCardExerciseProps = {
+  exercise: FlashCardExercise;
+  onSubmit: (answer: FlashCardAnswer) => Promise<FlashCardFeedback>;
   onComplete: (reason: ExerciseExitReason) => Promise<void>;
 };
 
