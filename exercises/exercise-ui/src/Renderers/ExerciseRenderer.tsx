@@ -1,7 +1,7 @@
 import { useMockLessonStore } from '@workspace/controllers';
 import type {
   ExerciseEvaluation,
-  ExerciseExitReason,
+  ExerciseExitReason
 } from '@workspace/dtotypes';
 
 import { OpenExerciseRenderer } from '../Exercises/OpenDialogExercise/Renderer/OpenExerciseRenderer';
@@ -59,7 +59,7 @@ export function ExerciseRenderer({ exercise }: Props) {
     // -------------------------
     // FlashCards
     // -------------------------
-    case 'flash-card':
+    case 'flashcard-test':
       return (
         <FlashCardRenderer
           exercise={exercise}

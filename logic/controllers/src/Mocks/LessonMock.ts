@@ -3,7 +3,7 @@ import type {
   LessonSummary,
   VerbFormTable,
   OpenExercise,
-  FlashCardExercise,
+  FlashCardExercise
 } from '@workspace/dtotypes';
 import type { Exercise } from '@workspace/dtotypes';
 
@@ -13,7 +13,7 @@ export const mockLessonSummary: LessonSummary = {
   description: '',
   type: 'grammar',
   level: 'A1',
-  image: 'mulher-cafe.png',
+  image: 'mulher-cafe.png'
 };
 
 const verbSer: VerbFormTable = {
@@ -25,8 +25,8 @@ const verbSer: VerbFormTable = {
     p3ev: 'é',
     p1mv: 'somos',
     p2mv: 'são',
-    p3mv: 'são',
-  },
+    p3mv: 'são'
+  }
 };
 
 export const mockVerbExercises: Exercise[] = [
@@ -36,7 +36,7 @@ export const mockVerbExercises: Exercise[] = [
     title: 'Conjugate "ser"',
     description: 'Click the correct forms',
     infinitive: verbSer.infinitive,
-    forms: verbSer.forms,
+    forms: verbSer.forms
   } as any,
   {
     id: 'ex-2',
@@ -44,7 +44,7 @@ export const mockVerbExercises: Exercise[] = [
     title: 'Conjugate "ser"',
     description: 'Select the correct forms',
     infinitive: verbSer.infinitive,
-    forms: verbSer.forms,
+    forms: verbSer.forms
   } as any,
   {
     id: 'ex-3',
@@ -52,13 +52,13 @@ export const mockVerbExercises: Exercise[] = [
     title: 'Conjugate "ser"',
     description: 'Type the correct forms',
     infinitive: verbSer.infinitive,
-    forms: verbSer.forms,
-  } as any,
+    forms: verbSer.forms
+  } as any
 ];
 
 export const mockLesson = {
   ...mockLessonSummary,
-  exercises: mockVerbExercises,
+  exercises: mockVerbExercises
 };
 
 export const mockGapExercises: Exercise[] = [
@@ -73,27 +73,27 @@ export const mockGapExercises: Exercise[] = [
         id: 's3',
         textParts: ['O quadro da sala', 'limpo'],
         translation: 'Het bord in de klas is schoon',
-        gaps: [{ id: 'g1', correct: 'é', alt: ['está'] }],
+        gaps: [{ id: 'g1', correct: 'é', alt: ['está'] }]
       },
       {
         id: 's4',
         textParts: ['O pai', 'em casa.'],
         translation: 'Vader is thuis.',
-        gaps: [{ id: 'g2', correct: 'está', alt: ['é'] }],
+        gaps: [{ id: 'g2', correct: 'está', alt: ['é'] }]
       },
       {
         id: 's5',
         textParts: ['Os prédios', 'altos'],
         translation: 'De gebouwen zijn hoog.',
-        gaps: [{ id: 'g3', correct: 'são', alt: ['estão'] }],
+        gaps: [{ id: 'g3', correct: 'são', alt: ['estão'] }]
       },
       {
         id: 's6',
         textParts: ['O Banco', 'fechado.'],
         translation: 'De bank is gesloten.',
-        gaps: [{ id: 'g4', correct: 'está', alt: ['é'] }],
-      },
-    ],
+        gaps: [{ id: 'g4', correct: 'está', alt: ['é'] }]
+      }
+    ]
   } as CheckGapExercise,
   {
     id: 'ex-4',
@@ -108,149 +108,162 @@ export const mockGapExercises: Exercise[] = [
         translation: 'Ik spreek alleen Portugees, maar hij spreekt ook Frans.',
         gaps: [
           { id: 'g1', correct: 'falo', hint: 'falar (eu)' },
-          { id: 'g2', correct: 'fala', hint: 'falar (ele)' },
-        ],
+          { id: 'g2', correct: 'fala', hint: 'falar (ele)' }
+        ]
       },
       {
         id: 's2',
         textParts: ['Nós ', ' agora'],
         translation: 'Wij eten nu.',
-        gaps: [{ id: 'g3', correct: 'comemos', hint: 'comer (nós)' }],
-      },
-    ],
-  } as CheckGapExercise,
+        gaps: [{ id: 'g3', correct: 'comemos', hint: 'comer (nós)' }]
+      }
+    ]
+  } as CheckGapExercise
+];
+
+const palavresCasaExterior = [
+  {
+    id: 'fi-1',
+    word: 'de schoorsteen',
+    translation: 'a chaminé',
+    image: 'chaminé.jpg'
+  },
+  {
+    id: 'fi-2',
+    word: 'het dak',
+    translation: 'o telhado',
+    image: 'telhado.jpg'
+  },
+  {
+    id: 'fi-3',
+    word: 'het raam',
+    translation: 'a janela',
+    image: 'janela.jpg'
+  },
+  {
+    id: 'fi-4',
+    word: 'het luik',
+    translation: 'a portada',
+    image: 'portada.jpg'
+  },
+  {
+    id: 'fi-5',
+    word: 'de tuin',
+    translation: 'o jardim',
+    image: 'jardim.jpg'
+  },
+  {
+    id: 'fi-6',
+    word: 'het erf ',
+    translation: 'o quintal',
+    image: 'quintal.jpg'
+  },
+  {
+    id: 'fi-7',
+    word: 'het grasveld ',
+    translation: 'o relvado',
+    image: 'relvado.jpg'
+  },
+  {
+    id: 'fi-8',
+    word: 'het gras ',
+    translation: 'a relva',
+    image: 'relva.jpg'
+  },
+  {
+    id: 'fi-9',
+    word: 'de fontein',
+    translation: 'a fonte',
+    image: 'fonte.jpg'
+  },
+  {
+    id: 'fi-10',
+    word: 'de garage',
+    translation: 'o garagem',
+    image: 'garagem.jpg'
+  },
+  {
+    id: 'fi-11',
+    word: 'het bijgebouw',
+    translation: 'o anexo',
+    image: 'anexo.jpg'
+  },
+  {
+    id: 'fi-12',
+    word: 'het schuurtje',
+    translation: 'a arrecadação',
+    image: 'arrecadação.jpg'
+  },
+  {
+    id: 'fi-13',
+    word: 'de muur (buiten',
+    translation: 'o muro',
+    image: 'muro.jpg'
+  },
+  {
+    id: 'fi-14',
+    word: 'het hek',
+    translation: 'o gradeamento',
+    image: 'gradeamento.jpg'
+  },
+  {
+    id: 'fi-15',
+    word: 'de deur',
+    translation: 'o porta',
+    image: 'porta.jpg'
+  },
+  {
+    id: 'fi-16',
+    word: 'het pad',
+    translation: 'o caminho',
+    image: 'caminho.jpg'
+  },
+  {
+    id: 'fi-17',
+    word: 'de stoep',
+    translation: 'o pavimento',
+    image: 'pavimento.jpg'
+  },
+  {
+    id: 'fi-18',
+    word: 'de gevel',
+    translation: 'a fachada',
+    image: 'fachada.jpg'
+  },
+  {
+    id: 'fi-19',
+    word: 'de geveltegels',
+    translation: 'os azulejos',
+    image: 'azulejos.jpg'
+  },
+  {
+    id: 'fi-20',
+    word: 'het afdak',
+    translation: 'a cobertura',
+    image: 'cobertura.jpg'
+  }
 ];
 
 export const mockVocabularioExercise: Exercise[] = [
   {
     id: 'fc-1',
-    type: 'flash-card',
+    type: 'flashcard-test',
     title: 'exterior da casa',
     description: 'Nomes dos elementos da casa e do que a rodeia.',
     imageLocation: ['flashcards', 'casa', 'exterior'],
-    items: [
-      {
-        id: 'fi-1',
-        word: 'de schoorsteen',
-        translation: 'a chaminé',
-        image: 'chaminé.jpg',
-      },
-      {
-        id: 'fi-2',
-        word: 'het dak',
-        translation: 'o telhado',
-        image: 'telhado.jpg',
-      },
-      {
-        id: 'fi-3',
-        word: 'het raam',
-        translation: 'a janela',
-        image: 'janela.jpg',
-      },
-      {
-        id: 'fi-4',
-        word: 'het luik',
-        translation: 'a portada',
-        image: 'portada.jpg',
-      },
-      {
-        id: 'fi-5',
-        word: 'de tuin',
-        translation: 'o jardim',
-        image: 'jardim.jpg',
-      },
-      {
-        id: 'fi-6',
-        word: 'het erf ',
-        translation: 'o quintal',
-        image: 'quintal.jpg',
-      },
-      {
-        id: 'fi-7',
-        word: 'het grasveld ',
-        translation: 'o relvado',
-        image: 'relvado.jpg',
-      },
-      {
-        id: 'fi-8',
-        word: 'het gras ',
-        translation: 'a relva',
-        image: 'relva.jpg',
-      },
-      {
-        id: 'fi-9',
-        word: 'de fontein',
-        translation: 'a fonte',
-        image: 'fonte.jpg',
-      },
-      {
-        id: 'fi-10',
-        word: 'de garage',
-        translation: 'o garagem',
-        image: 'garagem.jpg',
-      },
-      {
-        id: 'fi-11',
-        word: 'het bijgebouw',
-        translation: 'o anexo',
-        image: 'anexo.jpg',
-      },
-      {
-        id: 'fi-12',
-        word: 'het schuurtje',
-        translation: 'a arrecadação',
-        image: 'arrecadação.jpg',
-      },
-      {
-        id: 'fi-13',
-        word: 'de muur (buiten',
-        translation: 'o muro',
-        image: 'muro.jpg',
-      },
-      {
-        id: 'fi-14',
-        word: 'het hek',
-        translation: 'o gradeamento',
-        image: 'gradeamento.jpg',
-      },
-      {
-        id: 'fi-15',
-        word: 'de deur',
-        translation: 'o porta',
-        image: 'porta.jpg',
-      },
-      {
-        id: 'fi-16',
-        word: 'het pad',
-        translation: 'o caminho',
-        image: 'caminho.jpg',
-      },
-      {
-        id: 'fi-17',
-        word: 'de stoep',
-        translation: 'o pavimento',
-        image: 'pavimento.jpg',
-      },
-      {
-        id: 'fi-18',
-        word: 'de gevel',
-        translation: 'a fachada',
-        image: 'fachada.jpg',
-      },
-      {
-        id: 'fi-19',
-        word: 'de geveltegels',
-        translation: 'os azulejos',
-        image: 'azulejos.jpg',
-      },
-      {
-        id: 'fi-20',
-        word: 'het afdak',
-        translation: 'a cobertura',
-        image: 'cobertura.jpg',
-      },
-    ],
-  } as FlashCardExercise,
+    items: palavresCasaExterior
+  } as FlashCardExercise
+];
+
+export const mockVocabLearnExercise: Exercise[] = [
+  {
+    id: 'fc-1',
+    type: 'flashcard-learn',
+    title: 'exterior da casa',
+    description: 'Nomes dos elementos da casa e do que a rodeia.',
+    imageLocation: ['flashcards', 'casa', 'exterior'],
+    items: palavresCasaExterior
+  } as FlashCardExercise
 ];
 
 export const mockDialogExercise: OpenExercise = {
@@ -315,9 +328,9 @@ Beoordeel of de student:
       hatStyle: 'none',
       hatColor: '#506AF4',
       shirtColor: '#80dd66',
-      bgColor: '#cfdbcb',
+      bgColor: '#cfdbcb'
     },
     speech: 'speak clearly, joyful, and not too fast',
-    image: 'mulher-cafe.png',
-  },
+    image: 'mulher-cafe.png'
+  }
 };

@@ -34,16 +34,16 @@ const getContentType = (ext: string) => {
 export const imageController = {
   async getImage(
     req: FastifyRequest<{ Body: ImageRequestBody }>,
-    reply: FastifyReply,
+    reply: FastifyReply
   ) {
     const parseResult = imageSchema.safeParse(req.body);
     console.log(
       'name:',
       req.body.name,
       '; tree:',
-      req.body.tree.join('/'),
+      req.body.tree.join('\\'),
       ';size:',
-      req.body.size,
+      req.body.size
     );
     if (!parseResult.success) {
       console.log('parseResult', parseResult.error);
@@ -58,7 +58,7 @@ export const imageController = {
       'public',
       imagePath,
       size !== 'none' ? size : '',
-      name,
+      name
     );
 
     if (!fs.existsSync(fullPath)) {
@@ -84,5 +84,5 @@ export const imageController = {
         console.error('Stream error', err);
       });
     }
-  },
+  }
 };

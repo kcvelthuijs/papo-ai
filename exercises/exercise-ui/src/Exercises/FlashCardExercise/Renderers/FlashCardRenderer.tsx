@@ -4,10 +4,10 @@ import { FlashCardTest } from '../Tests/FlashCardTest';
 export function FlashCardRenderer({
   exercise,
   onSubmit,
-  onComplete,
+  onComplete
 }: FlashCardExerciseProps) {
   switch (exercise.type) {
-    case 'flash-card':
+    case 'flashcard-test':
       return (
         <FlashCardTest
           exercise={exercise}

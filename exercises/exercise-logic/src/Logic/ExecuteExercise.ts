@@ -4,7 +4,7 @@ import type {
   OpenExercise,
   CheckVerbExercise,
   CheckGapExercise,
-  FlashCardExercise,
+  FlashCardExercise
 } from '@workspace/dtotypes';
 
 import { isOpenExercise } from '../Types/Exercise.types';
@@ -16,7 +16,7 @@ import { evaluateOpenDialog } from '../Check/OpenDialog.logic';
 
 export async function executeExercise(
   exercise: ClosedExercise | OpenExercise,
-  answer: any,
+  answer: any
 ): Promise<ExerciseEvaluation> {
   // -------------------------
   // OPEN (LLM)
@@ -28,11 +28,11 @@ export async function executeExercise(
         return {
           exerciseId: exercise.id,
           score: feedback.score > 0.7 ? 'right' : 'wrong',
-          nextAction: 'next',
+          nextAction: 'next'
         };
       default:
         throw new Error(
-          `Unknown open exercise type: ${(exercise as ClosedExercise).type}`,
+          `Unknown open exercise type: ${(exercise as ClosedExercise).type}`
         );
     }
   } else {
@@ -49,7 +49,7 @@ export async function executeExercise(
       case 'gap-type-test':
         return checkGap(exercise as CheckGapExercise, answer);
 
-      case 'flash-card':
+      case 'flashcard-test':
         return checkFlashCard(exercise as FlashCardExercise, answer);
 
       /*
@@ -58,7 +58,7 @@ export async function executeExercise(
 */
       default:
         throw new Error(
-          `Unknown closed exercise type: ${(exercise as ClosedExercise).type}`,
+          `Unknown closed exercise type: ${(exercise as ClosedExercise).type}`
         );
     }
   }

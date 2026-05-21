@@ -6,7 +6,7 @@ import type {
   Exercise,
   VerbAnswer,
   ExerciseEvaluation,
-  ExerciseExitReason,
+  ExerciseExitReason
 } from '@workspace/dtotypes';
 
 import { executeExercise } from '@exercises/logic';
@@ -14,7 +14,7 @@ import {
   mockGapExercises,
   mockDialogExercise,
   mockVerbExercises,
-  mockVocabularioExercise,
+  mockVocabularioExercise
 } from './LessonMock';
 
 // -------------------------
@@ -27,7 +27,7 @@ const mockVerbLesson: LessonDetails = {
   level: 'A1',
   image: 'mulher-cafe.png',
   description: 'Verb click test mock lesson.',
-  exercises: mockVerbExercises,
+  exercises: mockVerbExercises
 };
 const mockVerbSummary: LessonSummary = {
   id: 'lesson-verb-1',
@@ -35,7 +35,7 @@ const mockVerbSummary: LessonSummary = {
   title: 'Ser - presente',
   level: 'A1',
   image: 'mulher-cafe.png',
-  description: 'Mock lesson summary.',
+  description: 'Mock lesson summary.'
 };
 const mockGapLesson: LessonDetails = {
   id: 'lesson-gap-1',
@@ -44,7 +44,7 @@ const mockGapLesson: LessonDetails = {
   level: 'A1',
   image: 'mulher-na-terraço.png',
   description: 'Select the correct verb.',
-  exercises: mockGapExercises,
+  exercises: mockGapExercises
 };
 const mockGapSummary: LessonSummary = {
   id: 'lesson-gap-1',
@@ -52,7 +52,7 @@ const mockGapSummary: LessonSummary = {
   title: 'Ser ou estar?',
   level: 'A1',
   image: 'mulher-na-terraço.png',
-  description: 'Select the correct verb.',
+  description: 'Select the correct verb.'
 };
 const mockDialogSummary: LessonSummary = {
   id: 'lesson-1',
@@ -60,7 +60,7 @@ const mockDialogSummary: LessonSummary = {
   title: 'Conhecer-se.',
   level: 'A1',
   image: 'no-terraço.png',
-  description: '...',
+  description: '...'
 };
 const mockDialogLesson: LessonDetails = {
   id: 'lesson-1',
@@ -69,7 +69,7 @@ const mockDialogLesson: LessonDetails = {
   level: 'A1',
   image: 'no-terraço.png',
   description: '...',
-  exercises: [mockDialogExercise],
+  exercises: [mockDialogExercise]
 };
 
 const mockVocabularioSummary: LessonSummary = {
@@ -78,7 +78,7 @@ const mockVocabularioSummary: LessonSummary = {
   level: 'A1',
   title: 'exterior da casa',
   description: 'Nomes dos elementos da casa e do que a rodeia.',
-  image: 'casa.png',
+  image: 'casa.png'
 };
 const mockVocabularioLesson: LessonDetails = {
   id: 'flash-card-1',
@@ -87,7 +87,7 @@ const mockVocabularioLesson: LessonDetails = {
   title: 'exterior da casa',
   description: 'Nomes dos elementos da casa e do que a rodeia.',
   image: 'casa.png',
-  exercises: mockVocabularioExercise,
+  exercises: mockVocabularioExercise
 };
 // -------------------------
 // STORE
@@ -126,13 +126,13 @@ export const useMockLessonStore = create<LessonState>((set, get) => ({
     [mockVerbSummary.id]: mockVerbSummary,
     [mockVocabularioSummary.id]: mockVocabularioSummary,
     [mockGapSummary.id]: mockGapSummary,
-    [mockDialogSummary.id]: mockDialogSummary,
+    [mockDialogSummary.id]: mockDialogSummary
   },
   lessonDetails: {
     [mockVerbLesson.id]: mockVerbLesson,
     [mockVocabularioLesson.id]: mockVocabularioLesson,
     [mockGapLesson.id]: mockGapLesson,
-    [mockDialogLesson.id]: mockDialogLesson,
+    [mockDialogLesson.id]: mockDialogLesson
   },
 
   currentLessonID: undefined,
@@ -156,9 +156,9 @@ export const useMockLessonStore = create<LessonState>((set, get) => ({
       lessonSummaries: {
         [mockVerbSummary.id]: mockVerbSummary,
         [mockGapSummary.id]: mockGapSummary,
-        [mockDialogSummary.id]: mockDialogSummary,
+        [mockDialogSummary.id]: mockDialogSummary
       },
-      isLoading: false,
+      isLoading: false
     });
   },
 
@@ -180,11 +180,11 @@ export const useMockLessonStore = create<LessonState>((set, get) => ({
     set((state) => ({
       lessonDetails: {
         ...state.lessonDetails,
-        [id]: selectedLesson,
+        [id]: selectedLesson
       },
       currentLesson: selectedLesson,
       currentLessonID: id,
-      isLoading: false,
+      isLoading: false
     }));
     get().startLesson();
     return selectedLesson;
@@ -202,7 +202,7 @@ export const useMockLessonStore = create<LessonState>((set, get) => ({
       currentLesson: lesson,
       currentExerciseIndex: 0,
       currentExercise: lesson.exercises[0],
-      results: [],
+      results: []
     });
     await get().startLesson();
   },
@@ -232,7 +232,7 @@ export const useMockLessonStore = create<LessonState>((set, get) => ({
       set({
         currentExerciseIndex: exerciseId,
         currentExercise: exercises[exerciseId],
-        results: [],
+        results: []
       });
       await get().startExercise();
     }
@@ -250,8 +250,8 @@ export const useMockLessonStore = create<LessonState>((set, get) => ({
     set({
       currentExercise: {
         ...currentExercise,
-        state: 'active',
-      },
+        state: 'active'
+      }
     });
     console.log('currentExercise', currentExercise);
   },
@@ -265,7 +265,7 @@ export const useMockLessonStore = create<LessonState>((set, get) => ({
 
     const evaluation = await executeExercise(exercise, answer);
     set((state) => ({
-      results: [...state.results, evaluation],
+      results: [...state.results, evaluation]
     }));
     return evaluation;
   },
@@ -298,8 +298,8 @@ export const useMockLessonStore = create<LessonState>((set, get) => ({
       console.log('Lesson completed');
       set({
         currentLesson: undefined,
-        currentLessonID: '',
+        currentLessonID: ''
       });
     }
-  },
+  }
 }));
