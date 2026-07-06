@@ -1,0 +1,20 @@
+{
+  "name": "db",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "migrate": "dbmate up",
+    "rollback": "dbmate rollback"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "dbmate": "^2.33.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2"
+  }
+}
