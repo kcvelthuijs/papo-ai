@@ -5,7 +5,7 @@ import { CardLayout, shuffle } from '@workspace/ui';
 import { type FlashCardExerciseProps } from '@exercises/logic';
 
 import { useFlashCardExercise } from '../Hooks/FlashCardHook';
-import type { FlashCardFeedback, FlashCardItem } from '@workspace/dtotypes';
+import type { FlashCardItem } from '@workspace/dtotypes';
 
 import { useExerciseStars } from '../../../Components/Hooks/useExerciseEffects';
 import { ExerciseInputBox } from '../../../Components/Atoms/ExerciseInputBox';
@@ -15,11 +15,11 @@ import { ImageView } from '../../../Components/Atoms/ImageView';
 export function FlashCardTest({
   exercise,
   onSubmit,
-  onComplete,
+  onComplete
 }: FlashCardExerciseProps) {
   const randomItems = useMemo<FlashCardItem[]>(
     () => shuffle(exercise.items),
-    [exercise.items],
+    [exercise.items]
   );
   const [localInput, setLocalInput] = useState<Record<string, string>>({});
   const { stars, spawnStars, registerStarRef } = useExerciseStars();
@@ -32,11 +32,11 @@ export function FlashCardTest({
     getState,
     submit,
     inputRef,
-    next,
+    next
   } = useFlashCardExercise({
     exercise: { ...exercise, items: randomItems },
     onSubmit,
-    onComplete,
+    onComplete
   });
 
   const currentValue = active ? (localInput[active.id] ?? '') : '';
@@ -51,7 +51,7 @@ export function FlashCardTest({
 
     setLocalInput((prev) => ({
       ...prev,
-      [active.id]: value,
+      [active.id]: value
     }));
   }
 
@@ -79,12 +79,12 @@ export function FlashCardTest({
     const correctAnswer = active.translation;
     setLocalInput((prev) => ({
       ...prev,
-      [active.id]: correctAnswer,
+      [active.id]: correctAnswer
     }));
     const result = await submit(correctAnswer);
     setLocalInput((prev) => ({
       ...prev,
-      [active.id]: '',
+      [active.id]: ''
     }));
     //next();
   }
@@ -100,22 +100,18 @@ export function FlashCardTest({
       onContinue={next}
       onSkip={handleReveal}
       stars={stars}
+      image={
+        <ImageView
+          name={active?.image ?? ''}
+          tree={exercise.imageLocation ?? ['flashcards']}
+          size='none'
+          className='w-full h-auto object-contain pt-0 mt-0 gap-0'
+        />
+      }
       content={
-        <div className='flex flex-col gap-6'>
+        <div className='flex flex-col py-1'>
           {/* CARD CONTENT */}
-          <div className='flex min-h-80 w-full flex-col items-center justify-center rounded-lg border border-gray-300 p-6'>
-            {/* IMAGE */}
-            {active?.image && (
-              <div className='mb-2 flex w-full justify-center'>
-                <ImageView
-                  name={active.image}
-                  tree={exercise.imageLocation ?? ['flashcards']}
-                  size='none'
-                  className='max-h-64 object-contain rounded-sm'
-                />
-              </div>
-            )}
-
+          <div className='flex w-full flex-col items-center justify-center p-2'>
             {/* WORD */}
             <div
               ref={(el) =>
@@ -127,7 +123,7 @@ export function FlashCardTest({
             </div>
           </div>
 
-          <div className='flex justify-center'>
+          <div className='flex justify-center pb-2'>
             {active &&
               (!isAnswered ? (
                 <ExerciseInputBox

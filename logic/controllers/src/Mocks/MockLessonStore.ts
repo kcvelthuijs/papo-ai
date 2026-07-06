@@ -14,7 +14,8 @@ import {
   mockGapExercises,
   mockDialogExercise,
   mockVerbExercises,
-  mockVocabularioExercise
+  mockVocabularioExercise,
+  mockVocabLearnExercise
 } from './LessonMock';
 
 // -------------------------
@@ -73,22 +74,40 @@ const mockDialogLesson: LessonDetails = {
 };
 
 const mockVocabularioSummary: LessonSummary = {
-  id: 'flash-card-1',
+  id: 'flash-card-2',
   type: 'vocabulário',
   level: 'A1',
-  title: 'exterior da casa',
+  title: 'exterior da casa (test)',
   description: 'Nomes dos elementos da casa e do que a rodeia.',
   image: 'casa.png'
 };
 const mockVocabularioLesson: LessonDetails = {
-  id: 'flash-card-1',
+  id: 'flash-card-2',
   level: 'A1',
   type: 'vocabulário',
-  title: 'exterior da casa',
+  title: 'exterior da casa (test)',
   description: 'Nomes dos elementos da casa e do que a rodeia.',
   image: 'casa.png',
   exercises: mockVocabularioExercise
 };
+const mockVocabLearnSummary: LessonSummary = {
+  id: 'flash-card-1',
+  type: 'vocabulário',
+  level: 'A1',
+  title: 'exterior da casa (learn)',
+  description: 'Nomes dos elementos da casa e do que a rodeia.',
+  image: 'casa.png'
+};
+const mockVocabLearnLesson: LessonDetails = {
+  id: 'flash-card-1',
+  level: 'A1',
+  type: 'vocabulário',
+  title: 'exterior da casa (learn)',
+  description: 'Nomes dos elementos da casa e do que a rodeia.',
+  image: 'casa.png',
+  exercises: mockVocabLearnExercise
+};
+
 // -------------------------
 // STORE
 // -------------------------
@@ -125,12 +144,14 @@ export const useMockLessonStore = create<LessonState>((set, get) => ({
   lessonSummaries: {
     [mockVerbSummary.id]: mockVerbSummary,
     [mockVocabularioSummary.id]: mockVocabularioSummary,
+    [mockVocabLearnSummary.id]: mockVocabLearnSummary,
     [mockGapSummary.id]: mockGapSummary,
     [mockDialogSummary.id]: mockDialogSummary
   },
   lessonDetails: {
     [mockVerbLesson.id]: mockVerbLesson,
     [mockVocabularioLesson.id]: mockVocabularioLesson,
+    [mockVocabLearnLesson.id]: mockVocabLearnLesson,
     [mockGapLesson.id]: mockGapLesson,
     [mockDialogLesson.id]: mockDialogLesson
   },
@@ -155,6 +176,8 @@ export const useMockLessonStore = create<LessonState>((set, get) => ({
     set({
       lessonSummaries: {
         [mockVerbSummary.id]: mockVerbSummary,
+        [mockVocabularioSummary.id]: mockVocabularioSummary,
+        [mockVocabLearnSummary.id]: mockVocabLearnSummary,
         [mockGapSummary.id]: mockGapSummary,
         [mockDialogSummary.id]: mockDialogSummary
       },

@@ -50,6 +50,7 @@ export async function executeExercise(
         return checkGap(exercise as CheckGapExercise, answer);
 
       case 'flashcard-test':
+      case 'flashcard-learn':
         return checkFlashCard(exercise as FlashCardExercise, answer);
 
       /*

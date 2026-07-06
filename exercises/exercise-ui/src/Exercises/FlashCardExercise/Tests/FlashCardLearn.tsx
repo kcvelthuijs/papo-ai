@@ -1,92 +1,64 @@
 import { useState } from 'react';
 
+import type { FlashCardItem } from '@workspace/dtotypes';
+
 import { CardLayout } from '@workspace/ui';
 
-import { type FlashCardExerciseProps } from '@exercises/logic';
-import type { FlashCardExercise, FlashCardItem } from '@workspace/dtotypes';
-
-import { useFlashCardExercise } from '../Hooks/FlashCardHook';
-import { ExerciseInputBox } from '../../../Components/Atoms/ExerciseInputBox';
 import { ExerciseTextbox } from '../../../Components/Atoms/ExerciseTextBox';
+import type { FlashCardExerciseProps } from '@exercises/logic';
 import { ImageView } from '../../../Components/Atoms/ImageView';
 
-type Props = {
-  exercise: FlashCardExercise;
-  onComplete: () => Promise<void>;
-}
-
-export function FlashCardTest({
+export function FlashCardLearn({
   exercise,
-  onComplete,
-}: Props) {
-  const [localInput, setLocalInput] = useState<Record<string, string>>({});
-
-  const {
-    active,
-    answers,
-    isComplete,
-    tempFocus,
-    getState,
-    submit,
-    inputRef,
-    next,
-  } = useFlashCardExercise({
-    exercise,
-    onComplete,
-  });
-
-  const currentValue = active ? (localInput[active.id] ?? '') : '';
-  const answer = active ? answers[active.id] : undefined;
-  const isAnswered = answer?.score === 'right' || answer?.score === 'partial';
+  onComplete
+}: FlashCardExerciseProps) {
+  // -------------------------
+  // STATE
+  // -------------------------
+  const [index, setIndex] = useState(0);
+  const [revealed, setRevealed] = useState(false);
 
   // -------------------------
-  // INPUT CHANGE
+  // ACTIVE CARD
   // -------------------------
-  function handleChange(value: string) {
-    if (!active) return;
+  const active: FlashCardItem | undefined = exercise.items[index];
 
-    setLocalInput((prev) => ({
-      ...prev,
-      [active.id]: value,
-    }));
+  const isComplete = index >= exercise.items.length - 1 && revealed;
+
+  // -------------------------
+  // REVEAL / HIDE
+  // -------------------------
+  function toggleReveal() {
+    setRevealed((prev) => !prev);
   }
 
   // -------------------------
-  // SUBMIT ON ENTER
+  // NEXT CARD
   // -------------------------
-  async function handleSubmit() {
-    if (!active) return;
-
-    const value = localInput[active.id] ?? '';
-    const result = await submit(value);
-
-    if (result?.score !== 'wrong') {
-      // laat zien dat het antwoord goed is
-      spawnStars(active.id);
+  async function next() {
+    // laatste kaart
+    if (index >= exercise.items.length - 1) {
+      await onComplete('end');
+      return;
     }
+
+    // volgende kaart
+    setIndex((prev) => prev + 1);
+    setRevealed(false);
   }
 
   // -------------------------
-  // HANDLE REVEAL
+  // PREVIOUS CARD
   // -------------------------
-  async function handleReveal() {
-    if (!active) return;
+  function previous() {
+    if (index <= 0) return;
 
-    const correctAnswer = active.translation;
-    setLocalInput((prev) => ({
-      ...prev,
-      [active.id]: correctAnswer,
-    }));
-    const result = await submit(correctAnswer);
-    setLocalInput((prev) => ({
-      ...prev,
-      [active.id]: '',
-    }));
-    //next();
+    setIndex((prev) => prev - 1);
+    setRevealed(false);
   }
 
   // -------------------------
-  // RENDER SINGLE Phrase
+  // RENDER
   // -------------------------
   return (
     <CardLayout
@@ -94,65 +66,60 @@ export function FlashCardTest({
       description={exercise.description}
       isComplete={isComplete}
       onContinue={next}
-      onSkip={handleReveal}
-      stars={stars}
+      image={
+        <ImageView
+          name={active?.image ?? ''}
+          tree={exercise.imageLocation ?? ['flashcards']}
+          size='none'
+          className='w-full h-auto object-contain pt-0 mt-0 gap-0'
+        />
+      }
       content={
         <div className='flex flex-col gap-6'>
-          {/* CARD CONTENT */}
-          <div className='flex min-h-80 w-full flex-col items-center justify-center rounded-lg border border-gray-300 p-6'>
-            {/* IMAGE */}
-            {active?.image && (
-              <div className='mb-2 flex w-full justify-center'>
-                <ImageView
-                  name={active.image}
-                  tree={exercise.imageLocation ?? ['flashcards']}
-                  size='none'
-                  className='max-h-64 object-contain rounded-sm'
-                />
-              </div>
-            )}
-
+          {/* CARD */}
+          <div className='flex w-full flex-col items-center justify-center'>
             {/* WORD */}
-            <div
-              ref={(el) =>
-                active?.id ? registerStarRef(active.id, el) : undefined
-              }
-              className='flex flex-1 items-center justify-center text-center text-3xl font-semibold'
-            >
-              {active?.word}
+            <div className='text-center text-2xl font-semibold py-3'>
+              {revealed ? active?.translation : active?.word}
             </div>
           </div>
 
-          <div className='flex justify-center'>
-            {active &&
-              (!isAnswered ? (
-                <ExerciseInputBox
-                  key={active.id}
-                  ref={inputRef}
-                  value={currentValue}
-                  hint={active.hint}
-                  size={Math.max(active.translation.length, 10)}
-                  state={getState(active.id, tempFocus)}
-                  score={answer?.score}
-                  className='min-w-60 text-center text-xl'
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    handleChange(e.target.value)
-                  }
-                  onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
-                    if (e.key === 'Enter') {
-                      handleSubmit();
-                    }
-                  }}
-                />
-              ) : (
-                <ExerciseTextbox
-                  textValue={answer?.givenAnswer ?? ''}
-                  state={getState(active.id, tempFocus)}
-                  score={answer?.score}
-                  className='text-xl'
-                />
-              ))}
-          </div>
+          {/* HINT */}
+          {active?.hint && (
+            <div className='text-center text-sm text-gray-400'>
+              {active.hint}
+            </div>
+          )}
+        </div>
+      }
+      footer={
+        <div className='flex flex-row gap-2'>
+          {/* PREVIOUS */}
+          <button
+            onClick={previous}
+            disabled={index === 0}
+            className='rounded-md border border-gray-400 px-3 py-1 text-sm transition hover:bg-gray-100 disabled:opacity-40'
+          >
+            ← Anterior
+          </button>
+
+          {/* REVEAL */}
+          <button
+            onClick={toggleReveal}
+            className='rounded-md border border-gray-400 px-3 py-1 text-sm transition hover:bg-gray-100'
+          >
+            {revealed ? 'Ocultar' : 'Revelar'}
+          </button>
+
+          {/* NEXT */}
+          {!isComplete && (
+            <button
+              onClick={next}
+              className='rounded-md border border-gray-400 px-3 py-1 text-sm transition hover:bg-gray-100'
+            >
+              Próxima →
+            </button>
+          )}
         </div>
       }
     />

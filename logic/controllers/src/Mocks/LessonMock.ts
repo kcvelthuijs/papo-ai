@@ -196,7 +196,7 @@ const palavresCasaExterior = [
   },
   {
     id: 'fi-13',
-    word: 'de muur (buiten',
+    word: 'de muur (buitenmuur)',
     translation: 'o muro',
     image: 'muro.jpg'
   },

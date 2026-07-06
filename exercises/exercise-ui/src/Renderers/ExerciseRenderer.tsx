@@ -60,6 +60,7 @@ export function ExerciseRenderer({ exercise }: Props) {
     // FlashCards
     // -------------------------
     case 'flashcard-test':
+    case 'flashcard-learn':
       return (
         <FlashCardRenderer
           exercise={exercise}

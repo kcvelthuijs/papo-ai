@@ -37,26 +37,17 @@ export const imageController = {
     reply: FastifyReply
   ) {
     const parseResult = imageSchema.safeParse(req.body);
-    console.log(
-      'name:',
-      req.body.name,
-      '; tree:',
-      req.body.tree.join('\\'),
-      ';size:',
-      req.body.size
-    );
     if (!parseResult.success) {
       console.log('parseResult', parseResult.error);
       return reply.status(400).send(z.prettifyError(parseResult.error));
     }
 
     const { name, tree, size } = parseResult.data;
-    const imagePath = tree.join('/').toLowerCase();
     const fullPath = path.join(
       __dirname,
       '..',
       'public',
-      imagePath,
+      ...tree,
       size !== 'none' ? size : '',
       name
     );

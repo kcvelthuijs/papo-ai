@@ -1,0 +1,137 @@
+[
+  {
+    "jsonb_build_object": {
+      "words": [
+        {
+          "id": 1,
+          "word": "de schoorsteen",
+          "image": ["flashcards", "casa", "exterior", "chamine.png"],
+          "translation": "a chimané"
+        },
+        {
+          "id": 2,
+          "word": "het dak",
+          "image": ["flashcards", "casa", "exterior", "telhado.png"],
+          "translation": "o telhado"
+        },
+        {
+          "id": 3,
+          "word": "de gevel",
+          "image": ["flashcards", "casa", "exterior", "fachada.png"],
+          "translation": "a fachada"
+        },
+        {
+          "id": 4,
+          "word": "het luik",
+          "image": ["flashcards", "casa", "exterior", "portada.png"],
+          "translation": "a portada"
+        },
+        {
+          "id": 5,
+          "word": "het raam",
+          "image": ["flashcards", "casa", "exterior", "janela.png"],
+          "translation": "a janela"
+        },
+        {
+          "id": 6,
+          "word": "de deur",
+          "image": ["flashcards", "casa", "exterior", "porta.png"],
+          "translation": "o porta"
+        },
+        {
+          "id": 7,
+          "word": "de overkapping",
+          "image": ["flashcards", "casa", "exterior", "cobertura.png"],
+          "translation": "a cobertura"
+        },
+        {
+          "id": 8,
+          "word": "de tuin",
+          "image": ["flashcards", "casa", "exterior", "jardim.png"],
+          "translation": "o jardim"
+        },
+        {
+          "id": 9,
+          "word": "het erf",
+          "image": ["flashcards", "casa", "exterior", "quintal.png"],
+          "translation": "o quintal"
+        },
+        {
+          "id": 10,
+          "word": "het grasveld",
+          "image": ["flashcards", "casa", "exterior", "relvado.png"],
+          "translation": "o relvado"
+        },
+        {
+          "id": 11,
+          "word": "het gras",
+          "image": ["flashcards", "casa", "exterior", "relva.png"],
+          "translation": "a relva"
+        },
+        {
+          "id": 12,
+          "word": "de fontein",
+          "image": ["flashcards", "casa", "exterior", "fonte.png"],
+          "translation": "a fonte"
+        },
+        {
+          "id": 13,
+          "word": "de garage",
+          "image": ["flashcards", "casa", "exterior", "garagem.png"],
+          "translation": "o garagem"
+        },
+        {
+          "id": 14,
+          "word": "het bijgebouw",
+          "image": ["flashcards", "casa", "exterior", "anexo.png"],
+          "translation": "o anexo"
+        },
+        {
+          "id": 15,
+          "word": "het schuurtje",
+          "image": ["flashcards", "casa", "exterior", "arrecadação.png"],
+          "translation": "a arrecadação"
+        },
+        {
+          "id": 16,
+          "word": "de buitenmuur",
+          "image": ["flashcards", "casa", "exterior", "muro.png"],
+          "translation": "o muro"
+        },
+        {
+          "id": 17,
+          "word": "het pad",
+          "image": ["flashcards", "casa", "exterior", "caminho.png"],
+          "translation": "o caminho"
+        },
+        {
+          "id": 18,
+          "word": "het hek",
+          "image": ["flashcards", "casa", "exterior", "gradeamento.png"],
+          "translation": "o gradeamento"
+        },
+        {
+          "id": 19,
+          "word": "de stoep",
+          "image": ["flashcards", "casa", "exterior", "pavimento.png"],
+          "translation": "o pavimento"
+        },
+        {
+          "id": 20,
+          "word": "de geveltegels",
+          "image": ["flashcards", "casa", "exterior", "azulejos.png"],
+          "translation": "os azulejos"
+        }
+      ],
+      "exercise": {
+        "id": 2,
+        "type": "flashcard-learn",
+        "image": null,
+        "title": "Exterior de casa",
+        "theme_id": 1,
+        "created_at": "2026-05-22T16:03:36.673266",
+        "description": "Nomes dos elementos da casa e do que a rodeia.\n"
+      }
+    }
+  }
+]

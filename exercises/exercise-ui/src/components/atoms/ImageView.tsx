@@ -8,9 +8,13 @@ export function ImageView(props: ImageComponentProps) {
 
   if (loading) {
     return (
-      <Skeleton className='w-full aspect-[2/1] animate-pulse bg-gray-200' />
+      <Skeleton className='w-180 h-101 aspect-2/1 mx-2 animate-pulse bg-gray-200' />
     );
   }
 
-  return <img src={url ?? ''} alt={props.name} className={props.className} />;
+  return (
+    <>
+      <img src={url ?? ''} alt={props.name} className={props.className} />
+    </>
+  );
 }
