@@ -5,7 +5,8 @@
   "private": true,
   "scripts": {
     "migrate": "dbmate up",
-    "rollback": "dbmate rollback"
+    "rollback": "dbmate rollback",
+    "addmigration": "dbmate new addedmigration"
   },
   "devDependencies": {
     "@types/bun": "latest",
