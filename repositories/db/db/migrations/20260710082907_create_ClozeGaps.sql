@@ -21,5 +21,5 @@ ALTER TABLE IF EXISTS "Cloze"."Gaps"
     OWNER to docent;
 
 -- migrate:down
-DROP TABLE IF EXISTS "Cloze".Gaps;
+DROP TABLE IF EXISTS "Cloze"."Gaps";
 

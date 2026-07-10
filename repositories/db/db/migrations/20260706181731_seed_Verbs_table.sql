@@ -45,5 +45,11 @@ INSERT INTO "Verb"."Verbs" VALUES (44, '2026-05-26 15:27:11.425706', 'brindar', 
 INSERT INTO "Verb"."Verbs" VALUES (45, '2026-05-26 15:36:08.059592', 'nadar', 1, 'nado', 'nadas', 'nada', 'nadamos', 'nadam', 'nadam');
 INSERT INTO "Verb"."Verbs" VALUES (46, '2026-05-26 15:38:08.788474', 'perguntar', 1, 'pergunto', 'perguntas', 'pergunta', 'perguntamos', 'perguntam', 'perguntam');
 
+-- sync id sequence
+SELECT setval(
+    '"Verb"."Verbs_id_seq"',
+    (SELECT MAX(id) FROM "Verb"."Verbs")
+);
+
 -- migrate:down
 DELETE FROM "Verb"."Verbs"

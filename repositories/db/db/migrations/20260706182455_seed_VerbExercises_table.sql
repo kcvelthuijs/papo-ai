@@ -9,5 +9,11 @@ INSERT INTO "Verb"."Exercises" VALUES (7, 'verb-click-learn', 'Conjugate "Ter"',
 INSERT INTO "Verb"."Exercises" VALUES (8, 'verb-click-test', 'Conjugate "Ter"', 'Seleciona a conjugação correta', 3);
 INSERT INTO "Verb"."Exercises" VALUES (9, 'verb-type-test', 'Conjugate "Ter"', 'Preencha a conjugação correta', 3);
 
+-- sync id sequence
+SELECT setval(
+    '"Verb"."Exercises_id_seq"',
+    (SELECT MAX(id) FROM "Verb"."Exercises")
+);
+
 -- migrate:down
 DELETE FROM "Verb"."Exercises";

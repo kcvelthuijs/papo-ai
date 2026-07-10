@@ -11,5 +11,11 @@ INSERT INTO "Lesson"."Lessons" VALUES (9, '2026-05-31 20:54:53.509279', 'notíci
 INSERT INTO "Lesson"."Lessons" VALUES (10, '2026-05-31 20:54:53.509279', 'notícias', 'A1', 'Notícias de desporto', 'Vês o noticiário desportivo. O locutor apresenta as notícias e respondes a perguntas de escolha múltipla no final.', NULL);
 INSERT INTO "Lesson"."Lessons" VALUES (11, '2026-05-31 20:54:53.509279', 'notícias', 'A1', 'Previsão do tempo', 'Vês a previsão do tempo na televisão. O apresentador fala sobre o tempo e respondes a perguntas para verificar a compreensão.', NULL);
 
+-- sync id sequence
+SELECT setval(
+    '"Lesson"."Lessons_id_seq"',
+    (SELECT MAX(id) FROM "Lesson"."Lessons")
+);
+
 -- migrate:down
-DELETE FROM "Lesson"."LessonExercises"
+DELETE FROM "Lesson"."Lessons"

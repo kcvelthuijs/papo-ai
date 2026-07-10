@@ -1,0 +1,14 @@
+-- migrate:up
+SELECT "Cloze"."AddSentence"( 2, 1, ARRAY['O quadro da sala', 'limpo'],
+    '[
+        {"language": "NL", "text": "Het bord in de klas is schoon"},
+        {"language": "EN","text": "The board in the classroom is clean"}
+    ]'::jsonb,
+    '[
+        {"correct": "é","alt": ["está"], "hint": "Gebruik ser voor een eigenschap"}
+    ]'::jsonb
+);
+
+
+-- migrate:down
+SELECT "Cloze"."DeleteSentence"(2, 1);

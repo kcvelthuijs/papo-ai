@@ -16,6 +16,11 @@ INSERT INTO "Cloze"."Sentences" VALUES (18, '2026-05-27 14:40:44.572976', '{"A m
 INSERT INTO "Cloze"."Sentences" VALUES (19, '2026-05-27 14:42:27.023795', '{"A Cátia e o Afonso","em Ingleterra."}');
 INSERT INTO "Cloze"."Sentences" VALUES (20, '2026-05-27 14:44:38.944732', '{"Hoje nós","em casa à noite."}');
 
+-- sync id sequence
+SELECT setval(
+    '"Cloze"."Sentences_id_seq"',
+    (SELECT MAX(id) FROM "Cloze"."Sentences")
+);
 
 -- migrate:down
 DELETE FROM "Cloze"."Sentences";

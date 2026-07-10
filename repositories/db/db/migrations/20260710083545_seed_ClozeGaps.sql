@@ -18,6 +18,11 @@ INSERT INTO "Cloze"."Gaps" VALUES (17, '2026-05-27 14:40:44.572976', 18, 0, 'é'
 INSERT INTO "Cloze"."Gaps" VALUES (18, '2026-05-27 14:42:27.023795', 19, 0, 'estão', '', '{são}');
 INSERT INTO "Cloze"."Gaps" VALUES (19, '2026-05-27 14:44:38.944732', 20, 0, 'estamos', '', '{somos}');
 
+-- sync id sequence
+SELECT setval(
+    '"Cloze"."Gaps_id_seq"',
+    (SELECT MAX(id) FROM "Cloze"."Gaps")
+);
 
 -- migrate:down
 DELETE FROM "Cloze"."Gaps";
