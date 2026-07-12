@@ -1,6 +1,6 @@
 {
-  "name": "db",
-  "module": "index.ts",
+  "name": "@repositories/postgresdb",
+  "module": "src/index.ts",
   "type": "module",
   "private": true,
   "scripts": {
@@ -16,6 +16,8 @@
     "typescript": "^5"
   },
   "dependencies": {
-    "dotenv": "^17.4.2"
+    "dotenv": "^17.4.2",
+    "postgres": "^3.4.9",
+    "@workspace/dtotypes": "workspace:*"
   }
 }

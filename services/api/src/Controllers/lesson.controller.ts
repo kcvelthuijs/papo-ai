@@ -1,8 +1,8 @@
-import type { Request, Response } from "express";
-import z from "zod";
+import type { Request, Response } from 'express';
+import z from 'zod';
 
-import { lessonService } from "../services/lesson.service";
-import { idSchema } from "../schemas/id.schema";
+import { lessonService } from '../Services/lesson.service';
+import { idSchema } from '../Schemas/id.schema';
 
 export const lessonController = {
   async getAll(req: Request, res: Response) {
@@ -24,23 +24,11 @@ export const lessonController = {
       const response = await lessonService.getByID(id);
 
       // Geef het return-object in json terug
-      res.json({
-        id: response.id,
-        title: response.title,
-        description: response.description,
-        type: response.type,
-        level: response.level,
-        prompt: response.prompt,
-        voice: response.voice ?? "",
-        avatar: response.avatar ?? "",
-        speech: response.speech ?? "",
-        phrases: response.phrases ?? "",
-        image: response.image ?? "",
-      });
+      res.json(response);
     } catch (error) {
       res.status(500).json({
-        error: `Failed to retrieve lesson.\n${error}`,
+        error: `Failed to retrieve lesson.\n${error}`
       });
     }
-  },
+  }
 };

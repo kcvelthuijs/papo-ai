@@ -19,7 +19,8 @@
     "yaml": "^2.8.3",
     "zod": "^4.3.6",
     "@workspace/dtotypes": "workspace:*",
-    "@repositories/ipma": "workspace:*"
+    "@repositories/ipma": "workspace:*",
+    "@repositories/postgresdb": "workspace:*"
   },
   "scripts": {
     "start": "bun run index.ts",
