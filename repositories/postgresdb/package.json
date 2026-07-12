@@ -16,8 +16,9 @@
     "typescript": "^5"
   },
   "dependencies": {
+    "@types/pg": "^8.20.0",
+    "@workspace/dtotypes": "workspace:*",
     "dotenv": "^17.4.2",
-    "postgres": "^3.4.9",
-    "@workspace/dtotypes": "workspace:*"
+    "pg": "^8.22.0"
   }
 }

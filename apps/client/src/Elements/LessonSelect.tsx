@@ -1,13 +1,13 @@
 import { useEffect, useRef } from 'react';
 
-import { useMockLessonStore } from '@workspace/controllers';
+import { useLessonStore } from '@workspace/controllers';
 import type { LessonSelectProps } from '@workspace/webtypes';
 
 import { LessonCard, LessonCardSkeleton } from '../Components/LessonCard';
 
 export const LessonSelect = ({ onSelect }: LessonSelectProps) => {
-  const { lessonSummaries, fetchAllLessons, isLoading, setCurrentLesson } =
-    useMockLessonStore();
+  const { lessons, fetchAllLessons, isLoading, setCurrentLesson } =
+    useLessonStore();
 
   const reading = useRef(false);
 
@@ -31,7 +31,7 @@ export const LessonSelect = ({ onSelect }: LessonSelectProps) => {
             ? Array.from({ length: 8 }).map((_, i) => (
                 <LessonCardSkeleton key={i} />
               ))
-            : Object.values(lessonSummaries).map((lesson) => (
+            : Object.values(lessons).map((lesson) => (
                 <LessonCard
                   key={lesson.id}
                   lesson={lesson}

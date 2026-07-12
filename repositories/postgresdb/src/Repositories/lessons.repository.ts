@@ -1,23 +1,48 @@
-import sql from '../Connections/sql';
+import pool from '../Connections/connect.pool';
 import { type LessonSummary } from '@workspace/dtotypes';
 
-export class LessonsRepository {
-  constructor() {
-    console.log(`{connected to db: ${sql.name}`);
-  }
+class classLessonsRepository {
+  constructor() {}
 
   async getAll(): Promise<LessonSummary[]> {
-    const lessons = await sql`
+    const query = `
       SELECT id, type, title, level, image, description
       FROM "Lesson"."Lessons"`;
+    try {
+      const lessons = await pool.query(query);
+      return lessons.rows.map((l) => this.toLessonSummary(l));
+    } catch (error) {
+      console.error('Error executing query:', error);
+      throw error;
+    }
+  }
 
-    return lessons.map((l) => ({
-      id: l.id.toString(),
-      type: l.type,
-      title: l.title,
-      level: l.level,
-      image: l.image?.[0] ?? '',
-      description: l.description ?? ''
-    }));
+  async getById(lessonId: number): Promise<LessonSummary> {
+    const query = `
+      SELECT id, type, title, level, image, description
+      FROM "Lesson"."Lessons"
+      WHERE id = $1
+      LIMIT 1`;
+    const values = [lessonId];
+    try {
+      const result = await pool.query(query, values);
+      return this.toLessonSummary(result.rows[0]);
+    } catch (error) {
+      console.error('Error executing query:', error);
+      throw error;
+    }
+  }
+
+  toLessonSummary(data: any): LessonSummary {
+    return {
+      id: data.id.toString(),
+      type: data.type,
+      title: data.title,
+      level: data.level,
+      image: data.image?.[0] ?? '',
+      description: data.description ?? ''
+    };
   }
 }
+
+export const LessonsRepository = new classLessonsRepository();

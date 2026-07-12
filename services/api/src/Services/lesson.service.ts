@@ -15,8 +15,6 @@ export const lessonService = {
   },
 
   async getByID(id: string): Promise<LessonSummary> {
-    throw new Error('not implemented');
-    try {
-    } catch (e) {}
+    return await LessonsRepository.getById(Number(id));
   }
 };

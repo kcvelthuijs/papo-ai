@@ -2,20 +2,18 @@ import axios from 'axios';
 import { create } from 'zustand';
 
 import { getAllLessons } from '@workspace/connectors';
-import type {
-  LessonSummary,
-  LessonDetails,
-  Exercise,
-} from '@workspace/dtotypes';
+
+import type { LessonSummary, Exercise } from '@workspace/dtotypes';
+
 import type { ExerciseEvaluation } from '@workspace/webtypes';
 import { executeExercise } from '@exercises/logic';
 
 type LessonState = {
-  lessonSummaries: Record<string, LessonSummary>;
-  lessonDetails: Record<string, LessonDetails>;
+  lessons: Record<string, LessonSummary>;
+  exercises: Exercise[];
 
   currentLessonID?: string;
-  currentLesson?: LessonDetails;
+  currentLesson?: LessonSummary;
 
   currentExerciseIndex: number;
   currentExercise?: Exercise;
@@ -26,7 +24,7 @@ type LessonState = {
   error?: string;
 
   fetchAllLessons: () => Promise<void>;
-  getLessonByID: (id: string) => Promise<LessonDetails>;
+  getLessonByID: (id: string) => Promise<LessonSummary>;
   setCurrentLesson: (id: string) => Promise<void>;
 
   startLesson: () => void;
@@ -35,8 +33,8 @@ type LessonState = {
 };
 
 export const useLessonStore = create<LessonState>((set, get) => ({
-  lessonSummaries: {},
-  lessonDetails: {},
+  lessons: {},
+  exercises: [],
 
   currentLessonID: undefined,
   currentLesson: undefined,
@@ -63,36 +61,36 @@ export const useLessonStore = create<LessonState>((set, get) => ({
           acc[l.id] = l;
           return acc;
         },
-        {} as Record<string, LessonSummary>,
+        {} as Record<string, LessonSummary>
       );
 
       set({
-        lessonSummaries: map,
-        isLoading: false,
+        lessons: map,
+        isLoading: false
       });
     } catch (err: any) {
       set({
         isLoading: false,
-        error: err?.message,
+        error: err?.message
       });
     }
   },
 
   getLessonByID: async (id: string) => {
-    const cached = get().lessonDetails[id];
+    const cached = get().lessons[id];
     if (cached) return cached;
     set({ isLoading: true });
 
-    const { data } = await axios.post<LessonDetails>('/api/lesson', {
-      id,
+    const { data } = await axios.post<LessonSummary>('/api/lesson', {
+      id
     });
 
     set((state) => ({
-      lessonDetails: {
-        ...state.lessonDetails,
-        [id]: data,
+      lessons: {
+        ...state.lessons,
+        [id]: data
       },
-      isLoading: false,
+      isLoading: false
     }));
 
     return data;
@@ -105,8 +103,8 @@ export const useLessonStore = create<LessonState>((set, get) => ({
       currentLessonID: id,
       currentLesson: lesson,
       currentExerciseIndex: 0,
-      currentExercise: lesson.exercises?.[0],
-      results: [],
+      currentExercise: undefined,
+      results: []
     });
   },
 
@@ -119,8 +117,8 @@ export const useLessonStore = create<LessonState>((set, get) => ({
 
     set({
       currentExerciseIndex: 0,
-      currentExercise: lesson.exercises[0],
-      results: [],
+      currentExercise: undefined,
+      results: []
     });
   },
 
@@ -132,7 +130,7 @@ export const useLessonStore = create<LessonState>((set, get) => ({
       const evaluation = await executeExercise(exercise, answer);
 
       set((state) => ({
-        results: [...state.results, evaluation],
+        results: [...state.results, evaluation]
       }));
 
       if (evaluation.nextAction === 'next exercise') {
@@ -149,14 +147,14 @@ export const useLessonStore = create<LessonState>((set, get) => ({
 
     const nextIndex = currentExerciseIndex + 1;
 
-    if (nextIndex >= currentLesson.exercises.length) {
+    if (nextIndex >= get().exercises?.length) {
       console.log('Lesson completed');
       return;
     }
 
     set({
       currentExerciseIndex: nextIndex,
-      currentExercise: currentLesson.exercises[nextIndex],
+      currentExercise: get().exercises[nextIndex]
     });
-  },
+  }
 }));
