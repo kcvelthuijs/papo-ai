@@ -1,7 +1,7 @@
 -- migrate:up
 CREATE OR REPLACE FUNCTION "Lesson"."GetClozeExercise"(
-    p_exercise_id integer,
-    p_language text DEFAULT 'NL'
+    p_exercise integer,
+    p_language varchar(3) DEFAULT 'NL'
 )
 RETURNS jsonb
 LANGUAGE sql
@@ -40,7 +40,7 @@ LEFT JOIN "Babel"."Texts" bt
     ON bt."tableName" = 'Cloze.Sentences'
     AND bt."keyId" = s.id
     AND bt."language" = p_language
-WHERE e.id = p_exercise_id
+WHERE e.id = p_exercise
 GROUP BY
     e.id,
     e.type,

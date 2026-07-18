@@ -24,7 +24,7 @@ VALUES (1, 'o caminho', '{flashcards,casa,exterior,caminho.png}')
 -- sync id sequence
 SELECT setval(
     '"Card"."Cards_id_seq"',
-    (SELECT MAX(id) FROM "Card"."Cards");
+    (SELECT MAX(id) FROM "Card"."Cards")
 );
 
 -- migrate:down

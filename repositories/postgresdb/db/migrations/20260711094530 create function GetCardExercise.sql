@@ -1,7 +1,7 @@
 -- migrate:up
 CREATE OR REPLACE FUNCTION "Lesson"."GetCardExercise"(
-    p_exercise_id integer,
-    p_language varchar(3)
+    p_exercise integer,
+    p_language varchar(3) DEFAULT 'NL'
 )
 RETURNS jsonb
 LANGUAGE plpgsql
@@ -41,7 +41,7 @@ BEGIN
             )
         )
         FROM "Card"."Exercises" ex
-        WHERE ex.id = p_exercise_id
+        WHERE ex.id = p_exercise
         LIMIT 1
     );
 END;

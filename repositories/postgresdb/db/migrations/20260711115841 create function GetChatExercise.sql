@@ -1,7 +1,7 @@
 -- migrate:up
 CREATE OR REPLACE FUNCTION "Lesson"."GetChatExercise"(
-    p_exercise_id integer,
-    p_language varchar DEFAULT 'NL'
+    p_exercise integer,
+    p_language varchar(3) DEFAULT 'NL'
 )
 RETURNS jsonb
 LANGUAGE plpgsql
@@ -26,7 +26,7 @@ BEGIN
             )
         )
         FROM "Chat"."Exercises" e
-        WHERE e.id = p_exercise_id
+        WHERE e.id = p_exercise
         LIMIT 1
     );
 END;

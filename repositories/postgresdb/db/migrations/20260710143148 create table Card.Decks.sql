@@ -13,4 +13,4 @@ ALTER TABLE IF EXISTS "Card"."Decks"
     OWNER to docent;
     
 -- migrate:down
-DROP TABLE IF EXISTS "Cards"."Exercises";
+DROP TABLE IF EXISTS "Card"."Decks";

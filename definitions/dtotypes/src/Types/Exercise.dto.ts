@@ -13,11 +13,19 @@ export type ExerciseScore = 'right' | 'wrong' | 'partial' | undefined;
 
 export type ExerciseExitReason = 'end' | 'quit';
 
+export type ExerciseData = {
+  lessonId: number;
+  seqNumber: number;
+  type: string;
+  title: string;
+  description: string;
+  data: any;
+};
+
 export type BaseExercise = {
   id: string;
   type: string;
   title: string;
-  description: string;
   state?: ExerciseState;
 };
 
@@ -138,6 +146,7 @@ export type FlashCardFeedback = ExerciseEvaluation & {
 export type OpenExercise = BaseExercise & {
   id: string;
   type: 'open-writing' | 'open-dialog' | 'open-reflection';
+  description: string;
   introduction: string;
   words: string[];
   prompt: string;

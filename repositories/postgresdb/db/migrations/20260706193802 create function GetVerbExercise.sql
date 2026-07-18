@@ -1,13 +1,13 @@
 -- migrate:up
 CREATE OR REPLACE FUNCTION "Lesson"."GetVerbExercise"(
-    par_lesson integer
+    p_exercise integer,
+    p_language varchar(3) DEFAULT 'NL'
 )
 RETURNS jsonb
 LANGUAGE sql
 AS $$
-SELECT jsonb_agg(
-    jsonb_build_object(
-        'id', le.id,
+SELECT jsonb_build_object(
+        'id', ve.id,
         'type', ve.type,
         'title', ve.title,
         'description', ve.description,
@@ -21,14 +21,13 @@ SELECT jsonb_agg(
             'p3mv', vb.p3mv
         )
     )
-)
 FROM "Lesson"."Exercises" le
 JOIN "Verb"."Exercises" ve
     ON ve.id = le."exerciseId"
 JOIN "Verb"."Verbs" vb
     ON vb.id = ve."verbId"
 WHERE le."exerciseType" = 'verb'
-  AND le."lessonId" = par_lesson;
+  AND le."exerciseId" = p_exercise;
 $$;
 
 -- migrate:down
