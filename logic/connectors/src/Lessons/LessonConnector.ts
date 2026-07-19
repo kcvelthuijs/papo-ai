@@ -31,7 +31,8 @@ export const getLessonByID = async (
     });
     const lesson: LessonSummary = response.data;
     return lesson;
-  } catch (err) {
+  } catch (err: any) {
+    console.log(err);
     if (axios.isCancel(err)) {
       console.log('Request geannuleerd');
     } else {

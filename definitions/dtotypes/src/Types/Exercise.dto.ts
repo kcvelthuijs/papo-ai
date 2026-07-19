@@ -23,9 +23,11 @@ export type ExerciseData = {
 };
 
 export type BaseExercise = {
-  id: string;
+  lessonId: number;
+  seqNumber: number;
   type: string;
   title: string;
+  description: string;
   state?: ExerciseState;
 };
 
@@ -45,7 +47,8 @@ export type ExerciseEvaluation = {
 export type ClosedExercise =
   | BaseExercise
   | CheckVerbExercise
-  | CheckGapExercise;
+  | CheckGapExercise
+  | BuildPhraseExercise;
 
 // -----------------------
 //  CheckVerbExercise
@@ -72,7 +75,6 @@ export type BuildPhraseExercise = BaseExercise & {
   type: 'phrase-build-test';
   correctOrder: string[];
   translation: string;
-  image: string;
 };
 export type PhraseBuildAnswer = {
   value: string[];

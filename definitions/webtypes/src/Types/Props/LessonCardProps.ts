@@ -1,4 +1,4 @@
-import { type LessonSummary } from "../Interfaces/Lesson";
+import { type LessonSummary } from '../Interfaces/Lesson';
 
 export type LessonCardProps = {
   key: string;

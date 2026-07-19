@@ -1,7 +1,7 @@
-import { useMockLessonStore } from '@workspace/controllers';
+import { useLessonStore } from '@workspace/controllers';
 import type {
   ExerciseEvaluation,
-  ExerciseExitReason
+  ExerciseExitReason,
 } from '@workspace/dtotypes';
 
 import { OpenExerciseRenderer } from '../Exercises/OpenDialogExercise/Renderer/OpenExerciseRenderer';
@@ -18,12 +18,12 @@ type Props = {
 };
 
 export function ExerciseRenderer({ exercise }: Props) {
-  const submitAnswer = useMockLessonStore((s) => s.submitAnswer);
+  const submitAnswer = useLessonStore((s) => s.submitAnswer);
   const handleSubmit = async (answer: any): Promise<any> => {
     return await submitAnswer(answer);
   };
 
-  const completeExercise = useMockLessonStore((s) => s.completeExercise);
+  const completeExercise = useLessonStore((s) => s.completeExercise);
   const handleComplete = async (reason: ExerciseExitReason): Promise<void> => {
     await completeExercise(reason);
   };

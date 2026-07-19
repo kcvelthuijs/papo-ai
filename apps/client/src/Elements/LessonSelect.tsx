@@ -4,6 +4,7 @@ import { useLessonStore } from '@workspace/controllers';
 import type { LessonSelectProps } from '@workspace/webtypes';
 
 import { LessonCard, LessonCardSkeleton } from '../Components/LessonCard';
+// import { getLessonByID } from '@workspace/connectors';
 
 export const LessonSelect = ({ onSelect }: LessonSelectProps) => {
   const { lessons, fetchAllLessons, isLoading, setCurrentLesson } =
@@ -19,6 +20,7 @@ export const LessonSelect = ({ onSelect }: LessonSelectProps) => {
   }, []);
 
   const onLessonCardSelect = (lessonID: string): void => {
+    console.log('onLessonCardSelect:', lessonID);
     setCurrentLesson(lessonID);
     if (onSelect) onSelect(lessonID);
   };

@@ -2,10 +2,10 @@ import NavigationBar from '../Elements/NavigationBar';
 
 import Lesson from './Lesson';
 import { LessonSelect } from '../Elements/LessonSelect';
-import { useMockLessonStore } from '@workspace/controllers';
+import { useLessonStore } from '@workspace/controllers';
 
 export default function Page() {
-  const { currentLessonID } = useMockLessonStore();
+  const { currentLessonID } = useLessonStore();
   return (
     <div className='flex flex-col bg-gray-200 h-screen m-0 p-0'>
       <NavigationBar />

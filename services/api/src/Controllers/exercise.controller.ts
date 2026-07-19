@@ -8,7 +8,7 @@ import { exerciseIdSchema } from '../Schemas/exercise.schema';
 export const exerciseController = {
   async getAll(req: Request, res: Response) {
     const response = await exerciseService.getAll();
-    res.json({ lessons: response });
+    res.json({ exercises: response });
   },
 
   async getByLessonId(req: Request, res: Response) {
@@ -25,7 +25,7 @@ export const exerciseController = {
       const response = await exerciseService.getByLessonId(id);
 
       // Geef het return-object in json terug
-      res.json(response);
+      res.json({ exercises: response });
     } catch (error) {
       res.status(500).json({
         error: `Failed to retrieve lesson.\n${error}`,
@@ -47,7 +47,7 @@ export const exerciseController = {
       const response = await exerciseService.getByID(lessonId, seqNumber);
 
       // Geef het return-object in json terug
-      res.json(response);
+      res.json({ exercise: response });
     } catch (error) {
       res.status(500).json({
         error: `Failed to retrieve lesson.\n${error}`,

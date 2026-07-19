@@ -1,5 +1,5 @@
 import { Button, Spinner } from '@workspace/ui';
-import { useMockLessonStore } from '@workspace/controllers';
+import { useLessonStore } from '@workspace/controllers';
 import { ExerciseRenderer } from '@exercises/ui';
 
 import ImageComponent from '../Components/ImageComponent';
@@ -10,7 +10,7 @@ type LessonProps = {
 
 const Lesson = ({ id }: LessonProps) => {
   const { currentLesson, currentExercise, isLoading, startLesson } =
-    useMockLessonStore();
+    useLessonStore();
 
   return (
     <div className='mx-3'>
