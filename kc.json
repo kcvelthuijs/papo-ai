@@ -125,7 +125,7 @@
       ],
       "exercise": {
         "id": 2,
-        "type": "flashcard-learn",
+        "type": "card-click-learn",
         "image": null,
         "title": "Exterior de casa",
         "theme_id": 1,

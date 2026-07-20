@@ -1,14 +1,14 @@
 import type {
   OpenExercise,
   CheckVerbExercise,
-  CheckGapExercise,
-  GapAnswer,
+  CheckClozeExercise,
+  ClozeAnswer,
   ExerciseExitReason,
-  FlashCardExercise,
-  FlashCardFeedback,
-  CheckGapFeedback,
+  CardExercise,
+  CardFeedback,
+  CheckClozeFeedback,
   CheckVerbFeedback,
-  FlashCardAnswer,
+  CardAnswer,
 } from '@workspace/dtotypes';
 import type { PropertyNameLiteral } from 'typescript';
 
@@ -29,15 +29,15 @@ export type VerbExerciseProps = {
   onComplete: (reason: ExerciseExitReason) => Promise<void>;
 };
 
-export type GapExerciseProps = {
-  exercise: CheckGapExercise;
-  onSubmit: (answer: GapAnswer) => Promise<CheckGapFeedback>;
+export type ClozeExerciseProps = {
+  exercise: CheckClozeExercise;
+  onSubmit: (answer: ClozeAnswer) => Promise<CheckClozeFeedback>;
   onComplete: (reason: ExerciseExitReason) => Promise<void>;
 };
 
-export type FlashCardExerciseProps = {
-  exercise: FlashCardExercise;
-  onSubmit: (answer: FlashCardAnswer) => Promise<FlashCardFeedback>;
+export type CardExerciseProps = {
+  exercise: CardExercise;
+  onSubmit: (answer: CardAnswer) => Promise<CardFeedback>;
   onComplete: (reason: ExerciseExitReason) => Promise<void>;
 };
 

@@ -1,13 +1,13 @@
 import {
-  type CheckGapExercise as dtoCheckGapExercise,
+  type CheckClozeExercise as dtoCheckClozeExercise,
   type Phrase as dtoPhrase,
 } from '@workspace/dtotypes';
 
 type Phrase = dtoPhrase;
 
-export type CheckGapExercise = dtoCheckGapExercise;
+export type CheckClozeExercise = dtoCheckClozeExercise;
 
 export type PhraseProps = {
-  exercise: CheckGapExercise;
+  exercise: CheckClozeExercise;
   onComplete: (answer: Record<string, string>) => void;
 };

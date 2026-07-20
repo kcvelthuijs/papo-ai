@@ -1,14 +1,11 @@
 import { useState } from 'react';
 
-import type { FlashCardItem } from '@workspace/dtotypes';
+import type { CardItem } from '@workspace/dtotypes';
 import { CardLayout } from '@workspace/ui';
 import { ImageView } from '../../../Components/Atoms/ImageView';
-import type { FlashCardExerciseProps } from '@exercises/logic';
+import type { CardExerciseProps } from '@exercises/logic';
 
-export function FlashCardLearn({
-  exercise,
-  onComplete,
-}: FlashCardExerciseProps) {
+export function CardLearn({ exercise, onComplete }: CardExerciseProps) {
   // -------------------------
   // STATE
   // -------------------------
@@ -18,7 +15,7 @@ export function FlashCardLearn({
   // -------------------------
   // ACTIVE CARD
   // -------------------------
-  const active: FlashCardItem | undefined = exercise.items[index];
+  const active: CardItem | undefined = exercise.items[index];
 
   const isComplete = index >= exercise.items.length - 1 && revealed;
 
@@ -68,11 +65,11 @@ export function FlashCardLearn({
           name={active?.name ?? ''}
           tree={active?.tree ?? []}
           size='none'
-          className='w-full h-auto object-contain pt-0 mt-0 gap-0'
+          className='w-full h-auto object-contain pt-0 mt-0 cloze-0'
         />
       }
       content={
-        <div className='flex flex-col gap-6'>
+        <div className='flex flex-col cloze-6'>
           {/* CARD */}
           <div className='flex w-full flex-col items-center justify-center'>
             {/* question or answer */}
@@ -90,7 +87,7 @@ export function FlashCardLearn({
         </div>
       }
       footer={
-        <div className='flex flex-row gap-2'>
+        <div className='flex flex-row cloze-2'>
           {/* PREVIOUS */}
           <button
             onClick={previous}

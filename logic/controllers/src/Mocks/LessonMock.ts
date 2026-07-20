@@ -1,9 +1,9 @@
 import type {
-  CheckGapExercise,
+  CheckClozeExercise,
   LessonSummary,
   VerbFormTable,
   OpenExercise,
-  FlashCardExercise,
+  CardExercise,
 } from '@workspace/dtotypes';
 import type { Exercise } from '@workspace/dtotypes';
 
@@ -61,11 +61,11 @@ export const mockLesson = {
   exercises: mockVerbExercises,
 };
 
-export const mockGapExercises: Exercise[] = [
+export const mockClozeExercises: Exercise[] = [
   {
     lessonId: 1,
     seqNumber: 1,
-    type: 'gap-click-test',
+    type: 'cloze-click-test',
     title: 'Ser ou Estar',
     description: 'Select the correct verb',
     phraseIndex: 0,
@@ -74,32 +74,32 @@ export const mockGapExercises: Exercise[] = [
         id: 's3',
         textParts: ['O quadro da sala', 'limpo'],
         translation: 'Het bord in de klas is schoon',
-        gaps: [{ id: 'g1', correct: 'é', alt: ['está'] }],
+        clozes: [{ id: 'g1', correct: 'é', alt: ['está'] }],
       },
       {
         id: 's4',
         textParts: ['O pai', 'em casa.'],
         translation: 'Vader is thuis.',
-        gaps: [{ id: 'g2', correct: 'está', alt: ['é'] }],
+        clozes: [{ id: 'g2', correct: 'está', alt: ['é'] }],
       },
       {
         id: 's5',
         textParts: ['Os prédios', 'altos'],
         translation: 'De gebouwen zijn hoog.',
-        gaps: [{ id: 'g3', correct: 'são', alt: ['estão'] }],
+        clozes: [{ id: 'g3', correct: 'são', alt: ['estão'] }],
       },
       {
         id: 's6',
         textParts: ['O Banco', 'fechado.'],
         translation: 'De bank is gesloten.',
-        gaps: [{ id: 'g4', correct: 'está', alt: ['é'] }],
+        clozes: [{ id: 'g4', correct: 'está', alt: ['é'] }],
       },
     ],
-  } as CheckGapExercise,
+  } as CheckClozeExercise,
   {
     lessonId: 1,
     seqNumber: 1,
-    type: 'gap-type-test',
+    type: 'cloze-type-test',
     title: 'Verbos regulares -er',
     description: 'Select the correct verb',
     phraseIndex: 0,
@@ -108,7 +108,7 @@ export const mockGapExercises: Exercise[] = [
         id: 's1',
         textParts: ['Eu ', 'só português, mas ele', 'também francês.'],
         translation: 'Ik spreek alleen Portugees, maar hij spreekt ook Frans.',
-        gaps: [
+        clozes: [
           { id: 'g1', correct: 'falo', hint: 'falar (eu)' },
           { id: 'g2', correct: 'fala', hint: 'falar (ele)' },
         ],
@@ -117,10 +117,10 @@ export const mockGapExercises: Exercise[] = [
         id: 's2',
         textParts: ['Nós ', ' agora'],
         translation: 'Wij eten nu.',
-        gaps: [{ id: 'g3', correct: 'comemos', hint: 'comer (nós)' }],
+        clozes: [{ id: 'g3', correct: 'comemos', hint: 'comer (nós)' }],
       },
     ],
-  } as CheckGapExercise,
+  } as CheckClozeExercise,
 ];
 
 const palavresCasaExterior = [
@@ -250,24 +250,24 @@ export const mockVocabularioExercise: Exercise[] = [
   {
     lessonId: 1,
     seqNumber: 1,
-    type: 'flashcard-test',
+    type: 'card-type-test',
     title: 'exterior da casa',
     description: 'Nomes dos elementos da casa e do que a rodeia.',
     imageLocation: ['flashcards', 'casa', 'exterior'],
     items: palavresCasaExterior,
-  } as FlashCardExercise,
+  } as CardExercise,
 ];
 
 export const mockVocabLearnExercise: Exercise[] = [
   {
     lessonId: 1,
     seqNumber: 1,
-    type: 'flashcard-learn',
+    type: 'card-click-learn',
     title: 'exterior da casa',
     description: 'Nomes dos elementos da casa e do que a rodeia.',
     imageLocation: ['flashcards', 'casa', 'exterior'],
     items: palavresCasaExterior,
-  } as FlashCardExercise,
+  } as CardExercise,
 ];
 
 export const mockDialogExercise: OpenExercise = {

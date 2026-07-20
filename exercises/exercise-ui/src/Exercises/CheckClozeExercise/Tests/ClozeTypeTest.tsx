@@ -1,19 +1,19 @@
 import { useState } from 'react';
 
-import { type GapExerciseProps } from '@exercises/logic';
+import { type ClozeExerciseProps } from '@exercises/logic';
 import { CardLayout } from '@workspace/ui';
 
-import { useGapExercise } from '../Hooks/GapExerciseHook';
+import { useClozeExercise } from '../Hooks/ClozeExerciseHook';
 import { useExerciseStars } from '../../../Components/Hooks/useExerciseEffects';
 
 import { ExerciseInputBox } from '../../../Components/Atoms/ExerciseInputBox';
 import { ExerciseTextbox } from '../../../Components/Atoms/ExerciseTextBox';
 
-export function GapTypeTest({
+export function ClozeTypeTest({
   exercise,
   onSubmit,
   onComplete,
-}: GapExerciseProps) {
+}: ClozeExerciseProps) {
   const {
     active,
     answers,
@@ -24,7 +24,7 @@ export function GapTypeTest({
     submit,
     registerInputRef,
     next,
-  } = useGapExercise({ exercise, onSubmit, onComplete });
+  } = useClozeExercise({ exercise, onSubmit, onComplete });
 
   const { stars, spawnStars, registerStarRef } = useExerciseStars();
   const [localInput, setLocalInput] = useState<Record<string, string>>({});
@@ -32,30 +32,30 @@ export function GapTypeTest({
   // -------------------------
   // INPUT CHANGE
   // -------------------------
-  function handleChange(gapId: string, value: string) {
+  function handleChange(clozeId: string, value: string) {
     setLocalInput((prev) => ({
       ...prev,
-      [gapId]: value,
+      [clozeId]: value,
     }));
   }
 
   // -------------------------
   // SUBMIT ON ENTER
   // -------------------------
-  async function handleSubmit(gapId: string) {
-    if (!active || gapId !== active.id) return;
+  async function handleSubmit(clozeId: string) {
+    if (!active || clozeId !== active.id) return;
 
-    const value = localInput[gapId] ?? '';
+    const value = localInput[clozeId] ?? '';
     const result = await submit(value);
 
     if (result?.score === 'right') {
       // laat zien dat het antwoord goed is
-      spawnStars(gapId);
+      spawnStars(clozeId);
 
       // input leegmaken voor volgende ronde
       setLocalInput((prev) => ({
         ...prev,
-        [gapId]: '',
+        [clozeId]: '',
       }));
     }
   }
@@ -71,53 +71,53 @@ export function GapTypeTest({
       onContinue={next}
       stars={stars}
       content={
-        <div className='flex flex-col gap-6'>
+        <div className='flex flex-col cloze-6'>
           {/* Phrase */}
-          <div className='flex flex-wrap items-center gap-2 text-lg'>
+          <div className='flex flex-wrap items-center cloze-2 text-lg'>
             {phrase?.textParts.map((part: string, index: number) => {
-              const gap = phrase.gaps[index];
-              const gapId = gap?.id ?? 'unknown';
-              const isActive = active?.id === gapId;
-              const isAnswered = answers[gapId]?.score === 'right';
+              const cloze = phrase.gaps[index];
+              const clozeId = cloze?.id ?? 'unknown';
+              const isActive = active?.id === clozeId;
+              const isAnswered = answers[clozeId]?.score === 'right';
               return (
-                <span key={index} className='flex items-center gap-2'>
+                <span key={index} className='flex items-center cloze-2'>
                   <span>{part}</span>
-                  <span ref={(el) => registerStarRef(gapId, el)}>
-                    {gap &&
+                  <span ref={(el) => registerStarRef(clozeId, el)}>
+                    {cloze &&
                       (isActive && !isAnswered ? (
                         <ExerciseInputBox
-                          key={`gap${gapId}`}
+                          key={`cloze${clozeId}`}
                           ref={(el: HTMLInputElement | null) => {
-                            registerInputRef(gapId, el);
-                            registerStarRef(gapId, el);
+                            registerInputRef(clozeId, el);
+                            registerStarRef(clozeId, el);
                           }}
-                          hint={gap.hint}
-                          size={gap.hint?.length ?? 1}
+                          hint={cloze.hint}
+                          size={cloze.hint?.length ?? 1}
                           value={
-                            active?.id === gapId
-                              ? (localInput[gapId] ?? '')
-                              : (answers[gapId]?.answer ?? '')
+                            active?.id === clozeId
+                              ? (localInput[clozeId] ?? '')
+                              : (answers[clozeId]?.answer ?? '')
                           }
-                          state={getState(gapId, tempFocus)}
-                          score={answers[gapId]?.score}
+                          state={getState(clozeId, tempFocus)}
+                          score={answers[clozeId]?.score}
                           className='text-center'
                           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                            handleChange(gapId, e.target.value)
+                            handleChange(clozeId, e.target.value)
                           }
                           onKeyDown={(
                             e: React.KeyboardEvent<HTMLInputElement>,
                           ) => {
                             if (e.key === 'Enter') {
-                              handleSubmit(gapId);
+                              handleSubmit(clozeId);
                             }
                           }}
                         />
                       ) : (
-                        gap && (
+                        cloze && (
                           <ExerciseTextbox
-                            textValue={answers[gapId]?.answer ?? ''}
-                            state={getState(gap.id, tempFocus)}
-                            score={answers[gap.id]?.score}
+                            textValue={answers[clozeId]?.answer ?? ''}
+                            state={getState(cloze.id, tempFocus)}
+                            score={answers[cloze.id]?.score}
                           />
                         )
                       ))}

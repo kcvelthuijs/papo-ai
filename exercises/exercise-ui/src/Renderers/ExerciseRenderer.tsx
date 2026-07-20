@@ -7,8 +7,8 @@ import type {
 import { OpenExerciseRenderer } from '../Exercises/OpenDialogExercise/Renderer/OpenExerciseRenderer';
 
 import { CheckVerbRenderer } from '../Exercises/CheckVerbExercise/Renderer/CheckVerbRenderer';
-import { CheckGapRenderer } from '../Exercises/CheckGapExercise/Renderers/CheckGapRenderer';
-import { FlashCardRenderer } from '../Exercises/FlashCardExercise/Renderers/FlashCardRenderer';
+import { CheckClozeRenderer } from '../Exercises/CheckClozeExercise/Renderers/CheckClozeRenderer';
+import { CheckCardRenderer } from '../Exercises/CheckCardExercise/Renderers/CheckCardRenderer';
 
 // import { PhraseBuildRenderer } from './renderers/PhraseBuildRenderer';
 // import { OpenExerciseRenderer } from './renderers/OpenExerciseRenderer';
@@ -44,12 +44,12 @@ export function ExerciseRenderer({ exercise }: Props) {
       );
 
     // -------------------------
-    // GAP
+    // CLOZE
     // -------------------------
-    case 'gap-click-test':
-    case 'gap-type-test':
+    case 'cloze-click-test':
+    case 'cloze-type-test':
       return (
-        <CheckGapRenderer
+        <CheckClozeRenderer
           exercise={exercise}
           onSubmit={handleSubmit}
           onComplete={handleComplete}
@@ -57,12 +57,12 @@ export function ExerciseRenderer({ exercise }: Props) {
       );
 
     // -------------------------
-    // FlashCards
+    // Cards
     // -------------------------
-    case 'flashcard-test':
-    case 'flashcard-learn':
+    case 'card-type-test':
+    case 'card-click-learn':
       return (
-        <FlashCardRenderer
+        <CheckCardRenderer
           exercise={exercise}
           onSubmit={handleSubmit}
           onComplete={handleComplete}

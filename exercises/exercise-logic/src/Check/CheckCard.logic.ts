@@ -1,19 +1,19 @@
 import type {
   ExerciseAction,
-  FlashCardAnswer,
-  FlashCardExercise,
-  FlashCardFeedback,
+  CardAnswer,
+  CardExercise,
+  CardFeedback,
 } from '@workspace/dtotypes';
 import { checkAnswerText } from '../Atoms/CheckAnswer';
 
-export function checkFlashCard(
-  exercise: FlashCardExercise,
-  answer: FlashCardAnswer,
-): FlashCardFeedback {
+export function checkCard(
+  exercise: CardExercise,
+  answer: CardAnswer,
+): CardFeedback {
   // vind het item
   const flashCardItem = exercise.items.find((a) => a.id === answer.id);
 
-  if (!flashCardItem) throw new Error(`FlashCard item not found: ${answer.id}`);
+  if (!flashCardItem) throw new Error(`Card item not found: ${answer.id}`);
 
   // bepaal de uitslag
   const givenAnswer = answer.value;
@@ -24,7 +24,8 @@ export function checkFlashCard(
   const nextAction: ExerciseAction = score === 'wrong' ? 'retry' : 'next step';
 
   return {
-    exerciseId: exercise.id,
+    lessonId: exercise.lessonId,
+    seqNumber: exercise.seqNumber,
     score,
     nextAction,
     givenAnswer,

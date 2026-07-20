@@ -36,7 +36,8 @@ export type BaseExercise = {
 // -----------------------
 export type Exercise = ClosedExercise | OpenExercise;
 export type ExerciseEvaluation = {
-  exerciseId: string;
+  lessonId: number;
+  seqNumber: number;
   score: ExerciseScore;
   nextAction: ExerciseAction;
 };
@@ -47,7 +48,7 @@ export type ExerciseEvaluation = {
 export type ClosedExercise =
   | BaseExercise
   | CheckVerbExercise
-  | CheckGapExercise
+  | CheckClozeExercise
   | BuildPhraseExercise;
 
 // -----------------------
@@ -87,46 +88,46 @@ export type PhraseBuildFeedback = {
 };
 
 // -----------------------
-//  CheckGapExercise
+//  CheckClozeExercise
 // -----------------------
-export type CheckGapExercise = BaseExercise & {
-  type: 'gap-type-test' | 'gap-click-test';
+export type CheckClozeExercise = BaseExercise & {
+  type: 'cloze-type-test' | 'cloze-click-test';
   phrases: Phrase[];
   phraseIndex: number;
 };
 export type Phrase = {
   id: string;
   textParts: string[];
-  gaps: Gap[];
+  gaps: Cloze[];
   translation?: string;
 };
-export type Gap = {
+export type Cloze = {
   id: string;
   correct: string;
   hint?: string;
   alt?: string[];
 };
-export type GapAnswer = {
+export type ClozeAnswer = {
   phraseIndex: number;
-  gapIndex: number;
-  gapId: string;
+  clozeIndex: number;
+  clozeId: string;
   value: string;
 };
-export type CheckGapFeedback = ExerciseEvaluation & {
-  gapId: string;
+export type CheckClozeFeedback = ExerciseEvaluation & {
+  clozeId: string;
   value: string;
   correctValue: string | null;
 };
 
 // -----------------------
-//  FlashCardExercise
+//  CardExercise
 // -----------------------
-export type FlashCardExercise = BaseExercise & {
-  type: 'flashcard-learn' | 'flashcard-test';
-  items: FlashCardItem[];
+export type CardExercise = BaseExercise & {
+  type: 'card-click-learn' | 'card-type-test';
+  items: CardItem[];
   imageLocation?: string[];
 };
-export type FlashCardItem = {
+export type CardItem = {
   id: string;
   name: string;
   tree: string[];
@@ -135,11 +136,11 @@ export type FlashCardItem = {
   hint?: string;
   image?: string;
 };
-export type FlashCardAnswer = {
+export type CardAnswer = {
   id: string;
   value: string;
 };
-export type FlashCardFeedback = ExerciseEvaluation & {
+export type CardFeedback = ExerciseEvaluation & {
   givenAnswer: string;
   correctAnswer: string;
 };

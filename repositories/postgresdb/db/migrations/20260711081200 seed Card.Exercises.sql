@@ -1,7 +1,7 @@
 -- migrate:up
 INSERT INTO "Card"."Exercises" (id, type, title, description, "deckId")
-VALUES (1, 'flashcard-learn', 'Exterior de casa', 'Nomes dos elementos da casa e do que a rodeia.', 1)
-  , (2, 'flashcard-test', 'Exterior de casa', 'Nomes dos elementos da casa e do que a rodeia.', 1);
+VALUES (1, 'card-click-learn', 'Exterior de casa', 'Nomes dos elementos da casa e do que a rodeia.', 1)
+  , (2, 'card-type-test', 'Exterior de casa', 'Nomes dos elementos da casa e do que a rodeia.', 1);
 
 SELECT setval(
     '"Card"."Exercises_id_seq"',

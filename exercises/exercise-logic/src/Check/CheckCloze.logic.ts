@@ -1,42 +1,43 @@
 import type {
-  CheckGapExercise,
-  CheckGapFeedback,
+  CheckClozeExercise,
+  CheckClozeFeedback,
   ExerciseAction,
   ExerciseScore,
-  Gap,
-  GapAnswer,
+  Cloze,
+  ClozeAnswer,
   Phrase,
 } from '@workspace/dtotypes';
 
-export function checkGap(
-  exercise: CheckGapExercise,
-  answer: GapAnswer,
-): CheckGapFeedback {
+export function checkCloze(
+  exercise: CheckClozeExercise,
+  answer: ClozeAnswer,
+): CheckClozeFeedback {
   // check the phrase
   const phrase: Phrase | undefined = exercise.phrases[answer.phraseIndex];
   if (phrase) {
-    const gap = phrase.gaps[answer.gapIndex];
-    if (gap) {
+    const cloze = phrase.gaps[answer.clozeIndex];
+    if (cloze) {
       // bepaal de uitslag
       const answerUser = answer.value.trim().toLowerCase();
-      const answerCorrect = gap?.correct.trim().toLowerCase();
+      const answerCorrect = cloze?.correct.trim().toLowerCase();
       const isCorrect = answerUser === answerCorrect;
 
       // zet de score
       const score: ExerciseScore = isCorrect ? 'right' : 'wrong';
 
       // kijk of het antwoord de laatste in de tekst is
-      const isLastGap = answer.gapIndex >= phrase.gaps.length - 1;
+      const isLastCloze = answer.clozeIndex >= phrase.gaps.length - 1;
 
       // bepaal de volgende actie
       const nextAction: ExerciseAction =
-        score !== 'right' ? 'retry' : !isLastGap ? 'next' : 'next step';
+        score !== 'right' ? 'retry' : !isLastCloze ? 'next' : 'next step';
 
       return {
-        exerciseId: exercise.id,
-        gapId: answer.gapId,
+        lessonId: exercise.lessonId,
+        seqNumber: exercise.seqNumber,
+        clozeId: answer.clozeId,
         value: answer.value,
-        correctValue: gap?.correct ?? '',
+        correctValue: cloze?.correct ?? '',
         score,
         nextAction,
       };
@@ -44,8 +45,9 @@ export function checkGap(
   }
   // Error!!
   return {
-    exerciseId: exercise.id,
-    gapId: answer.gapId,
+    lessonId: exercise.lessonId,
+    seqNumber: exercise.seqNumber,
+    clozeId: answer.clozeId,
     value: answer.value,
     correctValue: '',
     score: 'wrong',

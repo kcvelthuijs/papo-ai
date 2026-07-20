@@ -8,10 +8,10 @@ import {
 import type {
   ExerciseExitReason,
   ExerciseScore,
-  FlashCardAnswer,
-  FlashCardExercise,
-  FlashCardFeedback,
-  FlashCardItem,
+  CardAnswer,
+  CardExercise,
+  CardFeedback,
+  CardItem,
 } from '@workspace/dtotypes';
 
 type ItemFeedback = {
@@ -20,17 +20,17 @@ type ItemFeedback = {
   score: ExerciseScore;
 };
 
-type useFlashCardProps = {
-  exercise: FlashCardExercise;
-  onSubmit: (input: FlashCardAnswer) => Promise<FlashCardFeedback>;
+type useCardProps = {
+  exercise: CardExercise;
+  onSubmit: (input: CardAnswer) => Promise<CardFeedback>;
   onComplete: (reason: ExerciseExitReason) => Promise<void>;
 };
 
-export function useFlashCardExercise({
+export function useCardExercise({
   exercise,
   onSubmit,
   onComplete,
-}: useFlashCardProps) {
+}: useCardProps) {
   const [answers, setAnswers] = useState<Record<string, ItemFeedback>>({});
   const [itemIndex, setItemIndex] = useState(0);
   const [tempFocus, setFocus] = useState<string | null>(null);
@@ -76,7 +76,7 @@ export function useFlashCardExercise({
     if (!active) return;
 
     const current = active;
-    const result: FlashCardFeedback = await onSubmit({
+    const result: CardFeedback = await onSubmit({
       id: active.id ?? '',
       value,
     });

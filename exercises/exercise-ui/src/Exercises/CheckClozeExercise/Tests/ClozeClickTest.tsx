@@ -1,28 +1,28 @@
 import { useEffect, useMemo, useState } from 'react';
 
-import { type GapExerciseProps } from '@exercises/logic';
+import { type ClozeExerciseProps } from '@exercises/logic';
 import { CardLayout, shuffle } from '@workspace/ui';
 
-import { useGapExercise } from '../Hooks/GapExerciseHook';
+import { useClozeExercise } from '../Hooks/ClozeExerciseHook';
 import { AnswerButton } from '../../../Components/Atoms/AnswerButton';
 import { ExerciseTextbox } from '../../../Components/Atoms/ExerciseTextBox';
 
-export function GapClickTest({
+export function ClozeClickTest({
   exercise,
   onSubmit,
   onComplete,
-}: GapExerciseProps) {
+}: ClozeExerciseProps) {
   const {
     active,
     answers,
     phrase,
-    gapIndex,
+    clozeIndex,
     isComplete,
     tempFocus,
     getState,
     submit,
     next,
-  } = useGapExercise({
+  } = useClozeExercise({
     exercise,
     onSubmit,
     onComplete,
@@ -34,16 +34,16 @@ export function GapClickTest({
   // SHUFFLE OPTIONS
   // ---------------------------------------------------
   useEffect(() => {
-    if (!phrase?.gaps[gapIndex]) return;
+    if (!phrase?.gaps[clozeIndex]) return;
     else {
       const values = [
-        ...(phrase?.gaps[gapIndex ?? '']?.alt ?? []),
-        phrase.gaps[gapIndex].correct,
+        ...(phrase?.gaps[clozeIndex ?? '']?.alt ?? []),
+        phrase.gaps[clozeIndex].correct,
       ];
       const unique = [...new Set(values)];
       setOptions(shuffle(unique));
     }
-  }, [active, phrase, gapIndex, active?.id]);
+  }, [active, phrase, clozeIndex, active?.id]);
 
   // ---------------------------------------------------
   // HANDLE CLICK
@@ -63,28 +63,28 @@ export function GapClickTest({
       isComplete={isComplete}
       onContinue={next}
       content={
-        <div className='flex flex-col gap-6'>
+        <div className='flex flex-col cloze-6'>
           {/* Phrase */}
-          <div className='flex flex-wrap items-center gap-2 text-lg'>
+          <div className='flex flex-wrap items-center cloze-2 text-lg'>
             {phrase?.textParts.map((part: string, index: number) => {
-              const gap = phrase.gaps[index];
-              const gapId = gap?.id ?? 'unknown';
-              const isActive = active?.id === gapId;
-              const answer = answers[gapId];
+              const cloze = phrase.gaps[index];
+              const clozeId = cloze?.id ?? 'unknown';
+              const isActive = active?.id === clozeId;
+              const answer = answers[clozeId];
               return (
-                <span key={index} className='flex items-center gap-2'>
+                <span key={index} className='flex items-center cloze-2'>
                   <span>{part}</span>
-                  {gap && (
+                  {cloze && (
                     <ExerciseTextbox
                       textValue={
                         answer?.answer
                           ? answer.answer
                           : isActive
-                            ? (gap.hint ?? '')
+                            ? (cloze.hint ?? '')
                             : ''
                       }
-                      state={getState(gap.id, tempFocus)}
-                      score={answers[gap.id]?.score}
+                      state={getState(cloze.id, tempFocus)}
+                      score={answers[cloze.id]?.score}
                     />
                   )}
                 </span>
@@ -97,14 +97,14 @@ export function GapClickTest({
         </div>
       }
       footer={
-        <div className='flex flex-wrap gap-2 justify-center'>
+        <div className='flex flex-wrap cloze-2 justify-center'>
           {!isComplete &&
             options.map((option) => (
               <AnswerButton
                 key={option}
                 id={option}
                 onClick={() => handleSelect(option)}
-                score={answers[gapIndex]?.score}
+                score={answers[clozeIndex]?.score}
               >
                 {option}
               </AnswerButton>

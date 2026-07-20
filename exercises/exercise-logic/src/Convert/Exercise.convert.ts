@@ -1,9 +1,9 @@
 import {
   type BuildPhraseExercise,
-  type CheckGapExercise,
+  type CheckClozeExercise,
   type CheckVerbExercise,
   type ExerciseData,
-  type FlashCardExercise,
+  type CardExercise,
   type OpenExercise,
 } from '@workspace/dtotypes';
 import { type Exercise } from '@workspace/dtotypes';
@@ -35,12 +35,12 @@ export function ExerciseFromExerciseData(
         meta,
       } as OpenExercise;
 
-    case 'gap-type-test':
-    case 'gap-click-test':
+    case 'cloze-type-test':
+    case 'cloze-click-test':
       return {
         ...base,
         phrases: data.data.phrases,
-      } as CheckGapExercise;
+      } as CheckClozeExercise;
 
     case 'verb-click-learn':
     case 'verb-click-test':
@@ -53,14 +53,14 @@ export function ExerciseFromExerciseData(
         forms,
       } as CheckVerbExercise;
 
-    case 'flashcard-learn':
-    case 'flashcard-test':
+    case 'card-click-learn':
+    case 'card-type-test':
       const { items, imageLocation } = data.data;
       return {
         ...base,
         items,
         imageLocation,
-      } as FlashCardExercise;
+      } as CardExercise;
 
     case 'phrase-build-test':
       const { correctOrder, translation } = data.data;

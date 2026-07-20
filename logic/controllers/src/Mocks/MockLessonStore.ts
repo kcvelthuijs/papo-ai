@@ -10,7 +10,7 @@ import type {
 
 import { executeExercise } from '@exercises/logic';
 import {
-  mockGapExercises,
+  mockClozeExercises,
   mockDialogExercise,
   mockVerbExercises,
   mockVocabularioExercise,
@@ -37,17 +37,17 @@ const mockVerbSummary: LessonSummary = {
   image: 'mulher-cafe.png',
   description: 'Mock lesson summary.',
 };
-const mockGapLesson: LessonDetails = {
-  id: 'lesson-gap-1',
+const mockClozeLesson: LessonDetails = {
+  id: 'lesson-cloze-1',
   type: 'grammar',
   title: 'Ser ou estar?',
   level: 'A1',
   image: 'mulher-na-terraço.png',
   description: 'Select the correct verb.',
-  exercises: mockGapExercises,
+  exercises: mockClozeExercises,
 };
-const mockGapSummary: LessonSummary = {
-  id: 'lesson-gap-1',
+const mockClozeSummary: LessonSummary = {
+  id: 'lesson-cloze-1',
   type: 'grammar',
   title: 'Ser ou estar?',
   level: 'A1',
@@ -144,14 +144,14 @@ export const useMockLessonStore = create<LessonState>((set, get) => ({
     [mockVerbSummary.id]: mockVerbSummary,
     [mockVocabularioSummary.id]: mockVocabularioSummary,
     [mockVocabLearnSummary.id]: mockVocabLearnSummary,
-    [mockGapSummary.id]: mockGapSummary,
+    [mockClozeSummary.id]: mockClozeSummary,
     [mockDialogSummary.id]: mockDialogSummary,
   },
   lessonDetails: {
     [mockVerbLesson.id]: mockVerbLesson,
     [mockVocabularioLesson.id]: mockVocabularioLesson,
     [mockVocabLearnLesson.id]: mockVocabLearnLesson,
-    [mockGapLesson.id]: mockGapLesson,
+    [mockClozeLesson.id]: mockClozeLesson,
     [mockDialogLesson.id]: mockDialogLesson,
   },
 
@@ -177,7 +177,7 @@ export const useMockLessonStore = create<LessonState>((set, get) => ({
         [mockVerbSummary.id]: mockVerbSummary,
         [mockVocabularioSummary.id]: mockVocabularioSummary,
         [mockVocabLearnSummary.id]: mockVocabLearnSummary,
-        [mockGapSummary.id]: mockGapSummary,
+        [mockClozeSummary.id]: mockClozeSummary,
         [mockDialogSummary.id]: mockDialogSummary,
       },
       isLoading: false,

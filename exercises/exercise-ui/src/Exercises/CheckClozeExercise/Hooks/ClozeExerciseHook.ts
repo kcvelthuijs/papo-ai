@@ -1,12 +1,12 @@
 import { useState, useRef, useEffect } from 'react';
 
 import {
-  type CheckGapExercise,
-  type CheckGapFeedback,
+  type CheckClozeExercise,
+  type CheckClozeFeedback,
   type ExerciseExitReason,
   type ExerciseScore,
-  type Gap,
-  type GapAnswer,
+  type Cloze,
+  type ClozeAnswer,
 } from '@workspace/dtotypes';
 
 import {
@@ -14,28 +14,28 @@ import {
   type ExerciseInputState,
 } from '@workspace/webtypes';
 
-type GapFeedback = {
+type ClozeFeedback = {
   answer: string;
   score: ExerciseScore;
 };
 
-type useGapExercise = {
-  exercise: CheckGapExercise;
-  onSubmit: (input: GapAnswer) => Promise<CheckGapFeedback>;
+type useClozeExercise = {
+  exercise: CheckClozeExercise;
+  onSubmit: (input: ClozeAnswer) => Promise<CheckClozeFeedback>;
   onComplete: (reason: ExerciseExitReason) => Promise<void>;
 };
 
-export function useGapExercise({
+export function useClozeExercise({
   exercise,
   onSubmit,
   onComplete,
-}: useGapExercise) {
-  const [answers, setAnswers] = useState<Record<string, GapFeedback>>({});
+}: useClozeExercise) {
+  const [answers, setAnswers] = useState<Record<string, ClozeFeedback>>({});
   const inputRefs = useRef<Record<string, HTMLInputElement | null>>({});
 
   const [phraseIndex, setPhraseIndex] = useState(0);
-  const [gapIndex, setGapIndex] = useState<number>(0);
-  const [active, setActive] = useState<Gap | undefined>(undefined);
+  const [clozeIndex, setClozeIndex] = useState<number>(0);
+  const [active, setActive] = useState<Cloze | undefined>(undefined);
   const [tempFocus, setFocus] = useState<string | null>(null);
   const [isComplete, setComplete] = useState<boolean>(false);
 
@@ -45,18 +45,18 @@ export function useGapExercise({
   // PHRASE CHANGE HANDLING
   // -------------------------
   useEffect(() => {
-    setGapIndex(0);
+    setClozeIndex(0);
     setComplete(false);
     setActive(undefined);
   }, [phrase]);
 
   // -------------------------
-  // GAP CHANGE HANDLING
+  // CLOZE CHANGE HANDLING
   // -------------------------
   useEffect(() => {
-    const gap = phrase?.gaps?.[gapIndex];
-    setActive(gap);
-  }, [gapIndex, phraseIndex]);
+    const cloze = phrase?.gaps?.[clozeIndex];
+    setActive(cloze);
+  }, [clozeIndex, phraseIndex]);
 
   // -------------------------
   // FOCUS HANDLING
@@ -75,12 +75,12 @@ export function useGapExercise({
   // DERIVED STATE
   // -------------------------
   function getState(
-    gapId: string,
+    clozeId: string,
     tempFocus: string | null,
   ): ExerciseInputState {
     const baseState =
-      gapId === active?.id ? 'input' : !answers[gapId] ? 'idle' : 'ready';
-    if (tempFocus === gapId) return 'temp';
+      clozeId === active?.id ? 'input' : !answers[clozeId] ? 'idle' : 'ready';
+    if (tempFocus === clozeId) return 'temp';
     else return baseState;
   }
 
@@ -91,10 +91,10 @@ export function useGapExercise({
     if (!active) return;
 
     const current = active;
-    const result: CheckGapFeedback = await onSubmit({
+    const result: CheckClozeFeedback = await onSubmit({
       phraseIndex,
-      gapIndex,
-      gapId: active.id,
+      clozeIndex,
+      clozeId: active.id,
       value,
     });
 
@@ -109,7 +109,7 @@ export function useGapExercise({
 
     switch (result.nextAction) {
       case 'next':
-        setGapIndex((prev) => prev + 1);
+        setClozeIndex((prev) => prev + 1);
         break;
       case 'next step':
         setComplete(true);
@@ -138,8 +138,8 @@ export function useGapExercise({
   // -------------------------
   // REF REGISTRATIE (voor inputs)
   // -------------------------
-  function registerInputRef(gapId: string, el: HTMLInputElement | null) {
-    inputRefs.current[gapId] = el;
+  function registerInputRef(clozeId: string, el: HTMLInputElement | null) {
+    inputRefs.current[clozeId] = el;
   }
 
   // -------------------------
@@ -147,7 +147,7 @@ export function useGapExercise({
   // -------------------------
   function reset() {
     setAnswers({});
-    setGapIndex(0);
+    setClozeIndex(0);
   }
 
   // -------------------------
@@ -159,7 +159,7 @@ export function useGapExercise({
     answers,
     phrase,
     phraseIndex,
-    gapIndex,
+    clozeIndex,
     isComplete,
     tempFocus,
 

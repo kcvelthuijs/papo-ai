@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { fetchImageBlob } from '@workspace/connectors';
 
+import { fetchImageBlob } from '@workspace/connectors';
 import type { ImageProps } from '@workspace/dtotypes';
 
 export function useImage(props: ImageProps) {

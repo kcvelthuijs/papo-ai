@@ -1,25 +1,25 @@
-import type { FlashCardExerciseProps } from '@exercises/logic';
-import { FlashCardTest } from '../Tests/FlashCardTest';
-import { FlashCardLearn } from '../Tests/FlashCardLearn';
+import type { CardExerciseProps } from '@exercises/logic';
+import { CardTest } from '../Tests/CardTest';
+import { CardLearn } from '../Tests/CardLearn';
 
-export function FlashCardRenderer({
+export function CheckCardRenderer({
   exercise,
   onSubmit,
-  onComplete
-}: FlashCardExerciseProps) {
+  onComplete,
+}: CardExerciseProps) {
   switch (exercise.type) {
-    case 'flashcard-learn':
+    case 'card-click-learn':
       return (
-        <FlashCardLearn
+        <CardLearn
           exercise={exercise}
           onSubmit={onSubmit}
           onComplete={onComplete}
         />
       );
 
-    case 'flashcard-test':
+    case 'card-type-test':
       return (
-        <FlashCardTest
+        <CardTest
           exercise={exercise}
           onSubmit={onSubmit}
           onComplete={onComplete}

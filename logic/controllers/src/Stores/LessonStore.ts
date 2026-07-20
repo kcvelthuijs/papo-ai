@@ -153,8 +153,6 @@ export const useLessonStore = create<LessonState>((set, get) => ({
         currentLessonID: lessonId,
         currentLesson: lesson,
         exercises,
-        currentExerciseIndex: 0,
-        currentExercise: exercises?.[0],
         results: [],
         isLoading: false,
       });
@@ -179,7 +177,6 @@ export const useLessonStore = create<LessonState>((set, get) => ({
   // SET EXERCISE
   // -------------------------
   setExercise: async (exerciseId: number) => {
-    const lesson = get().currentLesson;
     const exercises = get().exercises;
     if (!exercises) {
       console.log('no exercises');
@@ -211,7 +208,6 @@ export const useLessonStore = create<LessonState>((set, get) => ({
         state: 'active',
       },
     });
-    console.log('currentExercise', currentExercise);
   },
 
   // -------------------------
@@ -236,6 +232,7 @@ export const useLessonStore = create<LessonState>((set, get) => ({
     if (!exercise) throw 'Current exercise is undefined';
 
     // TO-DO: Show an overview of exercise results
+    console.log('Exercise results', get().results);
 
     // next exercise
     get().nextExercise();

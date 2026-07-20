@@ -2,22 +2,22 @@ import { useMemo, useState } from 'react';
 
 import { CardLayout, shuffle } from '@workspace/ui';
 
-import { type FlashCardExerciseProps } from '@exercises/logic';
+import { type CardExerciseProps } from '@exercises/logic';
 
-import { useFlashCardExercise } from '../Hooks/FlashCardHook';
-import type { FlashCardItem } from '@workspace/dtotypes';
+import { useCardExercise } from '../Hooks/CardHook';
+import type { CardItem } from '@workspace/dtotypes';
 
 import { useExerciseStars } from '../../../Components/Hooks/useExerciseEffects';
 import { ExerciseInputBox } from '../../../Components/Atoms/ExerciseInputBox';
 import { ExerciseTextbox } from '../../../Components/Atoms/ExerciseTextBox';
 import { ImageView } from '../../../Components/Atoms/ImageView';
 
-export function FlashCardTest({
+export function CardTest({
   exercise,
   onSubmit,
   onComplete,
-}: FlashCardExerciseProps) {
-  const randomItems = useMemo<FlashCardItem[]>(
+}: CardExerciseProps) {
+  const randomItems = useMemo<CardItem[]>(
     () => shuffle(exercise.items),
     [exercise.items],
   );
@@ -33,7 +33,7 @@ export function FlashCardTest({
     submit,
     inputRef,
     next,
-  } = useFlashCardExercise({
+  } = useCardExercise({
     exercise: { ...exercise, items: randomItems },
     onSubmit,
     onComplete,
@@ -105,7 +105,7 @@ export function FlashCardTest({
           name={active?.name ?? ''}
           tree={active?.tree ?? ['flashcards']}
           size='none'
-          className='w-full h-auto object-contain pt-0 mt-0 gap-0'
+          className='w-full h-auto object-contain pt-0 mt-0 cloze-0'
         />
       }
       content={

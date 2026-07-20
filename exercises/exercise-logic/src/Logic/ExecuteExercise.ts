@@ -3,20 +3,20 @@ import type {
   ExerciseEvaluation,
   OpenExercise,
   CheckVerbExercise,
-  CheckGapExercise,
-  FlashCardExercise
+  CheckClozeExercise,
+  CardExercise,
 } from '@workspace/dtotypes';
 
 import { isOpenExercise } from '../Types/Exercise.types';
 
-import { checkGap } from '../Check/CheckGap.logic';
+import { checkCloze } from '../Check/CheckCloze.logic';
 import { checkVerb } from '../Check/CheckVerb.logic';
-import { checkFlashCard } from '../Check/CheckFlashCard.logic';
+import { checkCard } from '../Check/CheckCard.logic';
 import { evaluateOpenDialog } from '../Check/OpenDialog.logic';
 
 export async function executeExercise(
   exercise: ClosedExercise | OpenExercise,
-  answer: any
+  answer: any,
 ): Promise<ExerciseEvaluation> {
   // -------------------------
   // OPEN (LLM)
@@ -26,13 +26,14 @@ export async function executeExercise(
       case 'open-dialog':
         const feedback = await evaluateOpenDialog(exercise, answer);
         return {
-          exerciseId: exercise.id,
+          lessonId: exercise.lessonId,
+          seqNumber: exercise.seqNumber,
           score: feedback.score > 0.7 ? 'right' : 'wrong',
-          nextAction: 'next'
+          nextAction: 'next',
         };
       default:
         throw new Error(
-          `Unknown open exercise type: ${(exercise as ClosedExercise).type}`
+          `Unknown open exercise type: ${(exercise as ClosedExercise).type}`,
         );
     }
   } else {
@@ -45,13 +46,13 @@ export async function executeExercise(
       case 'verb-type-test':
         return checkVerb(exercise as CheckVerbExercise, answer);
 
-      case 'gap-click-test':
-      case 'gap-type-test':
-        return checkGap(exercise as CheckGapExercise, answer);
+      case 'cloze-click-test':
+      case 'cloze-type-test':
+        return checkCloze(exercise as CheckClozeExercise, answer);
 
-      case 'flashcard-test':
-      case 'flashcard-learn':
-        return checkFlashCard(exercise as FlashCardExercise, answer);
+      case 'card-type-test':
+      case 'card-click-learn':
+        return checkCard(exercise as CardExercise, answer);
 
       /*
       case 'Phrase-build-test':
@@ -59,7 +60,7 @@ export async function executeExercise(
 */
       default:
         throw new Error(
-          `Unknown closed exercise type: ${(exercise as ClosedExercise).type}`
+          `Unknown closed exercise type: ${(exercise as ClosedExercise).type}`,
         );
     }
   }

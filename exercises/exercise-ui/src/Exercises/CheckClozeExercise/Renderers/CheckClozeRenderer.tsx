@@ -1,26 +1,26 @@
-import type { GapExerciseProps } from '@exercises/logic';
+import type { ClozeExerciseProps } from '@exercises/logic';
 
-import { GapTypeTest } from '../Tests/GapTypeTest';
-import { GapClickTest } from '../Tests/GapClickTest';
+import { ClozeTypeTest } from '../Tests/ClozeTypeTest';
+import { ClozeClickTest } from '../Tests/ClozeClickTest';
 
-export function CheckGapRenderer({
+export function CheckClozeRenderer({
   exercise,
   onSubmit,
   onComplete,
-}: GapExerciseProps) {
+}: ClozeExerciseProps) {
   switch (exercise.type) {
-    case 'gap-click-test':
+    case 'cloze-click-test':
       return (
-        <GapClickTest
+        <ClozeClickTest
           exercise={exercise}
           onSubmit={onSubmit}
           onComplete={onComplete}
         />
       );
 
-    case 'gap-type-test':
+    case 'cloze-type-test':
       return (
-        <GapTypeTest
+        <ClozeTypeTest
           exercise={exercise}
           onSubmit={onSubmit}
           onComplete={onComplete}

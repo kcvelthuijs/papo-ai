@@ -4,11 +4,7 @@ import { ExerciseRenderer } from '@exercises/ui';
 
 import ImageComponent from '../Components/ImageComponent';
 
-type LessonProps = {
-  id: string;
-};
-
-const Lesson = ({ id }: LessonProps) => {
+const Lesson = () => {
   const { currentLesson, currentExercise, isLoading, startLesson } =
     useLessonStore();
 
@@ -39,7 +35,7 @@ const Lesson = ({ id }: LessonProps) => {
         {!currentExercise && (
           <div className='flex justify-center w-full my-4'>
             <Button
-              className='flex items-center gap-2 bg-gray-500 rounded-sm border-2 border-gray-600 shadow-2xl px-3 py-2 pointer'
+              className='flex items-center cloze-2 bg-gray-500 rounded-sm border-2 border-gray-600 shadow-2xl px-3 py-2 pointer'
               onClick={startLesson}
             >
               {isLoading ? (
@@ -50,7 +46,7 @@ const Lesson = ({ id }: LessonProps) => {
                   </span>
                 </>
               ) : (
-                <p>Começar a aula</p>
+                <p>Começar</p>
               )}
             </Button>
           </div>

@@ -12,27 +12,27 @@ type Props = {
 
 export function PhraseSlide({ Phrase, answers, setAnswers, wrong }: Props) {
   return (
-    <div className='flex flex-col gap-4'>
+    <div className='flex flex-col cloze-4'>
       {/* Phrase */}
-      <div className='flex flex-wrap items-center gap-2 text-lg'>
+      <div className='flex flex-wrap items-center cloze-2 text-lg'>
         {Phrase.textParts.map((part, index) => {
-          const gap = Phrase.gaps[index];
+          const cloze = Phrase.gaps[index];
 
           return (
-            <span key={index} className='flex items-center gap-2'>
+            <span key={index} className='flex items-center cloze-2'>
               <span>{part}</span>
 
-              {gap && (
+              {cloze && (
                 <ExerciseInputBox
-                  value={answers[gap.id] || ''}
+                  value={answers[cloze.id] || ''}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     setAnswers((prev) => ({
                       ...prev,
-                      [gap.id]: e.target.value,
+                      [cloze.id]: e.target.value,
                     }))
                   }
                   state={wrong ? 'wrong' : 'idle'}
-                  size={(answers[gap.id]?.length || 1) + 1}
+                  size={(answers[cloze.id]?.length || 1) + 1}
                 />
               )}
             </span>

@@ -6,7 +6,7 @@ import {
   CardDescription,
   CardContent,
   CardFooter,
-  CardAction
+  CardAction,
 } from '../shadcn/card';
 // import { Button } from '../shadcn/button';
 import StarBurst from '../animations/starburst';
@@ -33,7 +33,7 @@ export function CardLayout({
   stars,
   isComplete,
   onContinue,
-  onSkip
+  onSkip,
 }: CardLayoutProps) {
   const continueRef = useRef<HTMLButtonElement | null>(null);
 
@@ -42,7 +42,7 @@ export function CardLayout({
     setTimeout(() => {
       continueRef.current?.scrollIntoView({
         block: 'center',
-        behavior: 'smooth'
+        behavior: 'smooth',
       });
       continueRef.current?.focus();
     });
@@ -52,7 +52,7 @@ export function CardLayout({
     <>
       <div className='flex flex-row justify-center'>
         <Card
-          className={`mt-2 flex xl:w-180 flex-col justify-center border-gray-500 gap-0 `}
+          className={`mt-2 flex xl:w-180 flex-col justify-center border-gray-500 cloze-0 `}
         >
           {title && (
             <CardHeader className='border-b border-gray-600'>
