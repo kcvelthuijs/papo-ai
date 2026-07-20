@@ -7,6 +7,7 @@ export function CheckClozeRenderer({
   exercise,
   onSubmit,
   onComplete,
+  handleAudio,
 }: ClozeExerciseProps) {
   switch (exercise.type) {
     case 'cloze-click-test':
@@ -15,6 +16,7 @@ export function CheckClozeRenderer({
           exercise={exercise}
           onSubmit={onSubmit}
           onComplete={onComplete}
+          handleAudio={handleAudio}
         />
       );
 
@@ -24,6 +26,7 @@ export function CheckClozeRenderer({
           exercise={exercise}
           onSubmit={onSubmit}
           onComplete={onComplete}
+          handleAudio={handleAudio}
         />
       );
 

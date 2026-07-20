@@ -11,6 +11,7 @@ export function ClozeClickTest({
   exercise,
   onSubmit,
   onComplete,
+  handleAudio,
 }: ClozeExerciseProps) {
   const {
     active,
@@ -18,6 +19,7 @@ export function ClozeClickTest({
     phrase,
     clozeIndex,
     isComplete,
+    buzy,
     tempFocus,
     getState,
     submit,
@@ -26,6 +28,7 @@ export function ClozeClickTest({
     exercise,
     onSubmit,
     onComplete,
+    handleAudio,
   });
 
   const [options, setOptions] = useState<string[]>([]);
@@ -63,9 +66,9 @@ export function ClozeClickTest({
       isComplete={isComplete}
       onContinue={next}
       content={
-        <div className='flex flex-col gap-6'>
+        <div className='flex flex-col gap-6 items-center'>
           {/* Phrase */}
-          <div className='flex flex-wrap items-center gap-2 text-lg'>
+          <div className='flex flex-wrap gap-2 pt-4 pb-0 text-lg'>
             {phrase?.textParts.map((part: string, index: number) => {
               const cloze = phrase.gaps[index];
               const clozeId = cloze?.id ?? 'unknown';
@@ -93,7 +96,9 @@ export function ClozeClickTest({
           </div>
 
           {/* Translation */}
-          <div className='text-sm text-gray-400'>{phrase?.translation}</div>
+          <div className='text-sm text-gray-400 pb-4 pt-0'>
+            {phrase?.translation}
+          </div>
         </div>
       }
       footer={
@@ -105,6 +110,7 @@ export function ClozeClickTest({
                 id={option}
                 onClick={() => handleSelect(option)}
                 score={answers[clozeIndex]?.score}
+                disabled={buzy}
               >
                 {option}
               </AnswerButton>

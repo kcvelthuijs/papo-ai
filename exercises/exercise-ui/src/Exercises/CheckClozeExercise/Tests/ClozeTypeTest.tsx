@@ -13,6 +13,7 @@ export function ClozeTypeTest({
   exercise,
   onSubmit,
   onComplete,
+  handleAudio,
 }: ClozeExerciseProps) {
   const {
     active,
@@ -24,7 +25,7 @@ export function ClozeTypeTest({
     submit,
     registerInputRef,
     next,
-  } = useClozeExercise({ exercise, onSubmit, onComplete });
+  } = useClozeExercise({ exercise, onSubmit, onComplete, handleAudio });
 
   const { stars, spawnStars, registerStarRef } = useExerciseStars();
   const [localInput, setLocalInput] = useState<Record<string, string>>({});

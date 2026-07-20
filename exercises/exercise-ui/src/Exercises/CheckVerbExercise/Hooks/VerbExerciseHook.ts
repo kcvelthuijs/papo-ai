@@ -24,11 +24,13 @@ type UseVerbExerciseParams = {
     value: string;
   }) => Promise<CheckVerbFeedback>;
   onComplete: (readon: ExerciseExitReason) => Promise<void>;
+  handleAudio: (text: string, callback: () => void) => Promise<void>;
 };
 
 export function useVerbExercise({
   onSubmit,
   onComplete,
+  handleAudio,
 }: UseVerbExerciseParams) {
   // -------------------------
   // STATE
@@ -39,6 +41,8 @@ export function useVerbExercise({
   const [queue, setQueue] = useState<PronounId[]>(PtPronouns.map((p) => p.id));
   const [tempFocus, setFocus] = useState<string | null>(null);
   const [isComplete, setComplete] = useState<boolean>(false);
+  const [busy, setBusy] = useState<boolean>(false);
+
   const active = queue[0];
 
   // -------------------------
@@ -72,6 +76,9 @@ export function useVerbExercise({
   // SUBMIT LOGIC
   // -------------------------
   async function submit(value: string) {
+    const audioReady = () => {
+      setBusy(false);
+    };
     if (!active) return;
 
     const current = active;
@@ -90,6 +97,12 @@ export function useVerbExercise({
     setTimeout(() => {
       setFocus(null);
     }, EXERCISE_FEEDBACK_TIME);
+
+    if (result.score !== 'wrong' && handleAudio !== undefined) {
+      setBusy(true);
+      const pronoun = PtPronouns.find((p) => p.id == active);
+      if (pronoun) await handleAudio(`${pronoun.text} ${value}`, audioReady);
+    }
 
     switch (result.nextAction) {
       case 'next':
@@ -139,6 +152,7 @@ export function useVerbExercise({
     queue,
     isComplete,
     tempFocus,
+    busy,
 
     // helpers
     getState,

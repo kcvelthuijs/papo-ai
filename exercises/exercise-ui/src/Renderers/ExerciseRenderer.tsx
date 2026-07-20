@@ -28,6 +28,14 @@ export function ExerciseRenderer({ exercise }: Props) {
     await completeExercise(reason);
   };
 
+  const submitAudio = useLessonStore((s) => s.submitAudio);
+  const handleAudio = async (
+    text: string,
+    callback?: () => void,
+  ): Promise<void> => {
+    await submitAudio(text, callback);
+  };
+
   switch (exercise.type) {
     // -------------------------
     // VERB
@@ -40,6 +48,7 @@ export function ExerciseRenderer({ exercise }: Props) {
           exercise={exercise}
           onSubmit={handleSubmit}
           onComplete={handleComplete}
+          handleAudio={handleAudio}
         />
       );
 
@@ -53,6 +62,7 @@ export function ExerciseRenderer({ exercise }: Props) {
           exercise={exercise}
           onSubmit={handleSubmit}
           onComplete={handleComplete}
+          handleAudio={handleAudio}
         />
       );
 
@@ -66,6 +76,7 @@ export function ExerciseRenderer({ exercise }: Props) {
           exercise={exercise}
           onSubmit={handleSubmit}
           onComplete={handleComplete}
+          handleAudio={handleAudio}
         />
       );
 

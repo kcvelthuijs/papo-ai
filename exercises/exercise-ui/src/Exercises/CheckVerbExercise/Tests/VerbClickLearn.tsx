@@ -22,9 +22,10 @@ export function VerbClickLearn({
   exercise,
   onSubmit,
   onComplete,
+  handleAudio,
 }: VerbExerciseProps) {
-  const { active, answers, tempFocus, isComplete, getState, submit, next } =
-    useVerbExercise({ onSubmit, onComplete });
+  const { active, answers, tempFocus, isComplete, getState, submit, busy } =
+    useVerbExercise({ onSubmit, onComplete, handleAudio });
   const [vervoeging, setVervoeging] = useState<VerbFormRow[]>(
     buildVerbForms(exercise),
   );
@@ -75,6 +76,7 @@ export function VerbClickLearn({
               vervoeging[0] ? handleSelect(vervoeging[0]) : undefined
             }
             score={active ? answers[active]?.score : undefined}
+            disabled={busy}
           >
             {vervoeging[0]?.form}
           </AnswerButton>

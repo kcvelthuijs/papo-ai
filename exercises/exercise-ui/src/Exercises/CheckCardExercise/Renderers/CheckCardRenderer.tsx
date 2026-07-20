@@ -6,6 +6,7 @@ export function CheckCardRenderer({
   exercise,
   onSubmit,
   onComplete,
+  handleAudio,
 }: CardExerciseProps) {
   switch (exercise.type) {
     case 'card-click-learn':
@@ -14,6 +15,7 @@ export function CheckCardRenderer({
           exercise={exercise}
           onSubmit={onSubmit}
           onComplete={onComplete}
+          handleAudio={handleAudio}
         />
       );
 
@@ -23,6 +25,7 @@ export function CheckCardRenderer({
           exercise={exercise}
           onSubmit={onSubmit}
           onComplete={onComplete}
+          handleAudio={handleAudio}
         />
       );
     default:

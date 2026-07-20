@@ -14,46 +14,52 @@ import {
 } from '@workspace/connectors';
 
 import type { ExerciseEvaluation } from '@workspace/webtypes';
-
 import { executeExercise, ExerciseFromExerciseData } from '@exercises/logic';
 
-type LessonState = {
-  lessons: Record<string, LessonSummary>;
-  exerciseCache: Record<string, Exercise[]>;
-  exercises: Exercise[];
+import { useSpeechStore } from './SpeechStore';
+import { useAudioStore } from './AudioStore';
 
+type LessonState = {
+  // Lesson properties
+  lessons: Record<string, LessonSummary>;
   currentLessonID?: string;
   currentLesson?: LessonSummary;
 
+  // Exercise properties
+  exerciseCache: Record<string, Exercise[]>;
+  exercises: Exercise[];
   currentExerciseIndex: number;
   currentExercise?: Exercise;
 
+  // Exercise results
   results: ExerciseEvaluation[];
 
+  // Other settings
   isLoading: boolean;
   error?: string;
 
+  // Methods
   fetchAllLessons: () => Promise<void>;
   getLessonByID: (id: string) => Promise<LessonSummary | undefined>;
   setCurrentLesson: (lessonId: string) => Promise<void>;
-
   startLesson: () => void;
+
   setExercise: (exerciseId: number) => Promise<void>;
   startExercise: () => Promise<void>;
+  nextExercise: () => void;
+  completeExercise: (reason: ExerciseExitReason) => Promise<void>;
 
   submitAnswer: (answer: any) => Promise<ExerciseEvaluation>;
-  completeExercise: (reason: ExerciseExitReason) => Promise<void>;
-  nextExercise: () => void;
+  submitAudio: (text: string, callback?: () => void) => Promise<void>;
 };
 
 export const useLessonStore = create<LessonState>((set, get) => ({
   lessons: {},
-  exerciseCache: {},
-  exercises: [],
-
   currentLessonID: undefined,
   currentLesson: undefined,
 
+  exerciseCache: {},
+  exercises: [],
   currentExerciseIndex: 0,
   currentExercise: undefined,
 
@@ -253,7 +259,24 @@ export const useLessonStore = create<LessonState>((set, get) => ({
       set({
         currentLesson: undefined,
         currentLessonID: '',
+        exercises: [],
+        currentExerciseIndex: 0,
+        currentExercise: undefined,
       });
     }
+  },
+
+  // -------------------------
+  // HANDLE AUDIO
+  // -------------------------
+  submitAudio: async (text: string, callBack?: () => void): Promise<void> => {
+    // Tekst toevoegen
+    await useSpeechStore.getState().generateSpeech(text);
+
+    // Wacht tot het afspelen klaar is
+    await useAudioStore.getState().waitForCompletion();
+
+    // roep de callback aan als die gegeven is
+    if (callBack) callBack();
   },
 }));

@@ -7,6 +7,7 @@ import {
   type ExerciseScore,
   type Cloze,
   type ClozeAnswer,
+  type Phrase,
 } from '@workspace/dtotypes';
 
 import {
@@ -23,12 +24,14 @@ type useClozeExercise = {
   exercise: CheckClozeExercise;
   onSubmit: (input: ClozeAnswer) => Promise<CheckClozeFeedback>;
   onComplete: (reason: ExerciseExitReason) => Promise<void>;
+  handleAudio: (text: string, callBack?: () => void) => Promise<void>;
 };
 
 export function useClozeExercise({
   exercise,
   onSubmit,
   onComplete,
+  handleAudio,
 }: useClozeExercise) {
   const [answers, setAnswers] = useState<Record<string, ClozeFeedback>>({});
   const inputRefs = useRef<Record<string, HTMLInputElement | null>>({});
@@ -38,6 +41,7 @@ export function useClozeExercise({
   const [active, setActive] = useState<Cloze | undefined>(undefined);
   const [tempFocus, setFocus] = useState<string | null>(null);
   const [isComplete, setComplete] = useState<boolean>(false);
+  const [busy, setBusy] = useState<boolean>(false);
 
   const phrase = exercise.phrases[phraseIndex];
 
@@ -88,6 +92,11 @@ export function useClozeExercise({
   // SUBMIT LOGIC
   // -------------------------
   async function submit(value: string) {
+    const isComplete = () => {
+      setComplete(true);
+      setBusy(false);
+    };
+
     if (!active) return;
 
     const current = active;
@@ -107,32 +116,52 @@ export function useClozeExercise({
       },
     }));
 
+    // Show correct/incorrect
+    setFocus(active.id);
     switch (result.nextAction) {
       case 'next':
         setClozeIndex((prev) => prev + 1);
         break;
       case 'next step':
-        setComplete(true);
+        if (handleAudio !== undefined && phrase) {
+          setBusy(true);
+          await handleAudio(getFullPhraseText(phrase), isComplete);
+        } else isComplete();
         break;
     }
 
-    setFocus(active.id);
     setTimeout(() => {
       setFocus(null);
     }, EXERCISE_FEEDBACK_TIME);
     return result;
   }
 
+  function getFullPhraseText(phrase: Phrase): string {
+    const result: string[] = [];
+    phrase.textParts.forEach((part, index) => {
+      result.push(part);
+      const gap = phrase.gaps[index];
+      if (gap) {
+        result.push(gap.correct);
+      }
+    });
+    return result.join(' ');
+  }
+
   // -------------------------
   // CONTINUE TO NEXT
   // -------------------------
   async function next() {
-    if (phraseIndex < exercise.phrases.length - 1)
+    if (phraseIndex < exercise.phrases.length - 1) {
       // next phrase
       setPhraseIndex((prev) => prev + 1);
-    else
+    } else
       // next exercise
       await onComplete('end');
+  }
+
+  function nextPhrase() {
+    setPhraseIndex((prev) => prev + 1);
   }
 
   // -------------------------
@@ -162,6 +191,7 @@ export function useClozeExercise({
     clozeIndex,
     isComplete,
     tempFocus,
+    busy,
 
     // helpers
     getState,

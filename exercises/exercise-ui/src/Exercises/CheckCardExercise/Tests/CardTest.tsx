@@ -16,6 +16,7 @@ export function CardTest({
   exercise,
   onSubmit,
   onComplete,
+  handleAudio,
 }: CardExerciseProps) {
   const randomItems = useMemo<CardItem[]>(
     () => shuffle(exercise.items),
@@ -37,6 +38,7 @@ export function CardTest({
     exercise: { ...exercise, items: randomItems },
     onSubmit,
     onComplete,
+    handleAudio,
   });
 
   const currentValue = active ? (localInput[active.id] ?? '') : '';
@@ -65,8 +67,8 @@ export function CardTest({
     const result = await submit(value);
 
     if (result?.score !== 'wrong') {
-      // laat zien dat het antwoord goed is
       spawnStars(active.id);
+      // laat zien dat het antwoord goed is
     }
   }
 
@@ -81,12 +83,12 @@ export function CardTest({
       ...prev,
       [active.id]: correctAnswer,
     }));
-    const result = await submit(correctAnswer);
+    await submit(correctAnswer);
+    if (handleAudio !== undefined) await handleAudio(active?.response ?? '');
     setLocalInput((prev) => ({
       ...prev,
       [active.id]: '',
     }));
-    //next();
   }
 
   // -------------------------

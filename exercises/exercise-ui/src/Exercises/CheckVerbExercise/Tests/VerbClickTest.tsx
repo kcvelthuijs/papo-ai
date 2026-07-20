@@ -23,11 +23,13 @@ export function VerbClickTest({
   exercise,
   onSubmit,
   onComplete,
+  handleAudio,
 }: VerbExerciseProps) {
-  const { active, answers, tempFocus, isComplete, getState, submit, next } =
+  const { active, answers, tempFocus, isComplete, getState, submit, busy } =
     useVerbExercise({
       onSubmit,
       onComplete,
+      handleAudio,
     });
   const [vervoeging, setVervoeging] = useState<VerbFormRow[]>(
     shuffle(buildVerbForms(exercise)),
@@ -81,6 +83,7 @@ export function VerbClickTest({
                 key={v.id}
                 id={v.id}
                 onClick={() => handleSelect(v)}
+                disabled={busy}
                 score={feedback?.id === v.id ? feedback.score : undefined}
               >
                 {v.form}

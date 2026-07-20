@@ -27,7 +27,7 @@ export const useLanguageStore = create<LanguageState>((set, get) => ({
     const found = get().languageByCode[code];
     if (found) return found;
 
-    const fallback = LANGUAGES.default;
+    const fallback = LANGUAGES.default as LanguageConfig;
     set((state) => ({
       languageByCode: { ...state.languageByCode, [code]: fallback },
     }));

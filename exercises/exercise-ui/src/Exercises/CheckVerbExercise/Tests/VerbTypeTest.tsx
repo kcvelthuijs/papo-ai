@@ -12,16 +12,18 @@ export function VerbTypeTest({
   exercise,
   onSubmit,
   onComplete,
+  handleAudio,
 }: VerbExerciseProps) {
   const {
     active,
     answers,
     tempFocus,
     isComplete,
+    busy,
     getState,
     submit,
     registerInputRef,
-  } = useVerbExercise({ onSubmit, onComplete });
+  } = useVerbExercise({ onSubmit, onComplete, handleAudio });
 
   const { stars, spawnStars, registerStarRef } = useExerciseStars();
   const [localInput, setLocalInput] = useState<Record<string, string>>({});
@@ -86,7 +88,7 @@ export function VerbTypeTest({
               registerStarRef(pronounId, el);
             }}
             value={value}
-            // disabled={!(getState(pronounId as PronounId) == 'input')}
+            disabled={busy}
             state={getState(pronounId as PronounId, tempFocus)}
             score={answers[pronounId]?.score}
             size={Math.max(

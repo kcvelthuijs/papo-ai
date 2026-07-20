@@ -24,12 +24,14 @@ type useCardProps = {
   exercise: CardExercise;
   onSubmit: (input: CardAnswer) => Promise<CardFeedback>;
   onComplete: (reason: ExerciseExitReason) => Promise<void>;
+  handleAudio: (text: string, callback?: () => void) => Promise<void>;
 };
 
 export function useCardExercise({
   exercise,
   onSubmit,
   onComplete,
+  handleAudio,
 }: useCardProps) {
   const [answers, setAnswers] = useState<Record<string, ItemFeedback>>({});
   const [itemIndex, setItemIndex] = useState(0);
@@ -97,11 +99,20 @@ export function useCardExercise({
     }, EXERCISE_FEEDBACK_TIME);
 
     if (result.nextAction === 'next step') {
-      setTimeout(() => {
-        setItemIndex((i) => i + 1);
-      }, EXERCISE_FEEDBACK_TIME);
+      if (handleAudio !== undefined)
+        await handleAudio(active?.response ?? '', afterSubmit);
+      else afterSubmit();
     }
     return result;
+  }
+
+  // -------------------------
+  // AFTER SUBMIT
+  // -------------------------
+  function afterSubmit() {
+    setTimeout(() => {
+      setItemIndex((i) => i + 1);
+    }, EXERCISE_FEEDBACK_TIME);
   }
 
   // -------------------------

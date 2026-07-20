@@ -40,6 +40,10 @@ export const LessonCard = ({ lesson, onSelectLesson }: LessonCardProps) => {
     <Card
       id={lesson.id}
       className='relative overflow-hidden mx-auto w-full max-w-sm pt-0 pb-3 bg-gray-100 border-gray-500 h-65'
+      onClick={(e: any) => {
+        e.stopPropagation();
+        onSelectLesson(lesson.id);
+      }}
     >
       {lesson.type && (
         <Badge
@@ -59,17 +63,9 @@ export const LessonCard = ({ lesson, onSelectLesson }: LessonCardProps) => {
 
       <CardHeader className='px-2 m-0'>
         <CardAction>
-          <ContinueButton
-            className='cursor-pointer'
-            onClick={(e: any) => {
-              e.stopPropagation();
-              onSelectLesson(lesson.id);
-            }}
-          >
-            Start
-          </ContinueButton>
+          <ContinueButton className='cursor-pointer'>Start</ContinueButton>
         </CardAction>
-        <CardTitle className='text-lg pt-1'>{lesson.title}</CardTitle>
+        <CardTitle className='text-lg p-0'>{lesson.title}</CardTitle>
       </CardHeader>
     </Card>
   );

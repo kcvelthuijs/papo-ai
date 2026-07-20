@@ -27,18 +27,21 @@ export type VerbExerciseProps = {
     value: string;
   }) => Promise<CheckVerbFeedback>;
   onComplete: (reason: ExerciseExitReason) => Promise<void>;
+  handleAudio: (text: string, callBack?: () => void) => Promise<void>;
 };
 
 export type ClozeExerciseProps = {
   exercise: CheckClozeExercise;
   onSubmit: (answer: ClozeAnswer) => Promise<CheckClozeFeedback>;
   onComplete: (reason: ExerciseExitReason) => Promise<void>;
+  handleAudio: (text: string, callBack?: () => void) => Promise<void>;
 };
 
 export type CardExerciseProps = {
   exercise: CardExercise;
   onSubmit: (answer: CardAnswer) => Promise<CardFeedback>;
   onComplete: (reason: ExerciseExitReason) => Promise<void>;
+  handleAudio: (text: string, callBack?: () => void) => Promise<void>;
 };
 
 export type QuizQuestionProps = {

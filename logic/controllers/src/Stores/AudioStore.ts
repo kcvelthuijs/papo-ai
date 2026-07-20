@@ -11,6 +11,7 @@ type AudioStore = {
 
   setCurrent: (task: AudioTask | null) => void;
   setPaused: (paused: boolean) => void;
+  waitForCompletion: () => Promise<void>;
 
   pause: () => void;
   resume: () => void;
@@ -48,5 +49,9 @@ export const useAudioStore = create<AudioStore>((set) => ({
   stop: () => {
     AudioQueue.clear();
     set({ current: null, isPaused: false });
+  },
+
+  waitForCompletion: async () => {
+    await AudioQueue.waitUntilEmpty();
   },
 }));

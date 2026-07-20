@@ -8,6 +8,7 @@ export function CheckVerbRenderer({
   exercise,
   onSubmit,
   onComplete,
+  handleAudio,
 }: VerbExerciseProps) {
   switch (exercise.type) {
     case 'verb-click-learn':
@@ -16,6 +17,7 @@ export function CheckVerbRenderer({
           exercise={exercise}
           onSubmit={onSubmit}
           onComplete={onComplete}
+          handleAudio={handleAudio}
         />
       );
 
@@ -25,6 +27,7 @@ export function CheckVerbRenderer({
           exercise={exercise}
           onSubmit={onSubmit}
           onComplete={onComplete}
+          handleAudio={handleAudio}
         />
       );
 
@@ -34,6 +37,7 @@ export function CheckVerbRenderer({
           exercise={exercise}
           onSubmit={onSubmit}
           onComplete={onComplete}
+          handleAudio={handleAudio}
         />
       );
 
