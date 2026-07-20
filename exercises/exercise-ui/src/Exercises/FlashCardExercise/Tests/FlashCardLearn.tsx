@@ -1,16 +1,13 @@
 import { useState } from 'react';
 
 import type { FlashCardItem } from '@workspace/dtotypes';
-
 import { CardLayout } from '@workspace/ui';
-
-import { ExerciseTextbox } from '../../../Components/Atoms/ExerciseTextBox';
-import type { FlashCardExerciseProps } from '@exercises/logic';
 import { ImageView } from '../../../Components/Atoms/ImageView';
+import type { FlashCardExerciseProps } from '@exercises/logic';
 
 export function FlashCardLearn({
   exercise,
-  onComplete
+  onComplete,
 }: FlashCardExerciseProps) {
   // -------------------------
   // STATE
@@ -68,8 +65,8 @@ export function FlashCardLearn({
       onContinue={next}
       image={
         <ImageView
-          name={active?.image ?? ''}
-          tree={exercise.imageLocation ?? ['flashcards']}
+          name={active?.name ?? ''}
+          tree={active?.tree ?? []}
           size='none'
           className='w-full h-auto object-contain pt-0 mt-0 gap-0'
         />
@@ -78,9 +75,9 @@ export function FlashCardLearn({
         <div className='flex flex-col gap-6'>
           {/* CARD */}
           <div className='flex w-full flex-col items-center justify-center'>
-            {/* WORD */}
+            {/* question or answer */}
             <div className='text-center text-2xl font-semibold py-3'>
-              {revealed ? active?.translation : active?.word}
+              {revealed ? active?.response : active?.question}
             </div>
           </div>
 

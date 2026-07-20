@@ -70,24 +70,26 @@ export const useLessonStore = create<LessonState>((set, get) => ({
 
     try {
       const summaries = await getAllLessons();
-      if (!summaries) return;
+      if (summaries) {
+        const map = summaries.reduce(
+          (acc, l) => {
+            acc[l.id] = l;
+            return acc;
+          },
+          {} as Record<string, LessonSummary>,
+        );
 
-      const map = summaries.reduce(
-        (acc, l) => {
-          acc[l.id] = l;
-          return acc;
-        },
-        {} as Record<string, LessonSummary>,
-      );
-
-      set({
-        lessons: map,
-        isLoading: false,
-      });
+        set({
+          lessons: map,
+        });
+      }
     } catch (err: any) {
       set({
-        isLoading: false,
         error: err?.message,
+      });
+    } finally {
+      set({
+        isLoading: false,
       });
     }
   },

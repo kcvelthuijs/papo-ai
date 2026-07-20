@@ -227,7 +227,8 @@ BEGIN
                             'id', di.sequence,
                             'question', tl.text,
                             'response', c.text,
-                            'image', c.image
+                            'tree', c.tree,
+                            'name', c.name
                         )
                         ORDER BY di.sequence
                     )
@@ -406,7 +407,8 @@ CREATE TABLE "Card"."Cards" (
     id integer NOT NULL,
     created_at timestamp without time zone DEFAULT now() NOT NULL,
     text character varying(255) NOT NULL,
-    image text[]
+    tree text[],
+    name text
 );
 
 

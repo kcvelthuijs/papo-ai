@@ -1,23 +1,17 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 
 import { useLessonStore } from '@workspace/controllers';
 import type { LessonSelectProps } from '@workspace/webtypes';
 
 import { LessonCard, LessonCardSkeleton } from '../Components/LessonCard';
-// import { getLessonByID } from '@workspace/connectors';
 
 export const LessonSelect = ({ onSelect }: LessonSelectProps) => {
   const { lessons, fetchAllLessons, isLoading, setCurrentLesson } =
     useLessonStore();
 
-  const reading = useRef(false);
-
   useEffect(() => {
-    if (reading.current) return;
-    reading.current = true;
-
     fetchAllLessons();
-  }, []);
+  }, [fetchAllLessons]);
 
   const onLessonCardSelect = (lessonID: string): void => {
     console.log('onLessonCardSelect:', lessonID);

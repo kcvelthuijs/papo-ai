@@ -15,11 +15,11 @@ import { ImageView } from '../../../Components/Atoms/ImageView';
 export function FlashCardTest({
   exercise,
   onSubmit,
-  onComplete
+  onComplete,
 }: FlashCardExerciseProps) {
   const randomItems = useMemo<FlashCardItem[]>(
     () => shuffle(exercise.items),
-    [exercise.items]
+    [exercise.items],
   );
   const [localInput, setLocalInput] = useState<Record<string, string>>({});
   const { stars, spawnStars, registerStarRef } = useExerciseStars();
@@ -32,11 +32,11 @@ export function FlashCardTest({
     getState,
     submit,
     inputRef,
-    next
+    next,
   } = useFlashCardExercise({
     exercise: { ...exercise, items: randomItems },
     onSubmit,
-    onComplete
+    onComplete,
   });
 
   const currentValue = active ? (localInput[active.id] ?? '') : '';
@@ -51,7 +51,7 @@ export function FlashCardTest({
 
     setLocalInput((prev) => ({
       ...prev,
-      [active.id]: value
+      [active.id]: value,
     }));
   }
 
@@ -76,15 +76,15 @@ export function FlashCardTest({
   async function handleReveal() {
     if (!active) return;
 
-    const correctAnswer = active.translation;
+    const correctAnswer = active.response;
     setLocalInput((prev) => ({
       ...prev,
-      [active.id]: correctAnswer
+      [active.id]: correctAnswer,
     }));
     const result = await submit(correctAnswer);
     setLocalInput((prev) => ({
       ...prev,
-      [active.id]: ''
+      [active.id]: '',
     }));
     //next();
   }
@@ -102,8 +102,8 @@ export function FlashCardTest({
       stars={stars}
       image={
         <ImageView
-          name={active?.image ?? ''}
-          tree={exercise.imageLocation ?? ['flashcards']}
+          name={active?.name ?? ''}
+          tree={active?.tree ?? ['flashcards']}
           size='none'
           className='w-full h-auto object-contain pt-0 mt-0 gap-0'
         />
@@ -119,7 +119,7 @@ export function FlashCardTest({
               }
               className='flex flex-1 items-center justify-center text-center text-3xl font-semibold'
             >
-              {active?.word}
+              {active?.question}
             </div>
           </div>
 
@@ -131,7 +131,7 @@ export function FlashCardTest({
                   ref={inputRef}
                   value={currentValue}
                   hint={active.hint}
-                  size={Math.max(active.translation.length, 10)}
+                  size={Math.max(active.response.length, 10)}
                   state={getState(active.id, tempFocus)}
                   score={answer?.score}
                   className='min-w-60 text-center text-xl'

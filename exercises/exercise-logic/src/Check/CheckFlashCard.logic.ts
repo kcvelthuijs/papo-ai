@@ -17,7 +17,7 @@ export function checkFlashCard(
 
   // bepaal de uitslag
   const givenAnswer = answer.value;
-  const correctAnswer = flashCardItem.translation;
+  const correctAnswer = flashCardItem.response;
   const score = checkAnswerText(givenAnswer, correctAnswer);
 
   // bepaal de volgende actie

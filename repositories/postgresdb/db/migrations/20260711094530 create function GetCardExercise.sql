@@ -24,7 +24,8 @@ BEGIN
                             'id', di.sequence,
                             'question', tl.text,
                             'response', c.text,
-                            'image', c.image
+                            'tree', c.tree,
+                            'name', c.name
                         )
                         ORDER BY di.sequence
                     )

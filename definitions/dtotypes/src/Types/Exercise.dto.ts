@@ -128,8 +128,10 @@ export type FlashCardExercise = BaseExercise & {
 };
 export type FlashCardItem = {
   id: string;
-  word: string;
-  translation: string;
+  name: string;
+  tree: string[];
+  question: string;
+  response: string;
   hint?: string;
   image?: string;
 };

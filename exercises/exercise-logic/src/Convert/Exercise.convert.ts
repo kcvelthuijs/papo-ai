@@ -3,6 +3,7 @@ import {
   type CheckGapExercise,
   type CheckVerbExercise,
   type ExerciseData,
+  type FlashCardExercise,
   type OpenExercise,
 } from '@workspace/dtotypes';
 import { type Exercise } from '@workspace/dtotypes';
@@ -51,6 +52,15 @@ export function ExerciseFromExerciseData(
         tense,
         forms,
       } as CheckVerbExercise;
+
+    case 'flashcard-learn':
+    case 'flashcard-test':
+      const { items, imageLocation } = data.data;
+      return {
+        ...base,
+        items,
+        imageLocation,
+      } as FlashCardExercise;
 
     case 'phrase-build-test':
       const { correctOrder, translation } = data.data;
