@@ -26,7 +26,7 @@ export function ChatInput({ onSubmit, onAudio, isDisabled }: Props) {
   function onRecordingReady() {}
 
   return (
-    <div className='flex cloze-2 border rounded-2xl p-2'>
+    <div className='flex gap-2 border rounded-2xl p-2'>
       <textarea
         value={value}
         onChange={(e) => setValue(e.target.value)}
@@ -35,7 +35,7 @@ export function ChatInput({ onSubmit, onAudio, isDisabled }: Props) {
         placeholder='Typ je bericht...'
       />
 
-      <div className='flex overlay flex-row items-start justify-end cloze-1'>
+      <div className='flex overlay flex-row items-start justify-end gap-1'>
         <div>
           <AudioRecorder onReady={onRecordingReady} />
         </div>

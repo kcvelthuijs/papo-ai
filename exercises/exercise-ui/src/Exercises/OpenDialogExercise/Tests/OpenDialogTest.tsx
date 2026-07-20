@@ -22,7 +22,7 @@ export function OpenDialogTest({
   return (
     <div className='flex flex-col h-full'>
       {/* WORD STATUS */}
-      <div className='flex flex-wrap cloze-2 p-2 border-b'>
+      <div className='flex flex-wrap gap-2 p-2 border-b'>
         {words.map((w) => (
           <WordBadge key={w.word} word={w.word} used={w.used} />
         ))}

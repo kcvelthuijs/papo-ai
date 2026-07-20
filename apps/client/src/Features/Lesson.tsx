@@ -35,7 +35,7 @@ const Lesson = () => {
         {!currentExercise && (
           <div className='flex justify-center w-full my-4'>
             <Button
-              className='flex items-center cloze-2 bg-gray-500 rounded-sm border-2 border-gray-600 shadow-2xl px-3 py-2 pointer'
+              className='flex items-center gap-2 bg-gray-500 rounded-sm border-2 border-gray-600 shadow-2xl px-3 py-2 pointer'
               onClick={startLesson}
             >
               {isLoading ? (

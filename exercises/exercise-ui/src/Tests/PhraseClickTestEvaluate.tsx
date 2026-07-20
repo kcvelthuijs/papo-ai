@@ -47,7 +47,7 @@ export function PhraseClickTestEvaluate({
 
   // content voor CardContent
   const content = (
-    <div className='flex flex-wrap cloze-2 min-h-8 mb-4 justify-center'>
+    <div className='flex flex-wrap gap-2 min-h-8 mb-4 justify-center'>
       {selected.map((piece) => (
         <span
           key={piece.id}
@@ -61,7 +61,7 @@ export function PhraseClickTestEvaluate({
 
   // children voor CardFooter: beschikbare stukken
   const children = (
-    <div className='flex flex-wrap cloze-2 justify-center'>
+    <div className='flex flex-wrap gap-2 justify-center'>
       {available.map((piece) => (
         <AnswerButton
           id={piece.id}

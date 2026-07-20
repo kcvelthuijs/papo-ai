@@ -105,7 +105,7 @@ export function CardTest({
           name={active?.name ?? ''}
           tree={active?.tree ?? ['flashcards']}
           size='none'
-          className='w-full h-auto object-contain pt-0 mt-0 cloze-0'
+          className='w-full h-auto object-contain pt-0 mt-0 gap-0'
         />
       }
       content={

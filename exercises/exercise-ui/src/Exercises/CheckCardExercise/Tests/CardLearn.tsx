@@ -65,11 +65,11 @@ export function CardLearn({ exercise, onComplete }: CardExerciseProps) {
           name={active?.name ?? ''}
           tree={active?.tree ?? []}
           size='none'
-          className='w-full h-auto object-contain pt-0 mt-0 cloze-0'
+          className='w-full h-auto object-contain pt-0 mt-0 gap-0'
         />
       }
       content={
-        <div className='flex flex-col cloze-6'>
+        <div className='flex flex-col gap-6'>
           {/* CARD */}
           <div className='flex w-full flex-col items-center justify-center'>
             {/* question or answer */}
@@ -87,7 +87,7 @@ export function CardLearn({ exercise, onComplete }: CardExerciseProps) {
         </div>
       }
       footer={
-        <div className='flex flex-row cloze-2'>
+        <div className='flex flex-row gap-2'>
           {/* PREVIOUS */}
           <button
             onClick={previous}

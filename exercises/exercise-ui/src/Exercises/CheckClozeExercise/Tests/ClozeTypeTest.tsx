@@ -71,16 +71,16 @@ export function ClozeTypeTest({
       onContinue={next}
       stars={stars}
       content={
-        <div className='flex flex-col cloze-6'>
+        <div className='flex flex-col gap-6'>
           {/* Phrase */}
-          <div className='flex flex-wrap items-center cloze-2 text-lg'>
+          <div className='flex flex-wrap items-center gap-2 text-lg'>
             {phrase?.textParts.map((part: string, index: number) => {
               const cloze = phrase.gaps[index];
               const clozeId = cloze?.id ?? 'unknown';
               const isActive = active?.id === clozeId;
               const isAnswered = answers[clozeId]?.score === 'right';
               return (
-                <span key={index} className='flex items-center cloze-2'>
+                <span key={index} className='flex items-center gap-2'>
                   <span>{part}</span>
                   <span ref={(el) => registerStarRef(clozeId, el)}>
                     {cloze &&

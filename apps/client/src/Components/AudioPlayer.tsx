@@ -22,13 +22,13 @@ const AudioPlayer = ({ className }: Props) => {
 
   return (
     <div
-      className={`flex flex-col cloze-3 p-4 items-start rounded-xl ${className}`}
+      className={`flex flex-col gap-3 p-4 items-start rounded-xl ${className}`}
     >
       {/* Huidige zin */}
       <div className='self-start grow font-medium text-lg'>{current.text}</div>
 
       {/* Playback controls */}
-      <div className='flex-row self-start cloze-2 opacity-50 text-black font-bold'>
+      <div className='flex-row self-start gap-2 opacity-50 text-black font-bold'>
         <Button className='mx-2' onClick={restart}>
           <PiSkipBack />
         </Button>

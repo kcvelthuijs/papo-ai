@@ -10,6 +10,6 @@ export type Phrase = dtoPhrase;
 export type Cloze = dtoCloze;
 export type ExerciseEvaluation = dtoExerciseEvaluation;
 
-export type ExerciseInputState = 'idle' | 'input' | 'ready' | 'temp';
+export type ExerciseInputState = 'idle' | 'input' | 'ready' | 'wrong' | 'temp';
 
 export const EXERCISE_FEEDBACK_TIME = 800;

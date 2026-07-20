@@ -15,7 +15,7 @@ export const ChatMessageList = ({ messages, onSpeakMessage }: Props) => {
   }, [messages.length]);
 
   return (
-    <div className='flex flex-col cloze-2 py-2'>
+    <div className='flex flex-col gap-2 py-2'>
       {messages.map((message, index) => (
         <div
           key={message.id ?? index}

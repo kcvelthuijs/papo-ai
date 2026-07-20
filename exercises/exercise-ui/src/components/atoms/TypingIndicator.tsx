@@ -7,7 +7,7 @@ type Props = {
 export const TypingIndicator = ({ className = '' }: Props) => {
   return (
     <div
-      className={`flex cloze-1 px-3 py-2 bg-gray-100 rounded-xl self-start ${className}`}
+      className={`flex gap-1 px-3 py-2 bg-gray-100 rounded-xl self-start ${className}`}
     >
       <Dot />
       <Dot className='[animation-delay:0.2s]' />
