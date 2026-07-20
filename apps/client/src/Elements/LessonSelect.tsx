@@ -20,8 +20,8 @@ export const LessonSelect = ({ onSelect }: LessonSelectProps) => {
   };
 
   return (
-    <div className='xl:flex xl:justify-center bg-gray-300 shadow-lg'>
-      <div className='h-[calc(100vh-5rem)] xl:border-r xl:border-l xl:border-gray-400 bg-white  sm:w-full xl:w-300'>
+    <div className='xl:flex xl:justify-center'>
+      <div className='h-[calc(100vh-5rem)] xl:border-r xl:border-l xl:border-gray-400 bg-white  dark:bg-gray-800 dark:border-gray-800 sm:w-full xl:w-300'>
         <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 m-2'>
           {isLoading
             ? Array.from({ length: 8 }).map((_, i) => (

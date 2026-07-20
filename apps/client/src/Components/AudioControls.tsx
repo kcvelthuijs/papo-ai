@@ -1,19 +1,14 @@
 import { useState } from 'react';
 import { FaVolumeUp, FaVolumeMute } from 'react-icons/fa';
 
-import { Button } from '@workspace/ui';
 import type { OnOffState } from '@workspace/webtypes';
 
 type Props = {
   onStateChanged?: (state: OnOffState) => void;
-  className?: string;
 };
 
-const AudioControls = ({ onStateChanged, className }: Props) => {
+const AudioControls = ({ onStateChanged }: Props) => {
   const [audioState, setAudioState] = useState<OnOffState>('off');
-
-  const buttonStyle = `flex item-center text-black bg-gray-200 border-gray-400
-      hover:bg-blue-300 hover:border-blue-600 border-2 ${className}`;
 
   const toggleAudio = async () => {
     const newState: OnOffState = audioState === 'on' ? 'off' : 'on';
@@ -26,20 +21,14 @@ const AudioControls = ({ onStateChanged, className }: Props) => {
   };
 
   return (
-    <div className='flex flex-row flex-wrap gap-2'>
-      <Button onClick={toggleAudio} className={`${buttonStyle}`}>
-        {audioState === 'on' ? (
-          <>
-            <FaVolumeUp />
-            <span className='hidden lg:inline'>Geluid is aan</span>
-          </>
-        ) : (
-          <>
-            <FaVolumeMute />
-            <span className='hidden lg:inline'>Geluid is uit</span>
-          </>
-        )}
-      </Button>
+    <div className='text-center'>
+      <button
+        onClick={toggleAudio}
+        className='flex items-center gap-2 px-3 py-2 rounded-xl bg-gray-200 border border-gray-400 dark:bg-gray-700 hover:scale-103 transition-transform'
+      >
+        {audioState === 'on' ? <FaVolumeUp /> : <FaVolumeMute />}
+        {audioState === 'on' ? 'On' : 'Off'}
+      </button>
     </div>
   );
 };
