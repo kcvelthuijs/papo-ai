@@ -88,9 +88,11 @@ export function useVerbExercise({
     });
 
     // score zetten (voor feedback kleur)
+    const antwoord: string =
+      result.score === 'partial' ? result.correctValue : value;
     setAnswers((prev) => ({
       ...prev,
-      [current]: { answer: value, score: result.score },
+      [current]: { answer: antwoord, score: result.score },
     }));
 
     setFocus(current);
@@ -101,7 +103,7 @@ export function useVerbExercise({
     if (result.score !== 'wrong' && handleAudio !== undefined) {
       setBusy(true);
       const pronoun = PtPronouns.find((p) => p.id == active);
-      if (pronoun) await handleAudio(`${pronoun.text} ${value}`, audioReady);
+      if (pronoun) await handleAudio(`${pronoun.text} ${antwoord}`, audioReady);
     }
 
     switch (result.nextAction) {

@@ -2,11 +2,10 @@ import type {
   CheckClozeExercise,
   CheckClozeFeedback,
   ExerciseAction,
-  ExerciseScore,
-  Cloze,
   ClozeAnswer,
   Phrase,
 } from '@workspace/dtotypes';
+import { checkAnswerText } from '../Atoms/CheckAnswer';
 
 export function checkCloze(
   exercise: CheckClozeExercise,
@@ -18,19 +17,18 @@ export function checkCloze(
     const cloze = phrase.gaps[answer.clozeIndex];
     if (cloze) {
       // bepaal de uitslag
-      const answerUser = answer.value.trim().toLowerCase();
-      const answerCorrect = cloze?.correct.trim().toLowerCase();
-      const isCorrect = answerUser === answerCorrect;
+      const givenAnswer = answer.value.trim().toLowerCase();
+      const correctAnswer = cloze?.correct.trim().toLowerCase();
 
       // zet de score
-      const score: ExerciseScore = isCorrect ? 'right' : 'wrong';
+      const score = checkAnswerText(givenAnswer, correctAnswer);
 
       // kijk of het antwoord de laatste in de tekst is
       const isLastCloze = answer.clozeIndex >= phrase.gaps.length - 1;
 
       // bepaal de volgende actie
       const nextAction: ExerciseAction =
-        score !== 'right' ? 'retry' : !isLastCloze ? 'next' : 'next step';
+        score === 'wrong' ? 'retry' : !isLastCloze ? 'next' : 'next step';
 
       return {
         lessonId: exercise.lessonId,

@@ -47,7 +47,7 @@ export function VerbTypeTest({
     const value = localInput[pronounId] ?? '';
     const result = await submit(value);
 
-    if (result?.score === 'right') {
+    if (result?.score !== 'wrong') {
       // laat zien dat het antwoord goed is
       spawnStars(pronounId);
 
@@ -77,7 +77,7 @@ export function VerbTypeTest({
       renderField={(pronounId) => {
         const feedback = answers[pronounId];
         const value =
-          feedback?.score === 'right'
+          feedback?.score === 'right' || feedback?.score === 'partial'
             ? feedback.answer
             : (localInput[pronounId] ?? feedback?.answer ?? '');
         return (
