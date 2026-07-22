@@ -2,7 +2,7 @@ import type {
   CheckClozeExercise,
   LessonSummary,
   VerbFormTable,
-  OpenExercise,
+  ChatExercise,
   CardExercise,
 } from '@workspace/dtotypes';
 import type { Exercise } from '@workspace/dtotypes';
@@ -270,7 +270,7 @@ export const mockVocabLearnExercise: Exercise[] = [
   } as CardExercise,
 ];
 
-export const mockDialogExercise: OpenExercise = {
+export const mockDialogExercise: ChatExercise = {
   id: '1',
   lessonId: 1,
   seqNumber: 1,

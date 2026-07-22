@@ -4,8 +4,12 @@ import {
   type CheckVerbExercise,
   type ExerciseData,
   type CardExercise,
-  type OpenExercise,
+  type ChatExercise,
+  type BaseExercise,
+  type ExerciseState,
 } from '@workspace/dtotypes';
+
+import { sleep } from '@workspace/ui';
 import { type Exercise } from '@workspace/dtotypes';
 
 export function ExerciseFromExerciseData(
@@ -18,49 +22,70 @@ export function ExerciseFromExerciseData(
     type: data.type,
     title: data.title,
     description: data.description,
+    state: 'undefined',
   };
 
   switch (data.type) {
     case 'open-dialog':
-    case 'open-reflection':
-    case 'open-writing':
-      const { introduction, prompt, words, feedback, rubric, meta } = data.data;
-      return {
-        ...base,
-        introduction,
-        prompt,
-        words,
-        feedback,
-        rubric,
-        meta,
-      } as OpenExercise;
+      const createChatExercise = (
+        base: BaseExercise,
+        data: any,
+      ): ChatExercise => {
+        const { prompt, avatar, voice, items } = data.data;
+        return {
+          ...base,
+          prompt,
+          avatar,
+          voice,
+          scenes: items,
+        } as ChatExercise;
+      };
+      return createChatExercise(base, data);
 
     case 'cloze-type-test':
     case 'cloze-click-test':
-      return {
-        ...base,
-        phrases: data.data.phrases,
-      } as CheckClozeExercise;
+      const createClozeExercise = (
+        base: BaseExercise,
+        data: any,
+      ): CheckClozeExercise => {
+        return {
+          ...base,
+          phrases: data.data.phrases,
+        } as CheckClozeExercise;
+      };
+      return createClozeExercise(base, data);
 
     case 'verb-click-learn':
     case 'verb-click-test':
     case 'verb-type-test':
-      const { infinitive, tense, forms } = data.data;
-      return {
-        ...base,
-        infinitive,
-        tense,
-        forms,
-      } as CheckVerbExercise;
+      const createVerbExercise = (
+        base: BaseExercise,
+        data: any,
+      ): CheckVerbExercise => {
+        const { infinitive, tense, forms } = data.data;
+        return {
+          ...base,
+          infinitive,
+          tense,
+          forms,
+        } as CheckVerbExercise;
+      };
+      return createVerbExercise(base, data);
 
     case 'card-click-learn':
     case 'card-type-test':
-      const { items, imageLocation } = data.data;
-      return {
-        ...base,
-        items,
-        imageLocation,
-      } as CardExercise;
+      const createCardExercise = (
+        base: BaseExercise,
+        data: any,
+      ): CardExercise => {
+        const { items, imageLocation } = data.data;
+        return {
+          ...base,
+          items,
+          imageLocation,
+        } as CardExercise;
+      };
+      return createCardExercise(base, data);
 
     case 'phrase-build-test':
       const { correctOrder, translation } = data.data;

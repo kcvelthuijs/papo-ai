@@ -1,19 +1,21 @@
-import type { OpenExerciseProps } from '@exercises/logic';
+import type { ChatExerciseProps } from '@exercises/logic';
 
-import { OpenDialogTest } from '../Tests/OpenDialogTest';
+import { CheckChatTest } from '../Tests/CheckChatTest';
 
-export function OpenExerciseRenderer({
+export function ChatExerciseRenderer({
   exercise,
   onSubmit,
   onComplete,
-}: OpenExerciseProps) {
+  handleAudio,
+}: ChatExerciseProps) {
   switch (exercise.type) {
     case 'open-dialog':
       return (
-        <OpenDialogTest
+        <CheckChatTest
           exercise={exercise}
           onSubmit={onSubmit}
           onComplete={onComplete}
+          handleAudio={handleAudio}
         />
       );
 

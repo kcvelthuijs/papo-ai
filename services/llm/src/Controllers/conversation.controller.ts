@@ -17,12 +17,12 @@ export const conversationController = {
     }
 
     try {
-      const { appId, userId, description, prompt } = parseResult.data;
+      const { appId, userId, description, introduction } = parseResult.data;
       const response = await conversationService.create(
         appId,
         userId,
         description,
-        prompt,
+        introduction,
       );
 
       res.json({

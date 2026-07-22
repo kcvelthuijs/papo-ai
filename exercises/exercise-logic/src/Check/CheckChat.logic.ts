@@ -1,14 +1,14 @@
 import type {
-  OpenExercise,
-  OpenAnswer,
-  OpenDialogFeedback,
+  ChatExercise,
+  ChatResponse,
+  ChatExerciseFeedback,
 } from '@workspace/dtotypes';
 
-export async function evaluateOpenDialog(
-  exercise: OpenExercise,
-  answer: OpenAnswer,
-): Promise<OpenDialogFeedback> {
-  const response = await fetch('/api/llm-feedback', {
+export async function evaluateChatExercise(
+  exercise: ChatExercise,
+  answer: ChatResponse,
+): Promise<ChatExerciseFeedback> {
+  /*const response = await fetch('/api/llm-feedback', {
     method: 'POST',
     body: JSON.stringify({
       prompt: exercise.prompt,
@@ -16,11 +16,10 @@ export async function evaluateOpenDialog(
       rubric: exercise.rubric,
     }),
   });
-  const feedback = await response.json();
+  const feedback = await response.json();*/
   return {
     feedback: 'mijn feedback', // feedback.text
     score: 8, // feedback.score, // optioneel
     suggestions: 'oefenen, veel meer oefenen', //feedback.suggestions,
-    responseId: '1234556',
   };
 }

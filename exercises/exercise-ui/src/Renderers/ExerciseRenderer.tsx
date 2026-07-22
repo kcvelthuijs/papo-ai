@@ -4,7 +4,7 @@ import type {
   ExerciseExitReason,
 } from '@workspace/dtotypes';
 
-import { OpenExerciseRenderer } from '../Exercises/OpenDialogExercise/Renderer/OpenExerciseRenderer';
+import { ChatExerciseRenderer } from '../Exercises/CheckChatExercise/Renderer/ChatExerciseRenderer';
 
 import { CheckVerbRenderer } from '../Exercises/CheckVerbExercise/Renderer/CheckVerbRenderer';
 import { CheckClozeRenderer } from '../Exercises/CheckClozeExercise/Renderers/CheckClozeRenderer';
@@ -95,7 +95,7 @@ export function ExerciseRenderer({ exercise }: Props) {
     // -------------------------
     case 'open-dialog':
       return (
-        <OpenExerciseRenderer
+        <ChatExerciseRenderer
           exercise={exercise}
           onSubmit={handleSubmit}
           onComplete={handleComplete}

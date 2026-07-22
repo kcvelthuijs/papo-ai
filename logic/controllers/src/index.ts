@@ -1,3 +1,4 @@
+export * from './Helpers/AudioHelper';
 export * from './Mocks/LessonMock';
 export * from './Mocks/MockLessonStore';
 export * from './Queues/AudioQueue';

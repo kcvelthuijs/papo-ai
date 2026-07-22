@@ -19,8 +19,8 @@ export const CreateConversation = async ({
       {
         appId: 'papo-ai',
         userId,
-        prompt,
-        instructions: introduction,
+        description: title,
+        introduction,
       },
     );
     return response.data;

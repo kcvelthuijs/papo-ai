@@ -10,7 +10,7 @@ export const conversationService = {
     appId: string,
     userId: string,
     description: string,
-    prompt: string,
+    introduction: string,
   ): Promise<ConversationResponse> {
     const response = await openai.conversations.create({
       metadata: {
@@ -21,8 +21,8 @@ export const conversationService = {
       items: [
         {
           type: 'message',
-          role: 'assistant',
-          content: prompt,
+          role: 'system',
+          content: introduction,
         },
       ],
     });

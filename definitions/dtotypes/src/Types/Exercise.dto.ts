@@ -1,6 +1,11 @@
-import type { PronounId, TenseId } from '@workspace/dtotypes';
+import type { AvatarConfig, PronounId, TenseId } from '@workspace/dtotypes';
 
-export type ExerciseState = 'prepare' | 'active' | 'completed';
+export type ExerciseState =
+  | 'unknown'
+  | 'prepare'
+  | 'ready'
+  | 'active'
+  | 'completed';
 
 export type ExerciseAction =
   | 'retry'
@@ -34,7 +39,7 @@ export type BaseExercise = {
 // -----------------------
 //  COLLECTION OF EXERCISES
 // -----------------------
-export type Exercise = ClosedExercise | OpenExercise;
+export type Exercise = ClosedExercise | ChatExercise;
 export type ExerciseEvaluation = {
   lessonId: number;
   seqNumber: number;
@@ -148,22 +153,30 @@ export type CardFeedback = ExerciseEvaluation & {
 // -----------------------
 //  OPENEXERCISES
 // -----------------------
-export type OpenExercise = BaseExercise & {
+export type ChatExercise = BaseExercise & {
   id: string;
   type: 'open-writing' | 'open-dialog' | 'open-reflection';
   description: string;
-  introduction: string;
+  prompt: string;
+  avatar: AvatarConfig;
+  voice: any;
+  scenes: ChatScene[];
+};
+export type ChatScene = {
+  sequenceNumber: number;
+  title: string;
   words: string[];
   prompt: string;
-  feedback?: string;
-  rubric?: string;
-  meta?: any;
+  completionRules: CompletionRules;
 };
-export type OpenAnswer = {
+export interface CompletionRules {
+  requiredInformation: string[];
+}
+export type ChatResponse = {
   responseId: string;
   value: string;
 };
-export type OpenExerciseFeedback = {
+export type ChatExerciseFeedback = {
   feedback: string;
   score: number;
   suggestions: string;

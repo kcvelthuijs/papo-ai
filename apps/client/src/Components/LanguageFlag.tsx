@@ -1,5 +1,5 @@
 import { useLanguageStore } from '@workspace/controllers';
-import AppIcon from '@/assets/papo-logo.svg';
+import AppIcon from '@/assets/diz-la.svg';
 
 import ImageComponent from './ImageComponent';
 

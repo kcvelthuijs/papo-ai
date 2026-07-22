@@ -1,5 +1,5 @@
 import type {
-  OpenExercise,
+  ChatExercise,
   CheckVerbExercise,
   CheckClozeExercise,
   ClozeAnswer,
@@ -12,7 +12,7 @@ import type {
 } from '@workspace/dtotypes';
 import type { PropertyNameLiteral } from 'typescript';
 
-export function isOpenExercise(ex: any): ex is OpenExercise {
+export function isOpenExercise(ex: any): ex is ChatExercise {
   return (
     ex.type === 'open-writing' ||
     ex.type === 'open-dialog' ||
@@ -51,8 +51,9 @@ export type QuizQuestionProps = {
   options: string[];
 };
 
-export type OpenExerciseProps = {
-  exercise: OpenExercise;
+export type ChatExerciseProps = {
+  exercise: ChatExercise;
   onSubmit: (message: string) => Promise<any>;
   onComplete: (reason: ExerciseExitReason) => Promise<void>;
+  handleAudio: (text: string, callBack?: () => void) => Promise<void>;
 };

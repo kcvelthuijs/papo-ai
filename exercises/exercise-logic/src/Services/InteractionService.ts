@@ -6,17 +6,22 @@ import {
 import type {
   AddConversationProps,
   AddConversationResponse,
-  OpenExercise,
+  ChatExercise,
 } from '@workspace/dtotypes';
 
 export const InteractionService = {
   async startDialog(
-    exercise: OpenExercise,
+    exercise: ChatExercise,
   ): Promise<AddConversationResponse | undefined> {
+    // Start met algemene opening
     const conversation = await CreateConversation({
       userId: 'guest',
       title: exercise.title,
-      introduction: exercise.introduction,
+      introduction: `Je bent een taalcoach die volwassenen helpt om Português Europeu te leren.
+        Je voert een natuurlijk gesprek.
+        Stel maximaal één vraag tegelijk.
+        Pas je reactie aan op wat de gesprekspartner zegt.
+        Geef korte antwoorden in volledige zinnen van nooit meer dan 50 tokens`,
     });
     if (!conversation) throw new Error('Unable to create conversation!');
 

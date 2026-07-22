@@ -5,6 +5,7 @@ import type {
   Exercise,
   ExerciseData,
   ExerciseExitReason,
+  ExerciseState,
 } from '@workspace/dtotypes';
 
 import {
@@ -13,11 +14,14 @@ import {
   getExercisesByLessonID,
 } from '@workspace/connectors';
 
-import type { ExerciseEvaluation } from '@workspace/webtypes';
-import { executeExercise, ExerciseFromExerciseData } from '@exercises/logic';
+import {
+  prepareExercise,
+  executeExercise,
+  ExerciseFromExerciseData,
+} from '@exercises/logic';
 
-import { useSpeechStore } from './SpeechStore';
-import { useAudioStore } from './AudioStore';
+import type { ExerciseEvaluation } from '@workspace/webtypes';
+import { submitAudioHelper } from '../Helpers/AudioHelper';
 
 type LessonState = {
   // Lesson properties
@@ -29,6 +33,7 @@ type LessonState = {
   exerciseCache: Record<string, Exercise[]>;
   exercises: Exercise[];
   currentExerciseIndex: number;
+  currentExerciseState: ExerciseState;
   currentExercise?: Exercise;
 
   // Exercise results
@@ -41,7 +46,7 @@ type LessonState = {
   // Methods
   fetchAllLessons: () => Promise<void>;
   getLessonByID: (id: string) => Promise<LessonSummary | undefined>;
-  setCurrentLesson: (lessonId: string) => Promise<void>;
+  setCurrentLesson: (lessonId: string, autostart?: boolean) => Promise<void>;
   startLesson: () => void;
 
   setExercise: (exerciseId: number) => Promise<void>;
@@ -61,6 +66,7 @@ export const useLessonStore = create<LessonState>((set, get) => ({
   exerciseCache: {},
   exercises: [],
   currentExerciseIndex: 0,
+  currentExerciseState: 'unknown',
   currentExercise: undefined,
 
   results: [],
@@ -124,7 +130,7 @@ export const useLessonStore = create<LessonState>((set, get) => ({
   // -------------------------
   // SET CURRENT LESSON
   // -------------------------
-  setCurrentLesson: async (lessonId: string) => {
+  setCurrentLesson: async (lessonId: string, autostart: boolean = false) => {
     set({
       isLoading: true,
       error: undefined,
@@ -162,6 +168,9 @@ export const useLessonStore = create<LessonState>((set, get) => ({
         results: [],
         isLoading: false,
       });
+
+      // Automatically start lesson
+      if (autostart) await get().startLesson();
     } catch (err: any) {
       set({
         isLoading: false,
@@ -184,18 +193,25 @@ export const useLessonStore = create<LessonState>((set, get) => ({
   // -------------------------
   setExercise: async (exerciseId: number) => {
     const exercises = get().exercises;
-    if (!exercises) {
-      console.log('no exercises');
+    if (!exercises || exercises.length == 0) {
+      console.log(`Lesson ${get().currentLessonID ?? 0} has no exercises`);
       return;
     }
 
     if (exerciseId < exercises.length) {
-      set({
-        currentExerciseIndex: exerciseId,
-        currentExercise: exercises[exerciseId],
-        results: [],
-      });
-      await get().startExercise();
+      const exercise = exercises[exerciseId];
+      if (exercise) {
+        set({
+          currentExerciseIndex: exerciseId,
+          currentExerciseState: 'prepare',
+          currentExercise: {
+            ...exercise,
+            state: 'prepare',
+          },
+        });
+        await prepareExercise(exercise);
+        await get().startExercise();
+      }
     }
   },
 
@@ -213,6 +229,8 @@ export const useLessonStore = create<LessonState>((set, get) => ({
         ...currentExercise,
         state: 'active',
       },
+      currentExerciseState: 'active',
+      results: [],
     });
   },
 
@@ -270,13 +288,6 @@ export const useLessonStore = create<LessonState>((set, get) => ({
   // HANDLE AUDIO
   // -------------------------
   submitAudio: async (text: string, callBack?: () => void): Promise<void> => {
-    // Tekst toevoegen
-    await useSpeechStore.getState().generateSpeech(text);
-
-    // Wacht tot het afspelen klaar is
-    await useAudioStore.getState().waitForCompletion();
-
-    // roep de callback aan als die gegeven is
-    if (callBack) callBack();
+    await submitAudioHelper(text, callBack);
   },
 }));

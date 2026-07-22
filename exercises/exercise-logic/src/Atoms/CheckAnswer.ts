@@ -5,7 +5,6 @@ export function checkAnswerText(given: string, correct: string): ExerciseScore {
   // phase 1: exact match
   const givenPhrase = given.trim().toLowerCase();
   const correctPhrase = correct.trim().toLowerCase();
-
   if (givenPhrase === correctPhrase) return 'right';
 
   // phase 2: normalize text do not check diacritics

@@ -24,7 +24,7 @@ const AudioControls = ({ onStateChanged }: Props) => {
     <div className='text-center'>
       <button
         onClick={toggleAudio}
-        className='flex items-center gap-2 px-3 py-2 rounded-xl bg-gray-200 border border-gray-400 dark:bg-gray-700 hover:scale-103 transition-transform'
+        className='flex items-center gap-2 px-3 py-2 rounded-xl bg-gray-200 border border-gray-400 dark:bg-gray-700 dark:border-black hover:scale-103 transition-transform'
       >
         {audioState === 'on' ? <FaVolumeUp /> : <FaVolumeMute />}
         {audioState === 'on' ? 'On' : 'Off'}

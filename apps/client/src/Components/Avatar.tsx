@@ -22,7 +22,7 @@ function RoleAvatar({ role, className, style }: Props) {
   return (
     <div className='ml-4'>
       <Avatar
-        className={`${className ?? ''} border-gray-400 border-2 shadow-xl`}
+        className={`${className ?? ''} border-gray-400 dark:border-black border-1 shadow-xl`}
         style={{ ...style }}
         {...avatar}
       />

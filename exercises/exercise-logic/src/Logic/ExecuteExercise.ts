@@ -1,7 +1,7 @@
 import type {
   ClosedExercise,
   ExerciseEvaluation,
-  OpenExercise,
+  ChatExercise,
   CheckVerbExercise,
   CheckClozeExercise,
   CardExercise,
@@ -12,10 +12,10 @@ import { isOpenExercise } from '../Types/Exercise.types';
 import { checkCloze } from '../Check/CheckCloze.logic';
 import { checkVerb } from '../Check/CheckVerb.logic';
 import { checkCard } from '../Check/CheckCard.logic';
-import { evaluateOpenDialog } from '../Check/OpenDialog.logic';
+import { evaluateChatExercise } from '../Check/CheckChat.logic';
 
 export async function executeExercise(
-  exercise: ClosedExercise | OpenExercise,
+  exercise: ClosedExercise | ChatExercise,
   answer: any,
 ): Promise<ExerciseEvaluation> {
   // -------------------------
@@ -24,7 +24,7 @@ export async function executeExercise(
   if (isOpenExercise(exercise)) {
     switch (exercise.type.toLowerCase()) {
       case 'open-dialog':
-        const feedback = await evaluateOpenDialog(exercise, answer);
+        const feedback = await evaluateChatExercise(exercise, answer);
         return {
           lessonId: exercise.lessonId,
           seqNumber: exercise.seqNumber,

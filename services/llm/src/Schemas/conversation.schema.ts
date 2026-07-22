@@ -17,9 +17,9 @@ export const CreateConversationSchema = z.object({
     .min(1, 'User ID is required.')
     .max(50, 'User ID is exceeding the maximum of 50 characters.'),
 
-  description: z.string().trim(),
+  description: z.string().trim().min(1, 'description is required'),
 
-  prompt: z.string().trim().min(1, 'Prompt is required.'),
+  introduction: z.string().trim().min(1, 'introduction is required'),
 });
 
 export const AddConversationMessageSchema = z.object({

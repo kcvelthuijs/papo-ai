@@ -6,9 +6,7 @@ CREATE TABLE IF NOT EXISTS "Chat"."Exercises"
     title character varying COLLATE pg_catalog."default" NOT NULL,
     description text COLLATE pg_catalog."default",
     image text[] COLLATE pg_catalog."default",
-    introduction text COLLATE pg_catalog."default",
     prompt text COLLATE pg_catalog."default",
-    words character varying[] COLLATE pg_catalog."default",
     avatar jsonb,
     voice jsonb,
     CONSTRAINT "Exercises_pkey" PRIMARY KEY (id)

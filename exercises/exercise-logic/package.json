@@ -11,6 +11,7 @@
   "dependencies": {
     "@workspace/connectors": "workspace:*",
     "@workspace/dtotypes": "workspace:*",
+    "@workspace/ui": "workspace:*",
     "normalize-text": "^2.6.0"
   },
   "exports": {

@@ -41,7 +41,11 @@ function ImageComponent({ name, tree, size, className }: ImageComponentProps) {
       {loading ? (
         <Skeleton className='flex flex-col w-full aspect-2/1 animate-pulse bg-gray-200 ' />
       ) : (
-        <img src={imgSrc || 'null'} alt={name} className={className} />
+        <img
+          src={imgSrc || 'null'}
+          alt={name}
+          className={`border-1 border-gray-400 dark:border-gray-500 ${className}`}
+        />
       )}
     </div>
   );

@@ -1,6 +1,6 @@
 import {
   Badge,
-  ContinueButton,
+  ActionButton,
   Card,
   CardAction,
   CardHeader,
@@ -26,7 +26,7 @@ const classesByType: { [type: string]: string } = {
 
 export const LessonCardSkeleton = () => {
   return (
-    <Card className='relative overflow-hidden mx-auto w-full max-w-sm pt-0 pb-3 bg-gray-100 border-gray-300'>
+    <Card className='relative overflow-hidden mx-auto w-full max-w-sm pt-0 pb-3 bg-gray-100 border-gray-500 dark:bg-gray-500 dark:border-gray-300'>
       <Skeleton className='w-95 h-53 animate-pulse bg-gray-200 ' />
       <CardHeader className='px-2 m-0'>
         <CardAction>
@@ -44,7 +44,7 @@ export const LessonCard = ({ lesson, onSelectLesson }: LessonCardProps) => {
   return (
     <Card
       id={lesson.id}
-      className='relative overflow-hidden mx-auto w-full max-w-sm h-65 pt-0 pb-3 bg-gray-100 border-gray-500 dark:bg-gray-500 dark:border-gray-300'
+      className='relative overflow-hidden mx-auto w-full max-w-sm h-65 pt-0 pb-3 bg-gray-100 border-gray-500 dark:bg-gray-500 dark:border-gray-500 border-1'
       onClick={(e: any) => {
         e.stopPropagation();
         onSelectLesson(lesson.id);
@@ -68,7 +68,7 @@ export const LessonCard = ({ lesson, onSelectLesson }: LessonCardProps) => {
 
       <CardHeader className='px-2 m-0'>
         <CardAction>
-          <ContinueButton className='cursor-pointer'>Start</ContinueButton>
+          <ActionButton className='cursor-pointer'>Start</ActionButton>
         </CardAction>
         <CardTitle className='text-lg p-0'>{lesson.title}</CardTitle>
       </CardHeader>

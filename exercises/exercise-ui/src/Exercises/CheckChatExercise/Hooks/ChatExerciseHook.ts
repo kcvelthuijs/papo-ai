@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 
 import type {
-  OpenExercise,
-  OpenAnswer,
-  OpenExerciseFeedback,
+  ChatExercise,
+  ChatResponse,
+  ChatExerciseFeedback,
   ExerciseExitReason,
 } from '@workspace/dtotypes';
 
@@ -21,17 +21,17 @@ export type WordState = {
   responseId: string;
 };
 
-type UseOpenDialogParams = {
-  exercise: OpenExercise;
-  onSubmit: (answer: string) => Promise<OpenExerciseFeedback>;
+type UseChatExerciseParams = {
+  exercise: ChatExercise;
+  onSubmit: (answer: string) => Promise<ChatExerciseFeedback>;
   onComplete: (reason: ExerciseExitReason) => Promise<void>;
 };
 
-export function useOpenDialogHook({
+export function useChatExerciseHook({
   exercise,
   onSubmit,
   onComplete,
-}: UseOpenDialogParams) {
+}: UseChatExerciseParams) {
   // -------------------------
   // STATE
   // -------------------------
@@ -41,7 +41,7 @@ export function useOpenDialogHook({
   const [isComplete, setIsComplete] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [usedWords, setUsedWords] = useState<Record<string, WordState>>({});
-  const [feedback, setFeedback] = useState<OpenExerciseFeedback | null>(null);
+  const [feedback, setFeedback] = useState<ChatExerciseFeedback | null>(null);
 
   // -------------------------
   // START CONVERSATION

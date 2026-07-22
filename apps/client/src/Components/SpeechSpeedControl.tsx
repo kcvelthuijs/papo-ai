@@ -11,7 +11,7 @@ export default function SpeechSpeedControl({ speed, onChange }: Props) {
   const increase = () => onChange(Math.min(5, speed + 1));
 
   return (
-    <div className='flex flex-row text-center px-0.5  rounded-xl bg-gray-200 border border-gray-400 dark:bg-gray-700'>
+    <div className='flex flex-row text-center px-0.5  rounded-xl bg-gray-200 border border-gray-400 dark:bg-gray-700 dark:border-black'>
       <div className='flex flex-col items-center self-center gap-3 px-2'>
         <button
           onClick={decrease}

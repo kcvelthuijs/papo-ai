@@ -10,7 +10,7 @@ import {
 } from '../shadcn/card';
 // import { Button } from '../shadcn/button';
 import StarBurst from '../animations/starburst';
-import { ContinueButton } from './ContinueButton';
+import { ActionButton } from './ActionButton';
 
 type CardLayoutProps = {
   title?: string;
@@ -74,9 +74,9 @@ export function CardLayout({
             {footer && <div className='mx-1'>{footer}</div>}
             {isComplete ? (
               <CardAction className='mx-1 pt-2'>
-                <ContinueButton ref={continueRef} onClick={onContinue}>
+                <ActionButton ref={continueRef} onClick={onContinue}>
                   Continuar
-                </ContinueButton>
+                </ActionButton>
               </CardAction>
             ) : (
               <>

@@ -13,9 +13,10 @@ export const LessonSelect = ({ onSelect }: LessonSelectProps) => {
     fetchAllLessons();
   }, [fetchAllLessons]);
 
+  // Select lesson and start automatically
   const onLessonCardSelect = (lessonID: string): void => {
     console.log('onLessonCardSelect:', lessonID);
-    setCurrentLesson(lessonID);
+    setCurrentLesson(lessonID, true);
     if (onSelect) onSelect(lessonID);
   };
 

@@ -20,7 +20,7 @@ export default function DarkLightToggle() {
     <div className='text-center'>
       <button
         onClick={() => setDarkMode(!darkMode)}
-        className='flex items-center gap-1 px-3 py-2 rounded-xl bg-gray-200 border border-gray-400 dark:bg-gray-700 hover:scale-103 transition-transform'
+        className='flex items-center gap-1 px-3 py-2 rounded-xl bg-gray-200 border border-gray-400 dark:bg-gray-700  dark:border-black hover:scale-103 transition-transform'
       >
         {darkMode ? <FaRegSun /> : <FaMoon />}
         {darkMode ? 'Light' : 'Dark'}

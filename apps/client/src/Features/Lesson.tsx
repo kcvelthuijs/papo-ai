@@ -1,18 +1,33 @@
-import { Button, Spinner } from '@workspace/ui';
+import { ActionButton, Spinner } from '@workspace/ui';
 import { useLessonStore } from '@workspace/controllers';
 import { ExerciseRenderer } from '@exercises/ui';
 
 import ImageComponent from '../Components/ImageComponent';
 
 const Lesson = () => {
-  const { currentLesson, currentExercise, isLoading, startLesson } =
-    useLessonStore();
+  const {
+    isLoading,
+    currentLesson,
+    currentExercise,
+    currentExerciseState,
+    startLesson,
+  } = useLessonStore();
+
+  // Expliciete condities voor weergave van componentonderdelen
+  const showLessonInfo =
+    !currentExerciseState ||
+    currentExerciseState === 'unknown' ||
+    currentExerciseState === 'prepare';
+  const showPreparingLesson = !currentExercise;
+  const showPreparingExercise =
+    currentExercise && currentExerciseState === 'prepare';
+  const showExercise = currentExercise && currentExerciseState === 'active';
 
   return (
     <div className='mx-3'>
       <div className='self-center mx-0 lg:mx-2 pt-3'>
         {/* IMAGE */}
-        {!currentExercise && (
+        {showLessonInfo && (
           <>
             <ImageComponent
               name={currentLesson?.image ?? ''}
@@ -32,28 +47,37 @@ const Lesson = () => {
         )}
 
         {/* START BUTTON */}
-        {!currentExercise && (
-          <div className='flex justify-center w-full my-4'>
-            <Button
-              className='flex items-center gap-2 bg-gray-500 rounded-sm border-2 border-gray-600 shadow-2xl px-3 py-2 pointer'
-              onClick={startLesson}
-            >
-              {isLoading ? (
-                <>
-                  <Spinner className='h-8 w-8' />
-                  <span className='lg:text-lg font-medium mr-4'>
-                    Preparar a aula...
-                  </span>
-                </>
-              ) : (
-                <p>Começar</p>
-              )}
-            </Button>
+        {showPreparingLesson && (
+          <div className='flex justify-center w-full my-6'>
+            {isLoading ? (
+              <>
+                <Spinner className='h-8 w-8' />
+                <span className='lg:text-lg font-medium mr-4'>
+                  Preparar a aula...
+                </span>
+              </>
+            ) : (
+              <ActionButton className='cursor-pointer' onClick={startLesson}>
+                Começar
+              </ActionButton>
+            )}
+          </div>
+        )}
+
+        {/* LOADING EXERCISE */}
+        {showPreparingExercise && (
+          <div className='flex justify-center w-full my-6'>
+            <>
+              <Spinner className='h-8 w-8' />
+              <span className='lg:text-lg font-medium mr-4'>
+                Preparar o exercício ...
+              </span>
+            </>
           </div>
         )}
 
         {/* EXERCISE RENDERING */}
-        {currentExercise && (
+        {showExercise && (
           <div className='mt-4'>
             <ExerciseRenderer exercise={currentExercise} />
           </div>
