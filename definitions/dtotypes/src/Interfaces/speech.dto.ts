@@ -5,6 +5,12 @@ export type SpeechData = {
   speed?: number;
 };
 
+export interface SpeechOptions {
+  voice?: string;
+  instructions?: string;
+  speed?: number;
+}
+
 export enum SpeechReturnStateEnum {
   ok,
   error,

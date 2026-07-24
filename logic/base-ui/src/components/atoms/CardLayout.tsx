@@ -20,6 +20,7 @@ type CardLayoutProps = {
   footer?: ReactNode; // voor content in CardFooter of extra knoppen
   stars?: any; // optioneel voor animaties zoals StarBurst
   isComplete?: boolean;
+  takesFullScreen?: boolean;
   onContinue?: () => void;
   onSkip?: () => void;
 };
@@ -32,6 +33,7 @@ export function CardLayout({
   footer,
   stars,
   isComplete,
+  takesFullScreen = false,
   onContinue,
   onSkip,
 }: CardLayoutProps) {
@@ -48,11 +50,16 @@ export function CardLayout({
     });
   }, [isComplete]);
 
+  const scrollCard = takesFullScreen
+    ? 'h-[calc(100vh-9rem)] overflow-hidden'
+    : 'justify-center';
+  const scrollContent = takesFullScreen ? 'flex-1 min-h-0 overflow-y-auto' : '';
+
   return (
     <>
       <div className='flex flex-row justify-center'>
         <Card
-          className={`mt-2 flex l:w-180 w-full flex-col justify-center border-gray-500 gap-0 `}
+          className={`mt-2 flex l:w-180 w-full flex-col border-gray-500 gap-0 ${scrollCard}`}
         >
           {title && (
             <CardHeader className='border-b border-gray-600'>
@@ -68,10 +75,12 @@ export function CardLayout({
           )}
           {image && <>{image}</>}
 
-          {content && <CardContent>{content}</CardContent>}
+          {content && (
+            <CardContent className={`${scrollContent}`}>{content}</CardContent>
+          )}
 
-          <CardFooter className='flex justify-center border-t border-gray-600 min-h-16 pt-2'>
-            {footer && <div className='mx-1'>{footer}</div>}
+          <CardFooter className='flex-none flex w-full justify-center border-t border-gray-600 min-h-16 pt-2'>
+            {footer && <div className='mx-1 w-full'>{footer}</div>}
             {isComplete ? (
               <CardAction className='mx-1 pt-2'>
                 <ActionButton ref={continueRef} onClick={onContinue}>

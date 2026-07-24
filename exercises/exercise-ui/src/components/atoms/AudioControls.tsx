@@ -7,7 +7,7 @@ type Props = {
   onStateChanged?: (state: OnOffState) => void;
 };
 
-const AudioControls = ({ onStateChanged }: Props) => {
+export const AudioControls = ({ onStateChanged }: Props) => {
   const [audioState, setAudioState] = useState<OnOffState>('off');
 
   const toggleAudio = async () => {
@@ -32,5 +32,3 @@ const AudioControls = ({ onStateChanged }: Props) => {
     </div>
   );
 };
-
-export default AudioControls;

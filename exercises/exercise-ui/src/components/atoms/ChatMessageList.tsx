@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import type { ChatMessage } from '@exercises/logic';
+import type { ChatMessage } from '@workspace/dtotypes';
 import { ChatMessageItem } from './ChatMessageItem';
 
 type Props = {

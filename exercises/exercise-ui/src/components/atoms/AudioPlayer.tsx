@@ -13,19 +13,21 @@ type Props = {
   className?: string;
 };
 
-const AudioPlayer = ({ className }: Props) => {
+export const AudioPlayer = ({ className }: Props) => {
   const { current, isPaused, pause, resume, restart, skip, stop } =
     useAudioStore();
 
   // Geen audio om af te spelen → niks renderen
-  if (!current) return null;
+  // if (!current) return null;
 
   return (
     <div
       className={`flex flex-col gap-3 p-4 items-start rounded-xl ${className}`}
     >
       {/* Huidige zin */}
-      <div className='self-start grow font-medium text-lg'>{current.text}</div>
+      <div className='self-start grow font-medium text-lg'>
+        {current?.text ?? ''}
+      </div>
 
       {/* Playback controls */}
       <div className='flex-row self-start gap-2 opacity-50 text-black font-bold'>
@@ -51,5 +53,3 @@ const AudioPlayer = ({ className }: Props) => {
     </div>
   );
 };
-
-export default AudioPlayer;

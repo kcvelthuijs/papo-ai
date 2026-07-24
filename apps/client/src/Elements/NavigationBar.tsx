@@ -1,8 +1,7 @@
 import type { OnOffState } from '@workspace/webtypes';
 import { useSpeechStore } from '@workspace/controllers';
+import { RoleAvatar, AudioControls } from '@exercises/ui';
 
-import AudioControls from '../Components/AudioControls';
-import Avatar from '../Components/Avatar';
 import MenuButton from '../Components/MenuButton';
 import DarkLightToggle from '../Components/DarkLightToggle';
 import SpeechSpeedControl from '../Components/SpeechSpeedControl';
@@ -41,7 +40,7 @@ const NavigationBar = () => {
 
           {/* Uiterst rechts staat de avatar */}
           <div className='absolute right-2 top-2 md:static md:ml-2'>
-            <Avatar
+            <RoleAvatar
               role='student'
               style={{
                 width: '3.4rem',

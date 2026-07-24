@@ -3,9 +3,10 @@ import type {
   ExerciseState,
   ChatExercise,
 } from '@workspace/dtotypes';
-import { sleep } from '@workspace/ui';
 
 import { isOpenExercise } from '../Types/Exercise.types';
+import { useDialogStore } from '../Stores/DialogStore';
+import { useAvatarStore } from '@workspace/controllers';
 
 export async function prepareExercise(
   exercise: ClosedExercise | ChatExercise,
@@ -16,15 +17,24 @@ export async function prepareExercise(
   if (isOpenExercise(exercise)) {
     switch (exercise.type.toLowerCase()) {
       case 'open-dialog':
-        exercise.state = 'ready';
-        break;
+        // Stel de avatar in
+        useAvatarStore.getState().setAvatar('bot', exercise.avatar);
+
+        // Initialiseer de dialoog
+        useDialogStore.getState().initialize({
+          title: exercise.title,
+          identity: exercise.prompt,
+          assignment: exercise.scenes[0]?.prompt ?? '',
+        });
+        await useDialogStore.getState().startDialog();
+        exercise.state = 'active';
+        return 'active';
 
       default:
         throw new Error(
           `Unknown open exercise type: ${(exercise as ClosedExercise).type}`,
         );
     }
-    await sleep(1000);
   } else {
     // -------------------------
     // CLOSED (deterministic)

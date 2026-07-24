@@ -46,7 +46,7 @@ export const useAvatarStore = create<AvatarState>((set, get) => ({
     if (found) return found;
 
     // fallback: maak 'm aan met default (of leeg)
-    const fallback: AvatarFullConfig = DEFAULT_AVATARS.default;
+    const fallback: AvatarFullConfig = DEFAULT_AVATARS.default!;
 
     // optioneel: direct opslaan zodat consistent blijft
     set((state) => ({

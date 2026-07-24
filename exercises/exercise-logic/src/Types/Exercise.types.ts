@@ -10,7 +10,8 @@ import type {
   CheckVerbFeedback,
   CardAnswer,
 } from '@workspace/dtotypes';
-import type { PropertyNameLiteral } from 'typescript';
+
+import type { SpeechOptions } from '@workspace/dtotypes';
 
 export function isOpenExercise(ex: any): ex is ChatExercise {
   return (
@@ -27,21 +28,33 @@ export type VerbExerciseProps = {
     value: string;
   }) => Promise<CheckVerbFeedback>;
   onComplete: (reason: ExerciseExitReason) => Promise<void>;
-  handleAudio: (text: string, callBack?: () => void) => Promise<void>;
+  handleAudio: (
+    text: string,
+    options?: SpeechOptions,
+    callBack?: () => void,
+  ) => Promise<void>;
 };
 
 export type ClozeExerciseProps = {
   exercise: CheckClozeExercise;
   onSubmit: (answer: ClozeAnswer) => Promise<CheckClozeFeedback>;
   onComplete: (reason: ExerciseExitReason) => Promise<void>;
-  handleAudio: (text: string, callBack?: () => void) => Promise<void>;
+  handleAudio: (
+    text: string,
+    options?: SpeechOptions,
+    callBack?: () => void,
+  ) => Promise<void>;
 };
 
 export type CardExerciseProps = {
   exercise: CardExercise;
   onSubmit: (answer: CardAnswer) => Promise<CardFeedback>;
   onComplete: (reason: ExerciseExitReason) => Promise<void>;
-  handleAudio: (text: string, callBack?: () => void) => Promise<void>;
+  handleAudio: (
+    text: string,
+    options?: SpeechOptions,
+    callBack?: () => void,
+  ) => Promise<void>;
 };
 
 export type QuizQuestionProps = {
@@ -55,5 +68,9 @@ export type ChatExerciseProps = {
   exercise: ChatExercise;
   onSubmit: (message: string) => Promise<any>;
   onComplete: (reason: ExerciseExitReason) => Promise<void>;
-  handleAudio: (text: string, callBack?: () => void) => Promise<void>;
+  handleAudio: (
+    text: string,
+    options?: SpeechOptions,
+    callBack?: () => void,
+  ) => Promise<void>;
 };

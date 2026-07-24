@@ -1,27 +1,13 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import { Spinner } from '@workspace/ui';
-import type { ChatExerciseProps as ChatExerciseProps } from '@exercises/logic';
-import {
-  type AddConversationResponse,
-  type ChatExercise,
-} from '@workspace/dtotypes';
+import { useDialogStore } from '@workspace/controllers';
+import { CardLayout, Spinner } from '@workspace/ui';
+import type { ChatExerciseProps } from '@exercises/logic';
 
-import {
-  CreateConversation,
-  AddConversationMessage,
-} from '@workspace/connectors';
-
-import { useChatExerciseHook } from '../Hooks/ChatExerciseHook';
 import { ChatMessageList } from '../../../Components/Atoms/ChatMessageList';
 import { ChatInput } from '../../../Components/Atoms/ChatInput';
-import { TypingIndicator } from '../../../Components/Atoms/TypingIndicator';
-import { WordBadge } from '../../../Components/Atoms/WordBadge';
-
-import {
-  getChatSystemPrompt,
-  getChatExerciseIntroPrompt,
-} from '../Helpers/ChatExercisePromptBuilder';
+import { AudioPlayer } from '../../../Components/Atoms/AudioPlayer';
+import type { ChatMessage } from '@workspace/dtotypes';
 
 export function CheckChatTest({
   exercise,
@@ -29,77 +15,53 @@ export function CheckChatTest({
   onComplete,
   handleAudio,
 }: ChatExerciseProps) {
-  const { messages, words, submit, isSubmitting, isComplete } =
-    useChatExerciseHook({
-      exercise,
-      onSubmit,
-      onComplete,
-    });
+  const { messages, isBusy, isErr, errorMessage } = useDialogStore();
+  const [isPlaying, setPlaying] = useState<boolean>(false);
 
-  const [isLoading, setLoading] = useState<boolean>(true);
+  useEffect(() => {
+    // speel de eerste melding
+    if (messages && messages.length == 1) {
+      startAudio(messages[0]!);
+    }
+  }, [messages]);
 
-  const startDialog = async (
-    exercise: ChatExercise,
-  ): Promise<AddConversationResponse | undefined> => {
-    // Start de conversatie
-    const conversation = await CreateConversation({
-      userId: 'system',
-      title: exercise.title,
-      introduction: getChatExerciseIntroPrompt(exercise),
-    });
-    if (!conversation) throw new Error('Unable to create conversation!');
+  if (isErr) {
+    return <div className='p-4 text-red-600'>{errorMessage}</div>;
+  }
 
-    // Stel de eerste vraag
-    const response = await AddConversationMessage({
-      conversationId: conversation.id,
-      role: 'system',
-      instructions: getChatSystemPrompt(exercise, 0),
-      prompt: 'Open het gesprek met een eerste vraag.',
-    });
-    if (!response) throw new Error('Initial message failed!');
-
-    return {
-      conversationId: conversation.id,
-      responseId: response?.responseId ?? '',
-      message: response?.message ?? '',
-      role: response?.role ?? 'assistant',
-    };
+  const endAudio = () => {
+    setPlaying(false);
   };
 
-  // map alle woorden naar een word-structuur
-  const systemResponse = startDialog(exercise);
-  console.log(systemResponse);
+  const startAudio = async (msg: ChatMessage) => {
+    const voice: string = msg.role === 'bot' ? exercise.voice.voice : 'ash';
+    if (handleAudio !== undefined) {
+      setPlaying(true);
+      await handleAudio(msg.content, { voice }, endAudio);
+    }
+  };
+
+  const handleSubmit = async (text: string) => {
+    useDialogStore.getState().sayMessage = startAudio;
+    useDialogStore.getState().addMessage(text);
+  };
 
   return (
-    <div className='flex flex-col h-full'>
-      {isLoading ? (
+    <CardLayout
+      title={exercise.title}
+      content={
         <>
-          <Spinner className='h-8 w-8' />
-          <span className='lg:text-lg font-medium mr-4'>
-            Preparar a aula...
-          </span>
+          <ChatMessageList messages={messages} onSpeakMessage={startAudio} />
+          {isBusy && <Spinner className='h-10 w-10' />}
         </>
-      ) : (
-        <>
-          {/*<div className='flex flex-wrap gap-2 p-2 border-b'>
-            {words.map((w) => (
-              <WordBadge key={w.word} word={w.word} used={w.used} />
-            ))}
-          </div>*/}
-
-          <div className='flex-1 overflow-y-auto p-2'>
-            <ChatMessageList messages={messages} />
-            {isSubmitting && <TypingIndicator />}
-          </div>
-
-          <div className='p-2 border-t'>
-            <ChatInput
-              onSubmit={(value: string) => submit(value)}
-              isDisabled={isSubmitting || isComplete}
-            />
-          </div>
-        </>
-      )}
-    </div>
+      }
+      footer=<>
+        <AudioPlayer />
+        {!isPlaying && (
+          <ChatInput onSubmit={handleSubmit} isDisabled={isBusy} />
+        )}
+      </>
+      takesFullScreen
+    />
   );
 }

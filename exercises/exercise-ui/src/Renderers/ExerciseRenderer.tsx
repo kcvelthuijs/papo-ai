@@ -9,6 +9,7 @@ import { ChatExerciseRenderer } from '../Exercises/CheckChatExercise/Renderer/Ch
 import { CheckVerbRenderer } from '../Exercises/CheckVerbExercise/Renderer/CheckVerbRenderer';
 import { CheckClozeRenderer } from '../Exercises/CheckClozeExercise/Renderers/CheckClozeRenderer';
 import { CheckCardRenderer } from '../Exercises/CheckCardExercise/Renderers/CheckCardRenderer';
+import type { SpeechOptions } from '@workspace/dtotypes';
 
 // import { PhraseBuildRenderer } from './renderers/PhraseBuildRenderer';
 // import { OpenExerciseRenderer } from './renderers/OpenExerciseRenderer';
@@ -31,9 +32,10 @@ export function ExerciseRenderer({ exercise }: Props) {
   const submitAudio = useLessonStore((s) => s.submitAudio);
   const handleAudio = async (
     text: string,
+    options?: SpeechOptions,
     callback?: () => void,
   ): Promise<void> => {
-    await submitAudio(text, callback);
+    await submitAudio(text, options, callback);
   };
 
   switch (exercise.type) {
@@ -99,6 +101,7 @@ export function ExerciseRenderer({ exercise }: Props) {
           exercise={exercise}
           onSubmit={handleSubmit}
           onComplete={handleComplete}
+          handleAudio={handleAudio}
         />
       );
 

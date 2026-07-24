@@ -6,4 +6,5 @@ export * from './Stores/AudioStore';
 export * from './Stores/AvatarStore';
 export * from './Stores/LanguageStore';
 export * from './Stores/LessonStore';
+export * from '../../../exercises/exercise-logic/src/Stores/DialogStore';
 export * from './Stores/SpeechStore';

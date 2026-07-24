@@ -1,9 +1,3 @@
-export interface SpeechOptions {
-  voice?: string;
-  instructions?: string;
-  speed?: number;
-}
-
 export type SpeechTask = {
   id: string;
   blob: any;

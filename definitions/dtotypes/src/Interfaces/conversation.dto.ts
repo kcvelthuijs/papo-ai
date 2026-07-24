@@ -1,4 +1,4 @@
-export type ChatRole = 'user' | 'assistant' | 'teacher';
+export type ChatRole = 'user' | 'bot' | 'teacher';
 
 export type CreateConversationProps = {
   userId?: string;

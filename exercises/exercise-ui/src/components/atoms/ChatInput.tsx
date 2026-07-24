@@ -5,9 +5,10 @@ type Props = {
   onSubmit: (data: string) => void;
   onAudio?: (audio: Blob) => void;
   isDisabled?: boolean;
+  className?: string;
 };
 
-export function ChatInput({ onSubmit, onAudio, isDisabled }: Props) {
+export function ChatInput({ onSubmit, onAudio, isDisabled, className }: Props) {
   const [value, setValue] = useState('');
 
   function handleSubmit() {
@@ -26,12 +27,14 @@ export function ChatInput({ onSubmit, onAudio, isDisabled }: Props) {
   function onRecordingReady() {}
 
   return (
-    <div className='flex gap-2 border rounded-2xl p-2'>
+    <div
+      className={`flex gap-2 border rounded-lg p-2 ${className}  dark:bg-gray-700 dark:border-gray-500`}
+    >
       <textarea
         value={value}
         onChange={(e) => setValue(e.target.value)}
         onKeyDown={onKeyDown}
-        className='flex-1 resize-none outline-none'
+        className='flex-1 resize-none outline-none xl:text-lg'
         placeholder='Typ je bericht...'
       />
 
@@ -43,7 +46,7 @@ export function ChatInput({ onSubmit, onAudio, isDisabled }: Props) {
           <Button
             onClick={handleSubmit}
             disabled={isDisabled}
-            className='rounded-full w-10 h-10'
+            className='rounded-full w-9.5 h-9.5'
           >
             <ArrowUpIcon />
           </Button>

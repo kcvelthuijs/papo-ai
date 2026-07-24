@@ -9,7 +9,6 @@ import {
   type ExerciseState,
 } from '@workspace/dtotypes';
 
-import { sleep } from '@workspace/ui';
 import { type Exercise } from '@workspace/dtotypes';
 
 export function ExerciseFromExerciseData(
@@ -22,7 +21,7 @@ export function ExerciseFromExerciseData(
     type: data.type,
     title: data.title,
     description: data.description,
-    state: 'undefined',
+    state: 'undefined' as ExerciseState,
   };
 
   switch (data.type) {

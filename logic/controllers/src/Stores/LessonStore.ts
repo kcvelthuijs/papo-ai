@@ -6,6 +6,7 @@ import type {
   ExerciseData,
   ExerciseExitReason,
   ExerciseState,
+  SpeechOptions,
 } from '@workspace/dtotypes';
 
 import {
@@ -55,7 +56,11 @@ type LessonState = {
   completeExercise: (reason: ExerciseExitReason) => Promise<void>;
 
   submitAnswer: (answer: any) => Promise<ExerciseEvaluation>;
-  submitAudio: (text: string, callback?: () => void) => Promise<void>;
+  submitAudio: (
+    text: string,
+    options?: SpeechOptions,
+    callback?: () => void,
+  ) => Promise<void>;
 };
 
 export const useLessonStore = create<LessonState>((set, get) => ({
@@ -287,7 +292,11 @@ export const useLessonStore = create<LessonState>((set, get) => ({
   // -------------------------
   // HANDLE AUDIO
   // -------------------------
-  submitAudio: async (text: string, callBack?: () => void): Promise<void> => {
-    await submitAudioHelper(text, callBack);
+  submitAudio: async (
+    text: string,
+    options?: SpeechOptions,
+    callBack?: () => void,
+  ): Promise<void> => {
+    await submitAudioHelper(text, options, callBack);
   },
 }));
