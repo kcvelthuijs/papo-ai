@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
 
 import type { CardItem } from '@workspace/dtotypes';
-import { CardLayout } from '@workspace/ui';
-import { ImageView } from '../../../Components/Atoms/ImageView';
+import { CardLayout, NextButton, PrevButton } from '@workspace/ui';
 import type { CardExerciseProps } from '@exercises/logic';
+
+import { ImageView } from '../../../Components/Atoms/ImageView';
+import { getRandomSpeechOption } from '../../../Components/Helpers/RandomVoice';
 
 export function CardLearn({
   exercise,
@@ -31,7 +33,11 @@ export function CardLearn({
     const callAudio = async () => {
       setBusy(true);
       if (handleAudio !== undefined)
-        await handleAudio(active?.response ?? '', audioReady);
+        await handleAudio(
+          active?.response ?? '',
+          getRandomSpeechOption(),
+          audioReady,
+        );
     };
     if (active) callAudio();
   }, [index]);
@@ -66,6 +72,13 @@ export function CardLearn({
 
     setIndex((prev) => prev - 1);
     setRevealed(false);
+  }
+
+  // -------------------------
+  // QUIT
+  // -------------------------
+  function quit() {
+    onComplete('quit');
   }
 
   // -------------------------
@@ -104,15 +117,9 @@ export function CardLearn({
         </div>
       }
       footer={
-        <div className='flex flex-row gap-2'>
+        <div className='flex flex-row justify-center items-center gap-2'>
           {/* PREVIOUS */}
-          <button
-            onClick={previous}
-            disabled={index === 0 || busy}
-            className='rounded-md border border-gray-400 px-3 py-1 text-sm transition hover:bg-gray-100 disabled:opacity-40'
-          >
-            ← Anterior
-          </button>
+          <PrevButton disabled={index === 0 || busy} onClick={previous} />
 
           {/* REVEAL */}
           <button
@@ -123,17 +130,10 @@ export function CardLearn({
           </button>
 
           {/* NEXT */}
-          {!isComplete && (
-            <button
-              onClick={next}
-              disabled={busy}
-              className='rounded-md border border-gray-400 px-3 py-1 text-sm transition hover:bg-gray-100 disabled:opacity-40'
-            >
-              Próxima →
-            </button>
-          )}
+          {!isComplete && <NextButton onClick={next} disabled={busy} />}
         </div>
       }
+      onClose={quit}
     />
   );
 }

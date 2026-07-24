@@ -1,8 +1,7 @@
 import { create } from 'zustand';
-import { v4 as uuidv4 } from 'uuid';
 
 import { fetchSoundClip } from '@workspace/connectors';
-import type { SpeechOptions } from '@workspace/webtypes';
+import type { SpeechOptions } from '@workspace/dtotypes';
 import type { SpeechData } from '@workspace/dtotypes';
 
 import { AudioQueue } from '../Queues/AudioQueue';

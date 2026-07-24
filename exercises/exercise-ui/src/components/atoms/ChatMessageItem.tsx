@@ -49,7 +49,7 @@ export const ChatMessageItem = ({ message, onSpeakMessage }: Props) => {
 
       {isAssistant && (
         <CopyIcon
-          className='ml-2 opacity-0 group-hover:opacity-100 cursor-pointer'
+          className='ml-2 opacity-0 group-hover:opacity-100 cursor-pointer lg:text-2xl'
           onClick={copyText}
         />
       )}

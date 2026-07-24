@@ -12,6 +12,7 @@ type Props = {
   footer?: ReactNode;
   isComplete?: boolean;
   onComplete?: () => Promise<void>;
+  onClose?: () => void;
 };
 
 export function VerbCardLayout({
@@ -23,6 +24,7 @@ export function VerbCardLayout({
   footer,
   isComplete,
   onComplete,
+  onClose,
 }: Props) {
   const content = (
     <div>
@@ -50,6 +52,7 @@ export function VerbCardLayout({
       footer={footer}
       isComplete={isComplete}
       onContinue={onComplete}
+      onClose={onClose}
       stars={stars}
     />
   );

@@ -12,7 +12,9 @@ import type {
   CardExercise,
   CardFeedback,
   CardItem,
+  SpeechOptions,
 } from '@workspace/dtotypes';
+import { getRandomSpeechOption } from '../../../Components/Helpers/RandomVoice';
 
 type ItemFeedback = {
   givenAnswer: string;
@@ -24,7 +26,11 @@ type useCardProps = {
   exercise: CardExercise;
   onSubmit: (input: CardAnswer) => Promise<CardFeedback>;
   onComplete: (reason: ExerciseExitReason) => Promise<void>;
-  handleAudio: (text: string, callback?: () => void) => Promise<void>;
+  handleAudio: (
+    text: string,
+    options?: SpeechOptions,
+    callback?: () => void,
+  ) => Promise<void>;
 };
 
 export function useCardExercise({
@@ -100,7 +106,11 @@ export function useCardExercise({
 
     if (result.nextAction === 'next step') {
       if (handleAudio !== undefined)
-        await handleAudio(active?.response ?? '', afterSubmit);
+        await handleAudio(
+          active?.response ?? '',
+          getRandomSpeechOption(),
+          afterSubmit,
+        );
       else afterSubmit();
     }
     return result;

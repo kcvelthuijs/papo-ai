@@ -59,8 +59,18 @@ export function VerbTypeTest({
     }
   }
 
+  // -------------------------
+  // COMPLETE
+  // -------------------------
   async function handleComplete() {
     if (onComplete) await onComplete('end');
+  }
+
+  // -------------------------
+  // QUIT
+  // -------------------------
+  function quit() {
+    onComplete('quit');
   }
 
   // -------------------------
@@ -74,6 +84,7 @@ export function VerbTypeTest({
       stars={stars}
       isComplete={isComplete}
       onComplete={handleComplete}
+      onClose={quit}
       renderField={(pronounId) => {
         const feedback = answers[pronounId];
         const value =

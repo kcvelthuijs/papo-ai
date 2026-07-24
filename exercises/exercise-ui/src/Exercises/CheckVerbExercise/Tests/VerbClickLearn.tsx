@@ -48,8 +48,18 @@ export function VerbClickLearn({
     }, EXERCISE_FEEDBACK_TIME);
   }
 
+  // -------------------------
+  // COMPLETE
+  // -------------------------
   async function handleComplete() {
     if (onComplete) await onComplete('end');
+  }
+
+  // -------------------------
+  // QUIT
+  // -------------------------
+  function quit() {
+    onComplete('quit');
   }
 
   return (
@@ -59,6 +69,7 @@ export function VerbClickLearn({
       activePronounId={active}
       isComplete={isComplete}
       onComplete={handleComplete}
+      onClose={quit}
       renderField={(pronounId) => (
         <ExerciseTextbox
           key={pronounId}

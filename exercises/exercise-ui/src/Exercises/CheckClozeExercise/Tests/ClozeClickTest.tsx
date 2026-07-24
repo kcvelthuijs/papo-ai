@@ -19,7 +19,7 @@ export function ClozeClickTest({
     phrase,
     clozeIndex,
     isComplete,
-    buzy,
+    busy,
     tempFocus,
     getState,
     submit,
@@ -56,6 +56,13 @@ export function ClozeClickTest({
     await submit(value);
   }
 
+  // -------------------------
+  // QUIT
+  // -------------------------
+  function quit() {
+    onComplete('quit');
+  }
+
   // ---------------------------------------------------
   // RENDER
   // ---------------------------------------------------
@@ -65,6 +72,7 @@ export function ClozeClickTest({
       description={exercise.description}
       isComplete={isComplete}
       onContinue={next}
+      onClose={quit}
       content={
         <div className='flex flex-col gap-6 items-center'>
           {/* Phrase */}
@@ -110,7 +118,7 @@ export function ClozeClickTest({
                 id={option}
                 onClick={() => handleSelect(option)}
                 score={answers[clozeIndex]?.score}
-                disabled={buzy}
+                disabled={busy}
               >
                 {option}
               </AnswerButton>

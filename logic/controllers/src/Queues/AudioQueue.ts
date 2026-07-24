@@ -1,83 +1,169 @@
-import { type AudioTask } from '@workspace/webtypes';
+import { Voices, type AudioTask } from '@workspace/webtypes';
+
+export type AudioQueueState = {
+  current: AudioTask | null;
+  isPaused: boolean;
+  isBusy: boolean;
+};
 
 class AudioQueueClass {
   private queue: AudioTask[] = [];
   private current: AudioTask | null = null;
+
   private audio = new Audio();
-  private subscribers: ((task: AudioTask | null) => void)[] = [];
+  private audioContext = new AudioContext();
+  private sourceNode: MediaElementAudioSourceNode;
+  private gainNode: GainNode;
+
+  private subscribers: ((state: AudioQueueState) => void)[] = [];
+
   private paused = false;
+  private currentUrl: string | null = null;
 
   constructor() {
-    this.audio.onended = () => this.next();
-    this.audio.onerror = () => this.next();
+    // Creeer sourceNode en gainNode
+    this.sourceNode = this.audioContext.createMediaElementSource(this.audio);
+    this.gainNode = this.audioContext.createGain();
+
+    this.sourceNode.connect(this.gainNode);
+    this.gainNode.connect(this.audioContext.destination);
+
+    this.audio.onended = () => {
+      this.cleanupCurrentAudio();
+      this.next();
+    };
+
+    this.audio.onerror = () => {
+      this.cleanupCurrentAudio();
+      this.next();
+    };
   }
 
-  subscribe(fn: (task: AudioTask | null) => void) {
+  private getState(): AudioQueueState {
+    return {
+      current: this.current,
+      isPaused: this.paused,
+      isBusy: this.current !== null,
+    };
+  }
+  subscribe(fn: (state: AudioQueueState) => void) {
     this.subscribers.push(fn);
+    fn(this.getState());
     return () => {
       this.subscribers = this.subscribers.filter((s) => s !== fn);
     };
   }
 
   private notify() {
-    this.subscribers.forEach((fn) => fn(this.current));
+    const state = this.getState();
+    this.subscribers.forEach((s) => s(state));
   }
 
   enqueue(task: AudioTask) {
     this.queue.push(task);
     if (!this.current && !this.paused) {
       this.next();
+    } else {
+      this.notify();
     }
   }
 
-  private next() {
+  private async next() {
     if (this.queue.length === 0) {
       this.current = null;
+      this.paused = false;
       this.notify();
       return;
     }
 
     this.current = this.queue.shift()!;
-    const url = URL.createObjectURL(this.current.blob);
-    this.audio.src = url;
-    this.audio.play().catch(console.error);
-    this.notify();
+    this.paused = false;
+    this.currentUrl = URL.createObjectURL(this.current.blob);
+    this.audio.src = this.currentUrl;
 
-    this.audio.onended = () => {
-      URL.revokeObjectURL(url);
+    // pas snelheid en volume aan op de voice
+    const voice = Voices[this.current.voice];
+    this.gainNode.gain.value = voice?.volume ?? 1.0;
+    this.audio.playbackRate = voice?.speed ?? 1.0;
+    this.notify();
+    /*console.log(
+      'voice',
+      this.current.voice,
+      ' // volumne ',
+      voice?.volume ?? 1.0,
+      ' // speed ',
+      voice?.speed ?? 1.0,
+    );*/
+
+    try {
+      if (this.audioContext.state === 'suspended') {
+        await this.audioContext.resume();
+      }
+      await this.audio.play();
+    } catch (err) {
+      console.error(err);
       this.next();
-    };
+    }
+    this.audio.play().catch((error) => {
+      console.error('Audio playback failed:', error);
+      this.next();
+    });
+  }
+
+  private cleanupCurrentAudio() {
+    if (this.currentUrl) {
+      URL.revokeObjectURL(this.currentUrl);
+      this.currentUrl = null;
+    }
   }
 
   pause() {
-    this.audio.pause();
-    this.paused = true;
+    if (this.current) {
+      this.audio.pause();
+      this.paused = true;
+      this.notify();
+    }
   }
 
-  resume() {
+  async resume() {
     if (this.current) {
-      this.audio.play();
+      if (this.audioContext.state === 'suspended') {
+        await this.audioContext.resume();
+      }
+      await this.audio.play().catch(console.error);
       this.paused = false;
+      this.notify();
     }
   }
 
   skip() {
-    this.audio.pause();
-    this.next();
+    if (this.current) {
+      this.audio.pause();
+      this.cleanupCurrentAudio();
+      this.current = null;
+      this.next();
+    }
   }
 
-  restart() {
+  async restart() {
     if (this.current) {
       this.audio.currentTime = 0;
-      this.audio.play();
+      if (this.audioContext.state === 'suspended') {
+        await this.audioContext.resume();
+      }
+      await this.audio.play().catch(console.error);
+      this.paused = false;
+      this.notify();
     }
   }
 
   clear() {
     this.audio.pause();
+    this.cleanupCurrentAudio();
     this.audio.src = '';
-    this.current = null;
     this.queue = [];
+    this.current = null;
+    this.paused = false;
     this.notify();
   }
 

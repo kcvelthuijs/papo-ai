@@ -46,9 +46,24 @@ export function CheckChatTest({
     useDialogStore.getState().addMessage(text);
   };
 
+  // -------------------------
+  // COMPLETE
+  // -------------------------
+  async function handleComplete() {
+    if (onComplete) await onComplete('end');
+  }
+
+  // -------------------------
+  // QUIT
+  // -------------------------
+  function quit() {
+    onComplete('quit');
+  }
+
   return (
     <CardLayout
       title={exercise.title}
+      onClose={quit}
       content={
         <>
           <ChatMessageList messages={messages} onSpeakMessage={startAudio} />
@@ -56,8 +71,9 @@ export function CheckChatTest({
         </>
       }
       footer=<>
-        <AudioPlayer />
-        {!isPlaying && (
+        {isPlaying ? (
+          <AudioPlayer />
+        ) : (
           <ChatInput onSubmit={handleSubmit} isDisabled={isBusy} />
         )}
       </>

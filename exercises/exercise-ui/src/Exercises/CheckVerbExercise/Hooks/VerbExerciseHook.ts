@@ -5,6 +5,7 @@ import {
   type CheckVerbFeedback,
   type ExerciseExitReason,
   type ExerciseScore,
+  type SpeechOptions,
 } from '@workspace/dtotypes';
 
 import {
@@ -12,6 +13,7 @@ import {
   type ExerciseInputState,
   type PronounId,
 } from '@workspace/webtypes';
+import { getRandomSpeechOption } from '../../../Components/Helpers/RandomVoice';
 
 type VerbFeedback = {
   answer: string;
@@ -24,7 +26,11 @@ type UseVerbExerciseParams = {
     value: string;
   }) => Promise<CheckVerbFeedback>;
   onComplete: (readon: ExerciseExitReason) => Promise<void>;
-  handleAudio: (text: string, callback: () => void) => Promise<void>;
+  handleAudio: (
+    text: string,
+    options?: SpeechOptions,
+    callback?: () => void,
+  ) => Promise<void>;
 };
 
 export function useVerbExercise({
@@ -103,7 +109,12 @@ export function useVerbExercise({
     if (result.score !== 'wrong' && handleAudio !== undefined) {
       setBusy(true);
       const pronoun = PtPronouns.find((p) => p.id == active);
-      if (pronoun) await handleAudio(`${pronoun.text} ${antwoord}`, audioReady);
+      if (pronoun)
+        await handleAudio(
+          `${pronoun.text} ${antwoord}`,
+          getRandomSpeechOption(),
+          audioReady,
+        );
     }
 
     switch (result.nextAction) {

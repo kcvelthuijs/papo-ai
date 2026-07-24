@@ -53,9 +53,18 @@ export function VerbClickTest({
       setFeedback({ id: item.id, score: undefined });
     }, EXERCISE_FEEDBACK_TIME);
   }
-
+  // -------------------------
+  // COMPLETE
+  // -------------------------
   async function handleComplete() {
     if (onComplete) await onComplete('end');
+  }
+
+  // -------------------------
+  // QUIT
+  // -------------------------
+  function quit() {
+    onComplete('quit');
   }
 
   // -------------------------
@@ -68,6 +77,7 @@ export function VerbClickTest({
       activePronounId={active}
       isComplete={isComplete}
       onComplete={handleComplete}
+      onClose={quit}
       renderField={(pronounId) => (
         <ExerciseTextbox
           textValue={answers[pronounId]?.answer ?? ''}

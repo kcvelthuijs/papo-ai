@@ -8,12 +8,14 @@ import {
   type Cloze,
   type ClozeAnswer,
   type Phrase,
+  type SpeechOptions,
 } from '@workspace/dtotypes';
 
 import {
   EXERCISE_FEEDBACK_TIME,
   type ExerciseInputState,
 } from '@workspace/webtypes';
+import { getRandomSpeechOption } from '../../../Components/Helpers/RandomVoice';
 
 type ClozeFeedback = {
   answer: string;
@@ -24,7 +26,11 @@ type useClozeExercise = {
   exercise: CheckClozeExercise;
   onSubmit: (input: ClozeAnswer) => Promise<CheckClozeFeedback>;
   onComplete: (reason: ExerciseExitReason) => Promise<void>;
-  handleAudio: (text: string, callBack?: () => void) => Promise<void>;
+  handleAudio: (
+    text: string,
+    options?: SpeechOptions,
+    callBack?: () => void,
+  ) => Promise<void>;
 };
 
 export function useClozeExercise({
@@ -125,7 +131,11 @@ export function useClozeExercise({
       case 'next step':
         if (handleAudio !== undefined && phrase) {
           setBusy(true);
-          await handleAudio(getFullPhraseText(phrase), isComplete);
+          await handleAudio(
+            getFullPhraseText(phrase),
+            getRandomSpeechOption(),
+            isComplete,
+          );
         } else isComplete();
         break;
     }

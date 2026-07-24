@@ -9,15 +9,13 @@ type AudioStore = {
   isPaused: boolean;
   isBusy: boolean;
 
-  setCurrent: (task: AudioTask | null) => void;
-  setPaused: (paused: boolean) => void;
-  waitForCompletion: () => Promise<void>;
-
   pause: () => void;
   resume: () => void;
   skip: () => void;
   restart: () => void;
   stop: () => void;
+
+  waitForCompletion: () => Promise<void>;
 };
 
 export const useAudioStore = create<AudioStore>((set) => ({
@@ -25,17 +23,12 @@ export const useAudioStore = create<AudioStore>((set) => ({
   isPaused: false,
   isBusy: false,
 
-  setCurrent: (task) => set({ current: task }),
-  setPaused: (paused) => set({ isPaused: paused }),
-
   pause: () => {
     AudioQueue.pause();
-    set({ isPaused: true });
   },
 
   resume: () => {
     AudioQueue.resume();
-    set({ isPaused: false });
   },
 
   skip: () => {
@@ -48,10 +41,17 @@ export const useAudioStore = create<AudioStore>((set) => ({
 
   stop: () => {
     AudioQueue.clear();
-    set({ current: null, isPaused: false });
   },
 
   waitForCompletion: async () => {
     await AudioQueue.waitUntilEmpty();
   },
 }));
+
+AudioQueue.subscribe((state) => {
+  useAudioStore.setState({
+    current: state.current,
+    isPaused: state.isPaused,
+    isBusy: state.isBusy,
+  });
+});

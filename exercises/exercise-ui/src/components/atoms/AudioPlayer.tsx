@@ -22,7 +22,7 @@ export const AudioPlayer = ({ className }: Props) => {
 
   return (
     <div
-      className={`flex flex-col gap-3 p-4 items-start rounded-xl ${className}`}
+      className={`flex flex-col gap-3 p-2 items-start rounded-xl ${className}`}
     >
       {/* Huidige zin */}
       <div className='self-start grow font-medium text-lg'>

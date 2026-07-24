@@ -90,6 +90,12 @@ export function CardTest({
       [active.id]: '',
     }));
   }
+  // -------------------------
+  // QUIT
+  // -------------------------
+  function quit() {
+    onComplete('quit');
+  }
 
   // -------------------------
   // RENDER SINGLE Phrase
@@ -101,6 +107,7 @@ export function CardTest({
       isComplete={isComplete}
       onContinue={next}
       onSkip={handleReveal}
+      onClose={quit}
       stars={stars}
       image={
         <ImageView

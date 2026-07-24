@@ -19,10 +19,12 @@ import {
   prepareExercise,
   executeExercise,
   ExerciseFromExerciseData,
+  useDialogStore,
 } from '@exercises/logic';
 
 import type { ExerciseEvaluation } from '@workspace/webtypes';
 import { submitAudioHelper } from '../Helpers/AudioHelper';
+import { useAudioStore } from './AudioStore';
 
 type LessonState = {
   // Lesson properties
@@ -54,6 +56,7 @@ type LessonState = {
   startExercise: () => Promise<void>;
   nextExercise: () => void;
   completeExercise: (reason: ExerciseExitReason) => Promise<void>;
+  lessonCompleted: () => void;
 
   submitAnswer: (answer: any) => Promise<ExerciseEvaluation>;
   submitAudio: (
@@ -263,8 +266,12 @@ export const useLessonStore = create<LessonState>((set, get) => ({
     // TO-DO: Show an overview of exercise results
     console.log('Exercise results', get().results);
 
-    // next exercise
-    get().nextExercise();
+    if (reason === 'quit') {
+      get().lessonCompleted();
+    } else {
+      // next exercise
+      get().nextExercise();
+    }
   },
 
   // -------------------------
@@ -278,14 +285,7 @@ export const useLessonStore = create<LessonState>((set, get) => ({
     if (nextIndex < get().exercises.length) {
       get().setExercise(nextIndex);
     } else {
-      console.log('Lesson completed');
-      set({
-        currentLesson: undefined,
-        currentLessonID: '',
-        exercises: [],
-        currentExerciseIndex: 0,
-        currentExercise: undefined,
-      });
+      get().lessonCompleted();
     }
   },
 
@@ -298,5 +298,24 @@ export const useLessonStore = create<LessonState>((set, get) => ({
     callBack?: () => void,
   ): Promise<void> => {
     await submitAudioHelper(text, options, callBack);
+  },
+
+  // -------------------------
+  // LESSON COMPLETED
+  // -------------------------
+  lessonCompleted: () => {
+    console.log('Lesson completed');
+
+    // Stop het geluid
+    useAudioStore.getState().stop();
+
+    // Sluit de oefening af
+    set({
+      currentLesson: undefined,
+      currentLessonID: '',
+      exercises: [],
+      currentExerciseIndex: 0,
+      currentExercise: undefined,
+    });
   },
 }));

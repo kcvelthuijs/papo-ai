@@ -81,7 +81,7 @@ export function AudioRecorder({ className, onReady }: Props) {
           onClick={startRecording}
           aria-label='start recording'
           className='w-9 h-9 rounded-full flex items-center justify-center
-                  transition-colors duration-200 bg-black text-white'
+                  transition-colors duration-200 border bg-black text-white dark:bg-gray-200 dark:text-black dark:hover:bg-gray-400'
         >
           <StartRecordingIcon className='flex-col self-center' />
         </button>
@@ -90,7 +90,7 @@ export function AudioRecorder({ className, onReady }: Props) {
           onClick={stopRecording}
           aria-label='stop recording'
           className='w-9 h-9 rounded-full flex items-center justify-center
-                  transition-colors duration-200 bg-red-600 text-white'
+                  transition-colors duration-200 bg-red-600 text-white dark:bg-red-700'
         >
           <StopRecordingIcon className='flex-col self-center' />
         </button>
