@@ -9,6 +9,7 @@ import type {
   CheckClozeFeedback,
   CheckVerbFeedback,
   CardAnswer,
+  ChatExerciseFeedback,
 } from '@workspace/dtotypes';
 
 import type { SpeechOptions } from '@workspace/dtotypes';
@@ -66,7 +67,7 @@ export type QuizQuestionProps = {
 
 export type ChatExerciseProps = {
   exercise: ChatExercise;
-  onSubmit: (message: string) => Promise<any>;
+  onSubmit: (message: string) => Promise<ChatExerciseFeedback>;
   onComplete: (reason: ExerciseExitReason) => Promise<void>;
   handleAudio: (
     text: string,

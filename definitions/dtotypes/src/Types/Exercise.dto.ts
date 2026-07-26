@@ -167,10 +167,12 @@ export type ChatScene = {
   title: string;
   words: string[];
   prompt: string;
-  completionRules: CompletionRules;
+  completionRules: CompletionRule[];
 };
-export interface CompletionRules {
-  requiredInformation: string[];
+export interface CompletionRule {
+  key: string;
+  description: string;
+  alternatives: string[];
 }
 export type ChatResponse = {
   responseId: string;

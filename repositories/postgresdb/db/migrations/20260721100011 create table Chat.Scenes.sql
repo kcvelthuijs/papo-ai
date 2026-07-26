@@ -5,7 +5,6 @@ CREATE TABLE "Chat"."Scenes"
     "sequenceNumber" integer NOT NULL,
     title text NOT NULL,
     prompt text NOT NULL,
-    words text[] NOT NULL DEFAULT ARRAY[]::text[],
     "completionRules" jsonb NOT NULL DEFAULT '{}'::jsonb,
 
     CONSTRAINT "PK_Scenes"

@@ -97,7 +97,7 @@ export function CardLayout({
           )}
 
           <CardFooter className='flex-none flex w-full justify-center border-t border-gray-600 min-h-16 pt-2'>
-            {footer && <div className='mx-1'>{footer}</div>}
+            {footer && <div className='mx-1 w-full'>{footer}</div>}
             {isComplete ? (
               <CardAction className='pt-2'>
                 <ActionButton ref={continueRef} onClick={onContinue}>

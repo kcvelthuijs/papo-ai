@@ -1,22 +1,29 @@
 -- migrate:up
-INSERT INTO "Chat"."Scenes" ( "exerciseId", "sequenceNumber", title, prompt, words, "completionRules" )
+INSERT INTO "Chat"."Scenes" ( "exerciseId", "sequenceNumber", title, prompt, "completionRules" )
 VALUES ( 1, 1, 'Nome'
     , 'Doel: Maak kennis.
         Instructies:
-        - Stel jezelf voor met naam en leeftijd.
-        - Vraag naar de naam van de ander.
+        - Stel jezelf alleen voor met je voornaam. 
+        - Vraag dan naar de naam van de ander.
         - Kom erachter of de ander een man of een vrouw is zonder dat expliciet te vragen
         - Vraag daarna naar de leeftijd.
-        - Stel verder geen andere vragen.'
-    , ARRAY[
-        'nome', 'apelido',
-        'mulher', 'homem',
-        'idade', 'anos']
-    , '{"requiredInformation": [
-        "person_first_name"
-        , "person_last_name"
-        , "person_gender"
-        , "person_age"]}'::jsonb)
+        - Stel nog geen andere vragen.'
+    , '{[
+    {
+    "key": "saudação",
+    "description": "hallo",
+    "alternatives": ["olá","bom dia","boa tarde","boa noite", "tudo bem", "como estás", "como está", "muito prazer", "conhecer-te"]
+    },
+    {
+    "key": "nome",
+    "description": "naam",
+    "alternatives": ["chamo-me", "o meu nome", "sou o", "sou a"]
+    },
+    {
+    "key": "idade",
+    "description": "leeftijd",
+    "alternatives": ["idade","anos"]
+    }]}'::jsonb)
 
     , ( 1, 2, 'Origem'
     , 'Doel: weet waar de ander vandaan komt.
@@ -26,12 +33,22 @@ VALUES ( 1, 1, 'Nome'
         - Vraag naar de nationaliteit
         - Vraag eventueel 1 keer door.
         Praat nog niet over werk of studie.'
-    , ARRAY['morar', 'país', 'nacionalidade']
-    , '{"requiredInformation": [
-        "person_origin",
-        "person_residence",
-        "person_country",
-        "person_nationality"]}'::jsonb)
+    , '{[
+    {
+    "key": "nacionalidade",
+    "description": "nationaliteit",
+    "alternatives": ["o meu nacionalidade"]
+    },
+    {
+    "key": "nasci",
+    "description": "origine",
+    "alternatives": ["sou de", "sou da", "sou dos", "venho de", "venho da", "venho dos", "nasci", "país natal"]
+    },
+    {
+        "key": "morar",
+        "description": "woonplaats",
+        "alternatives": ["moro", "morada", "casa", "localização", "domicílio", "residência"]
+    }]}'::jsonb)
         
     , ( 1, 3, 'Familia'
     , 'Doel: Leer de gezinssituatie kennen.
@@ -40,10 +57,17 @@ VALUES ( 1, 1, 'Nome'
         - Vraag of de ander kinderen heeft.
         - Vraag eventueel naar de leeftijd van de kinderen.
         Vertel kort over je eigen gezin.'
-    , ARRAY[ 'marido', 'solteiro', 'casado', 'filhos']
-    ,'{"requiredInformation": [
-        "person_marital_status",
-        "person_children"]}'::jsonb)
+    ,'{[
+    {
+    "key": "estado civil",
+    "description": "thuissituatie",
+    "alternatives": ["casado", "casada", "divorsado", "divorsada", "solteiro", "solteira", "viuvo", "viuva", "separado", "separada", "un namorado", "un namorada", "complicado"]
+    },
+    {
+    "key": "filhos",
+    "description": "kinderen",
+    "alternatives": ["filho", "filha", "filhos"]}
+    }]}'::jsonb)
 
     , ( 1, 4, 'Trabalho'
     , 'Doel: Praat over het werk
@@ -52,10 +76,23 @@ VALUES ( 1, 1, 'Nome'
         - Informeer naar de werkgever of het een groot bedrijf is
         - Hoe de ander naar het werk reist
         Vertel ook iets over je eigen werk.'
-    , ARRAY[ 'profissão' ]
-    , '{"requiredInformation": [
-        "person_profession",
-        "person_employer"]}'::jsonb)
+    , '{[
+    { 
+    "key": "profissão",
+    "description": "werksituatie",
+    "alternatives": ["profissão", "ocupação", "trabalho como", "trabalhei como", "reformado", "reformada", "aposentado", "aposentada", "retirado", "retirada", "pensionista"]
+    },
+    {
+    "key": "empregador",
+    "description": "werkgever",
+    "alternatives": ["empregador", "empregadora", "empresa", "negócio", "companhia", "corporação", "patrão", "chefe"]
+    },
+    {
+    "key": "deslocamento",
+    "description": "woon/werk verkeer",
+    "alternatives": ["partir da casa", "carro", "autocarro", "bicicleta", "a pé", "metro", "comboio"]
+    }
+    ]}'::jsonb)
 
     , ( 1, 5, 'Passatempos'
     , 'Doel: praat over hobby''s
@@ -63,9 +100,12 @@ VALUES ( 1, 1, 'Nome'
         - Vraag naar hobby''s zoals: sport, lezen, film, muziek, uitgaan.
         - Vraag door als de ander enthousiast lijkt.
         Vertel ook over je eigen hobbies.'
-    , ARRAY[ 'desporto', 'livro', 'filme', 'música', 'gosta', 'discoteca', 'bar', 'festival']
-    ,'{"requiredInformation": [
-        "person_hobbies"]}'::jsonb)
+    ,'{[
+    {
+    "key": "passatempos",
+    "description": "hobbies",
+    "alternatives": ["filme", "música", "tocar de", "de cozinhar", "de viajar", "de nadar", "meu hobby", "tempos livros", "meus hobbies", "practico", "faço"]
+    }]}'::jsonb)
 
     , (1, 6, 'Portugal'
     , 'Doel: Praat over Portugal en waarom de ander Portugees wil leren.
@@ -74,11 +114,23 @@ VALUES ( 1, 1, 'Nome'
         - Vraag waar hij/zij geweest is en wat hij/zij daar gedaan heeft
         - Vraag wat er zo leuk is aan Portugal
         Vul aan met eigen ervaringen en persoonlijke tips.'
-    , ARRAY[ 'museu', 'cidade', 'relaxante', 'praia', 'vezes'] 
-    ,'{"requiredInformation": [
-        "number_of_visits",
-        "cities_visited",
-        "reasons_to_visit"]}'::jsonb);
+    ,'{[
+    {
+    "key": "cidades",
+    "description": "welke steden heb je al gezien?",
+    "alternatives": ["Lisboa", "Porto", "Faro", "Algarve", "Coimbra", "Setúbal", "Funcal", "Madeira", "Açores", "Delgado", "Mafra", "Braga", "Guimaraēs", "Tomar"]
+    },
+    {
+    "key": "visitas",
+    "description": "hoe vaak was je al in Portugal",
+    "alternatives": ["nunca", "vez", "vezes", "visitas"]
+    },
+    {
+    "key": "gosto em Portugal",
+    "description": "waarom kom je naar Portugal?",
+    "alternatives": ["tempo", "cidades", "historica", "praias", "praia", "trabalho", "relaxante"]
+    }
+    ]}'::jsonb);
 
 -- migrate:down
 DELETE FROM "Chat"."Scenes";

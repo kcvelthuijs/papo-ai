@@ -58,6 +58,45 @@ CREATE SCHEMA "Verb";
 
 
 --
+-- Name: AddCardToDeck(integer, character varying, text, text[], text); Type: FUNCTION; Schema: Card; Owner: -
+--
+
+CREATE FUNCTION "Card"."AddCardToDeck"(p_deck_id integer, p_title character varying, p_translation text, p_tree text[] DEFAULT NULL::text[], p_image text DEFAULT NULL::text) RETURNS integer
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+    v_card_id integer;
+    v_sequence smallint;
+BEGIN
+    -- 1. Voeg de card toe
+    INSERT INTO "Card"."Cards"(text,tree,name)
+    VALUES
+		( p_title, p_tree, p_image )
+    RETURNING id INTO v_card_id;
+
+    -- 2. Voeg de vertaling toe
+    INSERT INTO "Babel"."Texts" ( "tableName", "keyId", language, text )
+    VALUES
+    	( 'Card.Cards', v_card_id, 'NL', p_translation);
+
+    -- 3. Bepaal volgende sequence in deck
+    SELECT COALESCE(MAX(sequence), 0) + 1
+    INTO v_sequence
+    FROM "Card"."DeckItems"
+    WHERE "deckId" = p_deck_id;
+
+    -- 4. Voeg card toe aan deck
+    INSERT INTO "Card"."DeckItems" ( "deckId", "cardId", sequence )
+    VALUES
+    	( p_deck_id, v_card_id, v_sequence);
+
+    -- 5. Geef nieuwe cardId terug
+    RETURN v_card_id;
+END;
+$$;
+
+
+--
 -- Name: AddSentence(integer, integer, text[], jsonb, jsonb); Type: FUNCTION; Schema: Cloze; Owner: -
 --
 
@@ -271,7 +310,7 @@ BEGIN
 			'prompt', ex.prompt,
 			'avatar', ex.avatar,
 			'voice', ex.voice,
-            'items',
+            'scenes',
             COALESCE(
                 (
                     SELECT jsonb_agg(
@@ -1024,4 +1063,8 @@ INSERT INTO public.schema_migrations (version) VALUES
     ('20260721100011'),
     ('20260721131603'),
     ('20260721132231'),
-    ('20260721143541');
+    ('20260721143541'),
+    ('20260726144619'),
+    ('20260726154251'),
+    ('20260726160739'),
+    ('20260726171939');

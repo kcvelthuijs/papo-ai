@@ -91,12 +91,14 @@ export function CardLearn({
       isComplete={isComplete}
       onContinue={next}
       image={
-        <ImageView
-          name={active?.name ?? ''}
-          tree={active?.tree ?? []}
-          size='none'
-          className='w-full h-auto object-contain pt-0 mt-0 gap-0'
-        />
+        <div className='flex flex-1 self-center pt-3'>
+          <ImageView
+            name={active?.name ?? ''}
+            tree={active?.tree ?? []}
+            size='none'
+            className='h-auto object-contain pt-0 mt-0 gap-0 md:w-160'
+          />
+        </div>
       }
       content={
         <div className='flex flex-col gap-6'>
