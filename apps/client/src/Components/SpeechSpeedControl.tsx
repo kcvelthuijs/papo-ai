@@ -1,14 +1,14 @@
 import { TiMinus, TiPlus } from 'react-icons/ti';
 import { FaSquare, FaRegSquare } from 'react-icons/fa';
 
-type Props = {
-  speed: number;
-  onChange: (speed: number) => void;
-};
+import { useSpeechStore } from '@workspace/controllers';
 
-export default function SpeechSpeedControl({ speed, onChange }: Props) {
-  const decrease = () => onChange(Math.max(0, speed - 1));
-  const increase = () => onChange(Math.min(5, speed + 1));
+export default function SpeechSpeedControl() {
+  const speed = useSpeechStore((s) => s.speed);
+  const setSpeed = useSpeechStore((s) => s.setSpeed);
+
+  const decrease = () => setSpeed(Math.max(0, speed - 1));
+  const increase = () => setSpeed(Math.min(5, speed + 1));
 
   return (
     <div className='flex flex-row text-center px-0.5  rounded-xl bg-gray-200 border border-gray-400 dark:bg-gray-700 dark:border-black'>
@@ -24,7 +24,7 @@ export default function SpeechSpeedControl({ speed, onChange }: Props) {
         <p className='text-xs py-0.5'>speech speed</p>
         <div className='flex gap-0.5'>
           {Array.from({ length: 5 }, (_, i) =>
-            i < speed ? <FaSquare key={i} /> : <FaRegSquare key={i} />,
+            i < speed ? <FaSquare key={i} /> : <FaRegSquare key={i} />
           )}
         </div>
       </div>

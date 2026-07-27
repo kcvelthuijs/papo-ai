@@ -1,23 +1,13 @@
-import { useState } from 'react';
 import { FaVolumeUp, FaVolumeMute } from 'react-icons/fa';
 
-import type { OnOffState } from '@workspace/webtypes';
+import { useSpeechStore } from '@workspace/controllers';
 
-type Props = {
-  onStateChanged?: (state: OnOffState) => void;
-};
+export const AudioControls = () => {
+  const audioOn = useSpeechStore((state) => state.enabled);
+  const setEnabled = useSpeechStore((state) => state.setEnabled);
 
-export const AudioControls = ({ onStateChanged }: Props) => {
-  const [audioState, setAudioState] = useState<OnOffState>('off');
-
-  const toggleAudio = async () => {
-    const newState: OnOffState = audioState === 'on' ? 'off' : 'on';
-    if (newState == 'on') {
-      const ctx = new AudioContext();
-      await ctx.resume();
-    }
-    setAudioState(newState);
-    onStateChanged?.(newState);
+  const toggleAudio = () => {
+    setEnabled(!audioOn);
   };
 
   return (
@@ -26,8 +16,8 @@ export const AudioControls = ({ onStateChanged }: Props) => {
         onClick={toggleAudio}
         className='flex items-center gap-2 px-3 py-2 rounded-xl bg-gray-200 border border-gray-400 dark:bg-gray-700 dark:border-black hover:scale-103 transition-transform'
       >
-        {audioState === 'on' ? <FaVolumeUp /> : <FaVolumeMute />}
-        {audioState === 'on' ? 'On' : 'Off'}
+        {audioOn ? <FaVolumeUp /> : <FaVolumeMute />}
+        {audioOn ? 'On' : 'Off'}
       </button>
     </div>
   );

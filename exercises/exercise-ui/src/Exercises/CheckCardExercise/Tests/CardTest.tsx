@@ -84,7 +84,7 @@ export function CardTest({
       [active.id]: correctAnswer,
     }));
     await submit(correctAnswer);
-    if (handleAudio !== undefined) await handleAudio(active?.response ?? '');
+    // if (handleAudio !== undefined) await handleAudio(active?.response ?? '');
     setLocalInput((prev) => ({
       ...prev,
       [active.id]: '',

@@ -22,6 +22,7 @@ export const useAudioStore = create<AudioStore>((set) => ({
   current: null,
   isPaused: false,
   isBusy: false,
+  isOn: true,
 
   pause: () => {
     AudioQueue.pause();
@@ -45,13 +46,13 @@ export const useAudioStore = create<AudioStore>((set) => ({
 
   waitForCompletion: async () => {
     await AudioQueue.waitUntilEmpty();
-  },
+  }
 }));
 
 AudioQueue.subscribe((state) => {
   useAudioStore.setState({
     current: state.current,
     isPaused: state.isPaused,
-    isBusy: state.isBusy,
+    isBusy: state.isBusy
   });
 });

@@ -1,5 +1,3 @@
-import type { OnOffState } from '@workspace/webtypes';
-import { useSpeechStore } from '@workspace/controllers';
 import { RoleAvatar, AudioControls } from '@exercises/ui';
 
 import MenuButton from '../Components/MenuButton';
@@ -7,13 +5,6 @@ import DarkLightToggle from '../Components/DarkLightToggle';
 import SpeechSpeedControl from '../Components/SpeechSpeedControl';
 
 const NavigationBar = () => {
-  const onAudioOnOff = (state: OnOffState) => {
-    useSpeechStore.getState().setEnabled(state === 'on');
-  };
-
-  const speed = useSpeechStore((s) => s.speed);
-  const setSpeed = useSpeechStore((s) => s.setSpeed);
-
   return (
     <div>
       <div>
@@ -33,8 +24,8 @@ const NavigationBar = () => {
 
           {/* Hier kan je knoppen voor navigatie toevoegen */}
           <div className='flex flex-row self-center gap-2'>
-            <SpeechSpeedControl speed={speed} onChange={setSpeed} />
-            <AudioControls onStateChanged={onAudioOnOff} />
+            <SpeechSpeedControl />
+            <AudioControls />
             <DarkLightToggle />
           </div>
 
@@ -45,7 +36,7 @@ const NavigationBar = () => {
               style={{
                 width: '3.4rem',
                 height: '3.4rem',
-                transform: 'scaleX(-1)',
+                transform: 'scaleX(-1)'
               }}
             />
           </div>

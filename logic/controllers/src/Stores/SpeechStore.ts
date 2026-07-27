@@ -26,10 +26,14 @@ export const useSpeechStore = create<SpeechState>((set, get) => ({
     'Fale apenas em português europeu, com sotaque de Coimbra, e use um tom amigável e alegre.',
   enabled: true,
 
-  setEnabled: (enabled) => set({ enabled }),
   setSpeed: (speed: number) => set({ speed }),
   setVoice: (voice: string) => set({ voice }),
   setInstructions: (instructions: string) => set({ instructions }),
+
+  setEnabled: (enabled: boolean) => {
+    set({ enabled });
+    console.log('Speech enabled:', get().enabled);
+  },
 
   generateSpeech: async (text, options) => {
     const speechspeeds: number[] = [0.8, 0.9, 1.0, 1.05, 1.1, 1.15];
@@ -39,7 +43,7 @@ export const useSpeechStore = create<SpeechState>((set, get) => ({
         text,
         speed: options?.speed ?? speechspeeds[get().speed],
         voice: options?.voice ?? get().voice,
-        instructions: options?.instructions ?? get().instructions,
+        instructions: options?.instructions ?? get().instructions
       };
       const blob = await fetchSoundClip(data);
       if (blob) {
@@ -47,9 +51,9 @@ export const useSpeechStore = create<SpeechState>((set, get) => ({
           id,
           text: data.text,
           voice: data.voice ?? '',
-          blob,
+          blob
         });
       }
     }
-  },
+  }
 }));
