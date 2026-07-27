@@ -39,6 +39,9 @@ VALUES (13, 1, 'card', 5),
     (13, 2, 'card', 6);
 
 -- migrate:down
+DELETE FROM "Lesson"."Exercises" 
+WHERE "lessonId" = 13;
+
 DELETE FROM "Lesson"."Lessons"
 WHERE id = 13;
 

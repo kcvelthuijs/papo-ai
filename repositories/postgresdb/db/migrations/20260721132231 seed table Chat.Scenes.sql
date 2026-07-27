@@ -8,7 +8,7 @@ VALUES ( 1, 1, 'Nome'
         - Kom erachter of de ander een man of een vrouw is zonder dat expliciet te vragen
         - Vraag daarna naar de leeftijd.
         - Stel nog geen andere vragen.'
-    , '{[
+    , '[
     {
     "key": "saudação",
     "description": "hallo",
@@ -23,9 +23,8 @@ VALUES ( 1, 1, 'Nome'
     "key": "idade",
     "description": "leeftijd",
     "alternatives": ["idade","anos"]
-    }]}'::jsonb)
-
-    , ( 1, 2, 'Origem'
+    }]'::jsonb)
+, ( 1, 2, 'Origem'
     , 'Doel: weet waar de ander vandaan komt.
         Instructies:
         - Vraag waar de ander vandaan komt.
@@ -33,7 +32,7 @@ VALUES ( 1, 1, 'Nome'
         - Vraag naar de nationaliteit
         - Vraag eventueel 1 keer door.
         Praat nog niet over werk of studie.'
-    , '{[
+    , '[
     {
     "key": "nacionalidade",
     "description": "nationaliteit",
@@ -48,7 +47,7 @@ VALUES ( 1, 1, 'Nome'
         "key": "morar",
         "description": "woonplaats",
         "alternatives": ["moro", "morada", "casa", "localização", "domicílio", "residência"]
-    }]}'::jsonb)
+    }]'::jsonb)
         
     , ( 1, 3, 'Familia'
     , 'Doel: Leer de gezinssituatie kennen.
@@ -57,7 +56,7 @@ VALUES ( 1, 1, 'Nome'
         - Vraag of de ander kinderen heeft.
         - Vraag eventueel naar de leeftijd van de kinderen.
         Vertel kort over je eigen gezin.'
-    ,'{[
+    ,'[
     {
     "key": "estado civil",
     "description": "thuissituatie",
@@ -66,8 +65,8 @@ VALUES ( 1, 1, 'Nome'
     {
     "key": "filhos",
     "description": "kinderen",
-    "alternatives": ["filho", "filha", "filhos"]}
-    }]}'::jsonb)
+    "alternatives": ["filho", "filha", "filhos"]
+    }]'::jsonb)
 
     , ( 1, 4, 'Trabalho'
     , 'Doel: Praat over het werk
@@ -76,7 +75,7 @@ VALUES ( 1, 1, 'Nome'
         - Informeer naar de werkgever of het een groot bedrijf is
         - Hoe de ander naar het werk reist
         Vertel ook iets over je eigen werk.'
-    , '{[
+    , '[
     { 
     "key": "profissão",
     "description": "werksituatie",
@@ -91,8 +90,7 @@ VALUES ( 1, 1, 'Nome'
     "key": "deslocamento",
     "description": "woon/werk verkeer",
     "alternatives": ["partir da casa", "carro", "autocarro", "bicicleta", "a pé", "metro", "comboio"]
-    }
-    ]}'::jsonb)
+    }]'::jsonb)
 
     , ( 1, 5, 'Passatempos'
     , 'Doel: praat over hobby''s
@@ -100,12 +98,12 @@ VALUES ( 1, 1, 'Nome'
         - Vraag naar hobby''s zoals: sport, lezen, film, muziek, uitgaan.
         - Vraag door als de ander enthousiast lijkt.
         Vertel ook over je eigen hobbies.'
-    ,'{[
+    ,'[
     {
     "key": "passatempos",
     "description": "hobbies",
-    "alternatives": ["filme", "música", "tocar de", "de cozinhar", "de viajar", "de nadar", "meu hobby", "tempos livros", "meus hobbies", "practico", "faço"]
-    }]}'::jsonb)
+    "alternatives": ["filme", "música", "tocar de", "de cozinhar", "de viajar", "de nadar", "meu hobby", "tempos livres", "meus hobbies", "practico", "faço"]
+    }]'::jsonb)
 
     , (1, 6, 'Portugal'
     , 'Doel: Praat over Portugal en waarom de ander Portugees wil leren.
@@ -114,11 +112,11 @@ VALUES ( 1, 1, 'Nome'
         - Vraag waar hij/zij geweest is en wat hij/zij daar gedaan heeft
         - Vraag wat er zo leuk is aan Portugal
         Vul aan met eigen ervaringen en persoonlijke tips.'
-    ,'{[
+    ,'[
     {
     "key": "cidades",
     "description": "welke steden heb je al gezien?",
-    "alternatives": ["Lisboa", "Porto", "Faro", "Algarve", "Coimbra", "Setúbal", "Funcal", "Madeira", "Açores", "Delgado", "Mafra", "Braga", "Guimaraēs", "Tomar"]
+    "alternatives": ["Lisboa", "Porto", "Faro", "Algarve", "Coimbra", "Setúbal", "Funcal", "Madeira", "Açores", "Delgado", "Mafra", "Braga", "Guimarães", "Tomar"]
     },
     {
     "key": "visitas",
@@ -128,9 +126,8 @@ VALUES ( 1, 1, 'Nome'
     {
     "key": "gosto em Portugal",
     "description": "waarom kom je naar Portugal?",
-    "alternatives": ["tempo", "cidades", "historica", "praias", "praia", "trabalho", "relaxante"]
-    }
-    ]}'::jsonb);
+    "alternatives": ["tempo", "cidades", "histórica", "históricas", "praias", "praia", "trabalho", "relaxante"]
+    }]'::jsonb);
 
 -- migrate:down
 DELETE FROM "Chat"."Scenes";

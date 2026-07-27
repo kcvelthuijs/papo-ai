@@ -1,8 +1,6 @@
 import { type LessonSummary } from '@workspace/dtotypes';
 import { LessonsRepository } from '@repositories/postgresdb';
 
-const lessonPath = 'data/lessons';
-
 export const lessonService = {
   async getAll(): Promise<LessonSummary[]> {
     return await LessonsRepository.getAll();

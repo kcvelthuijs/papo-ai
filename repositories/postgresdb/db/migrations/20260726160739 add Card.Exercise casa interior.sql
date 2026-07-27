@@ -15,6 +15,9 @@ SELECT
     setval('"Card"."Exercises_id_seq"', COALESCE((SELECT MAX(id) FROM "Card"."Exercises"),1));
 
 -- migrate:down
+DELETE FROM "Lesson"."Exercises" 
+WHERE "lessonId" = 12;
+
 DELETE FROM "Lesson"."Lessons"
 WHERE id = 12;
 
