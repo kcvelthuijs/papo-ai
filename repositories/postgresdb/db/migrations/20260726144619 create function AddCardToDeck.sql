@@ -13,29 +13,40 @@ DECLARE
     v_card_id integer;
     v_sequence smallint;
 BEGIN
-    -- 1. Voeg de card toe
-    INSERT INTO "Card"."Cards"(text,tree,name)
-    VALUES 
-		( p_title, p_tree, p_image )
-    RETURNING id INTO v_card_id;
+   -- 1. Bestaat de kaart al?
+    SELECT id
+    INTO v_card_id
+    FROM "Card"."Cards"
+    WHERE text = p_title;
 
-    -- 2. Voeg de vertaling toe
-    INSERT INTO "Babel"."Texts" ( "tableName", "keyId", language, text )
-    VALUES
-    	( 'Card.Cards', v_card_id, 'NL', p_translation);
+    -- 2. Zo niet, maak hem aan
+    IF v_card_id IS NULL THEN
+        INSERT INTO "Card"."Cards" (text, tree, name)
+        VALUES (p_title, p_tree, p_image)
+        RETURNING id
+        INTO v_card_id;
 
-    -- 3. Bepaal volgende sequence in deck
-    SELECT COALESCE(MAX(sequence), 0) + 1
-    INTO v_sequence
-    FROM "Card"."DeckItems"
-    WHERE "deckId" = p_deck_id;
+        -- Voeg direct de Nederlandse vertaling toe
+        INSERT INTO "Babel"."Texts" ("tableName", "keyId", language, text)
+        VALUES ('Card.Cards', v_card_id, 'NL', p_translation);
+    END IF;
 
-    -- 4. Voeg card toe aan deck
-    INSERT INTO "Card"."DeckItems" ( "deckId", "cardId", sequence )
-    VALUES
-    	( p_deck_id, v_card_id, v_sequence);
+    -- 3. Voeg de kaart alleen toe als hij nog niet in dit deck zit
+    IF NOT EXISTS (
+        SELECT 1
+        FROM "Card"."DeckItems"
+        WHERE "deckId" = p_deck_id
+          AND "cardId" = v_card_id
+    ) THEN
+        SELECT COALESCE(MAX(sequence), 0) + 1
+        INTO v_sequence
+        FROM "Card"."DeckItems"
+        WHERE "deckId" = p_deck_id;
 
-    -- 5. Geef nieuwe cardId terug
+        INSERT INTO "Card"."DeckItems" ("deckId", "cardId", sequence)
+        VALUES (p_deck_id, v_card_id, v_sequence);
+    END IF;
+
     RETURN v_card_id;
 END;
 $$;

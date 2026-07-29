@@ -110,7 +110,7 @@ export function CardTest({
       onClose={quit}
       stars={stars}
       image={
-        <div className='flex flex-1 self-center pt-3'>
+        <div className='flex flex-1 self-center pt-3 min-h-100'>
           <ImageView
             name={active?.name ?? ''}
             tree={active?.tree ?? ['flashcards']}

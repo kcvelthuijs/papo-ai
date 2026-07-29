@@ -33,7 +33,7 @@ SELECT "Card"."AddCardToDeck" (4, 'a manga', 'de mango', '{flashcards,frutas}', 
 SELECT "Card"."AddCardToDeck" (4, 'a romã', 'de granaatappel', '{flashcards,frutas}', 'roma.png');
 
 INSERT INTO "Lesson"."Lessons" (id, type, level, title, description, image ) 
-VALUES (14, 'vocabulário', 'A1', 'As frutas', 'Aprende as palavras mais importantes em português para as frutas que encontras no dia a dia.', '{escritorio.png}');
+VALUES (14, 'vocabulário', 'A1', 'As frutas', 'Aprende as palavras mais importantes em português para as frutas que encontras no dia a dia.', '{as frutas.png}');
 
 INSERT INTO "Card"."Exercises" (id, type, title, description, "deckId")
 VALUES (7, 'card-click-learn', 'As frutas', 'Aprende as palavras mais importantes em português para as frutas que encontras no dia a dia', 4)
@@ -57,6 +57,9 @@ WHERE id = 14;
 
 DELETE FROM "Card"."Exercises" 
 WHERE id BETWEEN 7 AND 8;
+
+DELETE FROM "Card"."Decks"
+WHERE id = 4;
 
 SELECT 
     setval('"Lesson"."Lessons_id_seq"', COALESCE((SELECT MAX(id) FROM "Lesson"."Lessons"),1)),
