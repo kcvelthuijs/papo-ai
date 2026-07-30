@@ -104,7 +104,7 @@ export function useCardExercise({
       setFocus(null);
     }, EXERCISE_FEEDBACK_TIME);
 
-    if (result.nextAction === 'next step') {
+    if (result.nextAction === 'next step' || result.nextAction === 'next exercise') {
       if (handleAudio !== undefined)
         await handleAudio(
           active?.response ?? '',
@@ -112,6 +112,7 @@ export function useCardExercise({
           afterSubmit,
         );
       else afterSubmit();
+      if (result.nextAction === 'next exercise') setComplete(true);
     }
     return result;
   }

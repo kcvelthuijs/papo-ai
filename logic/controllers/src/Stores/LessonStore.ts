@@ -6,20 +6,19 @@ import type {
   ExerciseData,
   ExerciseExitReason,
   ExerciseState,
-  SpeechOptions,
+  SpeechOptions
 } from '@workspace/dtotypes';
 
 import {
   getAllLessons,
   getLessonByID,
-  getExercisesByLessonID,
+  getExercisesByLessonID
 } from '@workspace/connectors';
 
 import {
   prepareExercise,
   executeExercise,
-  ExerciseFromExerciseData,
-  useDialogStore,
+  ExerciseFromExerciseData
 } from '@exercises/logic';
 
 import type { ExerciseEvaluation } from '@workspace/webtypes';
@@ -44,6 +43,7 @@ type LessonState = {
 
   // Other settings
   isLoading: boolean;
+  isComplete: boolean;
   error?: string;
 
   // Methods
@@ -57,12 +57,13 @@ type LessonState = {
   nextExercise: () => void;
   completeExercise: (reason: ExerciseExitReason) => Promise<void>;
   lessonCompleted: () => void;
+  endLesson: () => void;
 
   submitAnswer: (answer: any) => Promise<ExerciseEvaluation>;
   submitAudio: (
     text: string,
     options?: SpeechOptions,
-    callback?: () => void,
+    callback?: () => void
   ) => Promise<void>;
 };
 
@@ -80,13 +81,14 @@ export const useLessonStore = create<LessonState>((set, get) => ({
   results: [],
 
   isLoading: false,
+  isComplete: false,
   error: undefined,
 
   // -------------------------
   // FETCH ALL LESSONS
   // -------------------------
   fetchAllLessons: async () => {
-    set({ isLoading: true, error: undefined });
+    set({ isLoading: true, isComplete: false, error: undefined });
 
     try {
       const summaries = await getAllLessons();
@@ -96,20 +98,20 @@ export const useLessonStore = create<LessonState>((set, get) => ({
             acc[l.id] = l;
             return acc;
           },
-          {} as Record<string, LessonSummary>,
+          {} as Record<string, LessonSummary>
         );
 
         set({
-          lessons: map,
+          lessons: map
         });
       }
     } catch (err: any) {
       set({
-        error: err?.message,
+        error: err?.message
       });
     } finally {
       set({
-        isLoading: false,
+        isLoading: false
       });
     }
   },
@@ -127,9 +129,10 @@ export const useLessonStore = create<LessonState>((set, get) => ({
       set((state) => ({
         lessons: {
           ...state.lessons,
-          [id]: lesson,
+          [id]: lesson
         },
         isLoading: false,
+        isComplete: false
       }));
     }
     return lesson;
@@ -141,7 +144,8 @@ export const useLessonStore = create<LessonState>((set, get) => ({
   setCurrentLesson: async (lessonId: string, autostart: boolean = false) => {
     set({
       isLoading: true,
-      error: undefined,
+      isComplete: false,
+      error: undefined
     });
 
     try {
@@ -165,7 +169,7 @@ export const useLessonStore = create<LessonState>((set, get) => ({
 
         set((state) => ({
           ...state.exerciseCache,
-          [lessonId]: exercises!,
+          [lessonId]: exercises!
         }));
       }
 
@@ -175,6 +179,7 @@ export const useLessonStore = create<LessonState>((set, get) => ({
         exercises,
         results: [],
         isLoading: false,
+        isComplete: false,
       });
 
       // Automatically start lesson
@@ -182,7 +187,8 @@ export const useLessonStore = create<LessonState>((set, get) => ({
     } catch (err: any) {
       set({
         isLoading: false,
-        error: err.message,
+        isComplete: false,
+        error: err.message
       });
     }
   },
@@ -214,8 +220,8 @@ export const useLessonStore = create<LessonState>((set, get) => ({
           currentExerciseState: 'prepare',
           currentExercise: {
             ...exercise,
-            state: 'prepare',
-          },
+            state: 'prepare'
+          }
         });
         await prepareExercise(exercise);
         await get().startExercise();
@@ -235,10 +241,10 @@ export const useLessonStore = create<LessonState>((set, get) => ({
     set({
       currentExercise: {
         ...currentExercise,
-        state: 'active',
+        state: 'active'
       },
       currentExerciseState: 'active',
-      results: [],
+      results: []
     });
   },
 
@@ -251,7 +257,7 @@ export const useLessonStore = create<LessonState>((set, get) => ({
 
     const evaluation = await executeExercise(exercise, answer);
     set((state) => ({
-      results: [...state.results, evaluation],
+      results: [...state.results, evaluation]
     }));
     return evaluation;
   },
@@ -262,9 +268,6 @@ export const useLessonStore = create<LessonState>((set, get) => ({
   completeExercise: async (reason: ExerciseExitReason): Promise<void> => {
     const exercise = get().currentExercise;
     if (!exercise) throw 'Current exercise is undefined';
-
-    // TO-DO: Show an overview of exercise results
-    console.log('Exercise results', get().results);
 
     if (reason === 'quit') {
       get().lessonCompleted();
@@ -295,7 +298,7 @@ export const useLessonStore = create<LessonState>((set, get) => ({
   submitAudio: async (
     text: string,
     options?: SpeechOptions,
-    callBack?: () => void,
+    callBack?: () => void
   ): Promise<void> => {
     await submitAudioHelper(text, options, callBack);
   },
@@ -304,8 +307,11 @@ export const useLessonStore = create<LessonState>((set, get) => ({
   // LESSON COMPLETED
   // -------------------------
   lessonCompleted: () => {
-    console.log('Lesson completed');
+    console.log('Lesson results', get().results);
+    set({ isComplete: true });
+  },
 
+  endLesson: () => {
     // Stop het geluid
     useAudioStore.getState().stop();
 
@@ -315,7 +321,7 @@ export const useLessonStore = create<LessonState>((set, get) => ({
       currentLessonID: '',
       exercises: [],
       currentExerciseIndex: 0,
-      currentExercise: undefined,
+      currentExercise: undefined
     });
-  },
+  }
 }));

@@ -1,3 +1,4 @@
+export * from './Convert/Exercise.convert';
 export * from './Atoms/CheckAnswer';
 export * from './Check/CheckCard.logic';
 export * from './Check/CheckChat.logic';
@@ -6,6 +7,6 @@ export * from './Check/CheckVerb.logic';
 export * from './Check/PhraseBuild.logic';
 export * from './Logic/ExecuteExercise';
 export * from './Logic/PrepareExercise';
-export * from './Convert/Exercise.convert';
+export * from './Logic/ProcessLessonResults';
 export * from './Stores/DialogStore';
 export * from './Types/Exercise.types';

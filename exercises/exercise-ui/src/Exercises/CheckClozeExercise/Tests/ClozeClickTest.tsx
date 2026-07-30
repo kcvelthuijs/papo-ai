@@ -11,7 +11,7 @@ export function ClozeClickTest({
   exercise,
   onSubmit,
   onComplete,
-  handleAudio,
+  handleAudio
 }: ClozeExerciseProps) {
   const {
     active,
@@ -23,12 +23,12 @@ export function ClozeClickTest({
     tempFocus,
     getState,
     submit,
-    next,
+    next
   } = useClozeExercise({
     exercise,
     onSubmit,
     onComplete,
-    handleAudio,
+    handleAudio
   });
 
   const [options, setOptions] = useState<string[]>([]);
@@ -41,7 +41,7 @@ export function ClozeClickTest({
     else {
       const values = [
         ...(phrase?.gaps[clozeIndex ?? '']?.alt ?? []),
-        phrase.gaps[clozeIndex].correct,
+        phrase.gaps[clozeIndex].correct
       ];
       const unique = [...new Set(values)];
       setOptions(shuffle(unique));
@@ -104,7 +104,7 @@ export function ClozeClickTest({
           </div>
 
           {/* Translation */}
-          <div className='text-sm text-gray-400 pb-4 pt-0'>
+          <div className='flex flex-1 align-middle justify-center text-lg text-gray-400 pb-4'>
             {phrase?.translation}
           </div>
         </div>

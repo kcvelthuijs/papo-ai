@@ -2,14 +2,14 @@ import type {
   ExerciseAction,
   CardAnswer,
   CardExercise,
-  CardFeedback,
+  CardFeedback
 } from '@workspace/dtotypes';
 
 import { checkAnswerText } from '../Atoms/CheckAnswer';
 
 export function checkCard(
   exercise: CardExercise,
-  answer: CardAnswer,
+  answer: CardAnswer
 ): CardFeedback {
   // vind het item
   const flashCardItem = exercise.items.find((a) => a.id === answer.id);
@@ -22,7 +22,12 @@ export function checkCard(
   const score = checkAnswerText(givenAnswer, correctAnswer);
 
   // bepaal de volgende actie
-  const nextAction: ExerciseAction = score === 'wrong' ? 'retry' : 'next step';
+  const nextAction: ExerciseAction =
+    score === 'wrong'
+      ? 'retry'
+      : exercise.seqNumber < exercise.items.length - 1
+        ? 'next step'
+        : 'next exercise';
 
   return {
     lessonId: exercise.lessonId,
@@ -30,6 +35,6 @@ export function checkCard(
     score,
     nextAction,
     givenAnswer,
-    correctAnswer,
+    correctAnswer
   };
 }

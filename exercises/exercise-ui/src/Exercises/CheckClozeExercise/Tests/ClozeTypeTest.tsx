@@ -62,6 +62,13 @@ export function ClozeTypeTest({
   }
 
   // -------------------------
+  // QUIT
+  // -------------------------
+  function quit() {
+    onComplete('quit');
+  }
+
+  // -------------------------
   // RENDER SINGLE Phrase
   // -------------------------
   return (
@@ -70,6 +77,7 @@ export function ClozeTypeTest({
       description={exercise.description}
       isComplete={isComplete}
       onContinue={next}
+      onClose={quit}
       stars={stars}
       content={
         <div className='flex flex-col gap-6 pt-6'>
@@ -129,7 +137,9 @@ export function ClozeTypeTest({
           </div>
 
           {/* TRANSLATION */}
-          <div className='text-sm text-gray-400'>{phrase?.translation}</div>
+          <div className='flex flex-1 align-middle justify-center text-lg text-gray-400 pb-4'>
+            {phrase?.translation}
+          </div>
         </div>
       }
     />
