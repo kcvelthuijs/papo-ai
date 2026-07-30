@@ -11,8 +11,8 @@ import {
 
 import { useLessonStore } from '@workspace/controllers';
 import { ProcessLessonResults, type LessonSummary } from '@exercises/logic';
-import { ExerciseTextbox } from '../Atoms/ExerciseTextBox';
 import { LessonSummaryItem } from '../Atoms/LessonSummaryItem';
+import { Smiley } from '../Atoms/Smiley';
 
 export function LessonResults() {
   const { currentLesson, endLesson } = useLessonStore.getState();
@@ -41,11 +41,11 @@ export function LessonResults() {
           </CardTitle>
           <CardDescription className='pb-2 text-center text-xl font-semibold'>
             {currentLesson?.description}
-            {`Your score: ${score.toFixed(2)}%`}
           </CardDescription>
         </CardHeader>
         <CardContent>
           <>
+            <Smiley result={score} size={80} className='float-right m-4' />
             <div className='font-bold text-3xl mt-3'>RESUMO:</div>
             <div className='my-3'>
               <div className='text-2xl mt-3 font-semibold'>{`${correct.length} respostas corretas:`}</div>

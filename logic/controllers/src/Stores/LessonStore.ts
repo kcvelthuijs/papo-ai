@@ -179,7 +179,7 @@ export const useLessonStore = create<LessonState>((set, get) => ({
         exercises,
         results: [],
         isLoading: false,
-        isComplete: false,
+        isComplete: false
       });
 
       // Automatically start lesson
@@ -307,8 +307,9 @@ export const useLessonStore = create<LessonState>((set, get) => ({
   // LESSON COMPLETED
   // -------------------------
   lessonCompleted: () => {
-    console.log('Lesson results', get().results);
-    set({ isComplete: true });
+    // geen resultaten als de les zonder input is afgebroken
+    if (get().results.length == 0) get().endLesson();
+    else set({ isComplete: true });
   },
 
   endLesson: () => {

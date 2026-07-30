@@ -1,8 +1,6 @@
 import type { ChatExerciseProps } from '@exercises/logic';
-import { useLessonStore } from '@workspace/controllers';
 
 import { CheckChatTest } from '../Tests/CheckChatTest';
-import { LessonResults } from '../../../Components/Dialogs/LessonResults';
 
 export function ChatExerciseRenderer({
   exercise,

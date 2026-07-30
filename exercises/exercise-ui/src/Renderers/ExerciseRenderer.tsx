@@ -1,6 +1,5 @@
 import { useLessonStore } from '@workspace/controllers';
 import type {
-  ExerciseEvaluation,
   ExerciseExitReason
 } from '@workspace/dtotypes';
 
