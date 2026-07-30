@@ -11,32 +11,28 @@ export function CheckClozeRenderer({
   onComplete,
   handleAudio
 }: ClozeExerciseProps) {
-  const isComplete = useLessonStore((state) => state.isComplete);
+  switch (exercise.type) {
+    case 'cloze-click-test':
+      return (
+        <ClozeClickTest
+          exercise={exercise}
+          onSubmit={onSubmit}
+          onComplete={onComplete}
+          handleAudio={handleAudio}
+        />
+      );
 
-  if (!isComplete) {
-    switch (exercise.type) {
-      case 'cloze-click-test':
-        return (
-          <ClozeClickTest
-            exercise={exercise}
-            onSubmit={onSubmit}
-            onComplete={onComplete}
-            handleAudio={handleAudio}
-          />
-        );
+    case 'cloze-type-test':
+      return (
+        <ClozeTypeTest
+          exercise={exercise}
+          onSubmit={onSubmit}
+          onComplete={onComplete}
+          handleAudio={handleAudio}
+        />
+      );
 
-      case 'cloze-type-test':
-        return (
-          <ClozeTypeTest
-            exercise={exercise}
-            onSubmit={onSubmit}
-            onComplete={onComplete}
-            handleAudio={handleAudio}
-          />
-        );
-
-      default:
-        return <div>Unsupported verb exercise</div>;
-    }
-  } else return <LessonResults />;
+    default:
+      return <div>Unsupported verb exercise</div>;
+  }
 }

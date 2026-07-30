@@ -11,31 +11,27 @@ export function CheckCardRenderer({
   onComplete,
   handleAudio
 }: CardExerciseProps) {
-  const isComplete = useLessonStore((state) => state.isComplete);
+  switch (exercise.type) {
+    case 'card-click-learn':
+      return (
+        <CardLearn
+          exercise={exercise}
+          onSubmit={onSubmit}
+          onComplete={onComplete}
+          handleAudio={handleAudio}
+        />
+      );
 
-  if (!isComplete) {
-    switch (exercise.type) {
-      case 'card-click-learn':
-        return (
-          <CardLearn
-            exercise={exercise}
-            onSubmit={onSubmit}
-            onComplete={onComplete}
-            handleAudio={handleAudio}
-          />
-        );
-
-      case 'card-type-test':
-        return (
-          <CardTest
-            exercise={exercise}
-            onSubmit={onSubmit}
-            onComplete={onComplete}
-            handleAudio={handleAudio}
-          />
-        );
-      default:
-        return <div>Unsupported verb exercise</div>;
-    }
-  } else return <LessonResults />;
+    case 'card-type-test':
+      return (
+        <CardTest
+          exercise={exercise}
+          onSubmit={onSubmit}
+          onComplete={onComplete}
+          handleAudio={handleAudio}
+        />
+      );
+    default:
+      return <div>Unsupported verb exercise</div>;
+  }
 }

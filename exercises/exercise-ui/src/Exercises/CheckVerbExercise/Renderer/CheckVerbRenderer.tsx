@@ -12,42 +12,38 @@ export function CheckVerbRenderer({
   onComplete,
   handleAudio
 }: VerbExerciseProps) {
-  const isComplete = useLessonStore((state) => state.isComplete);
+  switch (exercise.type) {
+    case 'verb-click-learn':
+      return (
+        <VerbClickLearn
+          exercise={exercise}
+          onSubmit={onSubmit}
+          onComplete={onComplete}
+          handleAudio={handleAudio}
+        />
+      );
 
-  if (!isComplete) {
-    switch (exercise.type) {
-      case 'verb-click-learn':
-        return (
-          <VerbClickLearn
-            exercise={exercise}
-            onSubmit={onSubmit}
-            onComplete={onComplete}
-            handleAudio={handleAudio}
-          />
-        );
+    case 'verb-click-test':
+      return (
+        <VerbClickTest
+          exercise={exercise}
+          onSubmit={onSubmit}
+          onComplete={onComplete}
+          handleAudio={handleAudio}
+        />
+      );
 
-      case 'verb-click-test':
-        return (
-          <VerbClickTest
-            exercise={exercise}
-            onSubmit={onSubmit}
-            onComplete={onComplete}
-            handleAudio={handleAudio}
-          />
-        );
+    case 'verb-type-test':
+      return (
+        <VerbTypeTest
+          exercise={exercise}
+          onSubmit={onSubmit}
+          onComplete={onComplete}
+          handleAudio={handleAudio}
+        />
+      );
 
-      case 'verb-type-test':
-        return (
-          <VerbTypeTest
-            exercise={exercise}
-            onSubmit={onSubmit}
-            onComplete={onComplete}
-            handleAudio={handleAudio}
-          />
-        );
-
-      default:
-        return <div>Unsupported verb exercise</div>;
-    }
-  } else return <LessonResults />;
+    default:
+      return <div>Unsupported verb exercise</div>;
+  }
 }

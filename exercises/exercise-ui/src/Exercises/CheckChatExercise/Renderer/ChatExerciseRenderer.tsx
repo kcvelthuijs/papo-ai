@@ -10,22 +10,18 @@ export function ChatExerciseRenderer({
   onComplete,
   handleAudio
 }: ChatExerciseProps) {
-  const isComplete = useLessonStore((state) => state.isComplete);
+  switch (exercise.type) {
+    case 'open-dialog':
+      return (
+        <CheckChatTest
+          exercise={exercise}
+          onSubmit={onSubmit}
+          onComplete={onComplete}
+          handleAudio={handleAudio}
+        />
+      );
 
-  if (!isComplete) {
-    switch (exercise.type) {
-      case 'open-dialog':
-        return (
-          <CheckChatTest
-            exercise={exercise}
-            onSubmit={onSubmit}
-            onComplete={onComplete}
-            handleAudio={handleAudio}
-          />
-        );
-
-      default:
-        return <div>Unsupported verb exercise</div>;
-    }
-  } else return <LessonResults />;
+    default:
+      return <div>Unsupported verb exercise</div>;
+  }
 }

@@ -1,7 +1,7 @@
 import { useLessonStore } from '@workspace/controllers';
 import type {
   ExerciseEvaluation,
-  ExerciseExitReason,
+  ExerciseExitReason
 } from '@workspace/dtotypes';
 
 import { ChatExerciseRenderer } from '../Exercises/CheckChatExercise/Renderer/ChatExerciseRenderer';
@@ -10,6 +10,7 @@ import { CheckVerbRenderer } from '../Exercises/CheckVerbExercise/Renderer/Check
 import { CheckClozeRenderer } from '../Exercises/CheckClozeExercise/Renderers/CheckClozeRenderer';
 import { CheckCardRenderer } from '../Exercises/CheckCardExercise/Renderers/CheckCardRenderer';
 import type { SpeechOptions } from '@workspace/dtotypes';
+import { LessonResults } from '../Components/Dialogs/LessonResults';
 
 // import { PhraseBuildRenderer } from './renderers/PhraseBuildRenderer';
 // import { OpenExerciseRenderer } from './renderers/OpenExerciseRenderer';
@@ -33,79 +34,84 @@ export function ExerciseRenderer({ exercise }: Props) {
   const handleAudio = async (
     text: string,
     options?: SpeechOptions,
-    callback?: () => void,
+    callback?: () => void
   ): Promise<void> => {
     await submitAudio(text, options, callback);
   };
+  const isComplete = useLessonStore((state) => state.isComplete);
 
-  switch (exercise.type) {
-    // -------------------------
-    // VERB
-    // -------------------------
-    case 'verb-click-learn':
-    case 'verb-click-test':
-    case 'verb-type-test':
-      return (
-        <CheckVerbRenderer
-          exercise={exercise}
-          onSubmit={handleSubmit}
-          onComplete={handleComplete}
-          handleAudio={handleAudio}
-        />
-      );
+  if (isComplete) {
+    return <LessonResults />;
+  } else {
+    switch (exercise.type) {
+      // -------------------------
+      // VERB
+      // -------------------------
+      case 'verb-click-learn':
+      case 'verb-click-test':
+      case 'verb-type-test':
+        return (
+          <CheckVerbRenderer
+            exercise={exercise}
+            onSubmit={handleSubmit}
+            onComplete={handleComplete}
+            handleAudio={handleAudio}
+          />
+        );
 
-    // -------------------------
-    // CLOZE
-    // -------------------------
-    case 'cloze-click-test':
-    case 'cloze-type-test':
-      return (
-        <CheckClozeRenderer
-          exercise={exercise}
-          onSubmit={handleSubmit}
-          onComplete={handleComplete}
-          handleAudio={handleAudio}
-        />
-      );
+      // -------------------------
+      // CLOZE
+      // -------------------------
+      case 'cloze-click-test':
+      case 'cloze-type-test':
+        return (
+          <CheckClozeRenderer
+            exercise={exercise}
+            onSubmit={handleSubmit}
+            onComplete={handleComplete}
+            handleAudio={handleAudio}
+          />
+        );
 
-    // -------------------------
-    // Cards
-    // -------------------------
-    case 'card-type-test':
-    case 'card-click-learn':
-      return (
-        <CheckCardRenderer
-          exercise={exercise}
-          onSubmit={handleSubmit}
-          onComplete={handleComplete}
-          handleAudio={handleAudio}
-        />
-      );
+      // -------------------------
+      // Cards
+      // -------------------------
+      case 'card-type-test':
+      case 'card-click-learn':
+        return (
+          <CheckCardRenderer
+            exercise={exercise}
+            onSubmit={handleSubmit}
+            onComplete={handleComplete}
+            handleAudio={handleAudio}
+          />
+        );
 
-    /*
-    // -------------------------
-    // BUILD
-    // -------------------------
-    case 'Phrase-build-test':
-      return (
-        <PhraseBuildRenderer exercise={exercise} onSubmit={handleSubmit} />
-      );
-    */
+      /*
+      // -------------------------
+      // BUILD
+      // -------------------------
+      case 'Phrase-build-test':
+        return (
+          <PhraseBuildRenderer exercise={exercise} onSubmit={handleSubmit} />
+        );
+      */
 
-    // -------------------------
-    // OPEN (LLM)
-    // -------------------------
-    case 'open-dialog':
-      return (
-        <ChatExerciseRenderer
-          exercise={exercise}
-          onSubmit={handleSubmit}
-          onComplete={handleComplete}
-          handleAudio={handleAudio}
-        />
-      );
+      // -------------------------
+      // OPEN (LLM)
+      // -------------------------
+      case 'open-dialog':
+        return (
+          <ChatExerciseRenderer
+            exercise={exercise}
+            onSubmit={handleSubmit}
+            onComplete={handleComplete}
+            handleAudio={handleAudio}
+          />
+        );
 
-    default:
-      return <div>Unknown exercise type</div>;
+      default:
+        return <div>Unknown exercise type</div>;
+    }
   }
 }
