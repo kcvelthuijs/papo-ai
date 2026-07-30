@@ -7,7 +7,7 @@ import {
   CardDescription,
   CardContent,
   CardFooter,
-  CardAction,
+  CardAction
 } from '../shadcn/card';
 
 import StarBurst from '../animations/starburst';
@@ -40,7 +40,7 @@ export function CardLayout({
   takesFullScreen = false,
   onContinue,
   onSkip,
-  onClose,
+  onClose
 }: CardLayoutProps) {
   const continueRef = useRef<HTMLButtonElement | null>(null);
 
@@ -51,7 +51,7 @@ export function CardLayout({
     setTimeout(() => {
       continueRef.current?.scrollIntoView({
         block: 'center',
-        behavior: 'smooth',
+        behavior: 'smooth'
       });
       continueRef.current?.focus();
     });
@@ -97,7 +97,6 @@ export function CardLayout({
           )}
 
           <CardFooter className='flex-none flex w-full justify-center border-t border-gray-600 min-h-16 pt-2'>
-            {footer && <div className='mx-1 w-full'>{footer}</div>}
             {isComplete ? (
               <CardAction className='pt-2'>
                 <ActionButton ref={continueRef} onClick={onContinue}>
@@ -106,6 +105,9 @@ export function CardLayout({
               </CardAction>
             ) : (
               <>
+                {footer && footer.toString().length > 1 && (
+                  <div className='mx-1 w-full'>{footer}</div>
+                )}
                 {onSkip && (
                   <button
                     onClick={onSkip}

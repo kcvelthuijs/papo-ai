@@ -13,7 +13,7 @@ export function ClozeTypeTest({
   exercise,
   onSubmit,
   onComplete,
-  handleAudio,
+  handleAudio
 }: ClozeExerciseProps) {
   const {
     active,
@@ -24,7 +24,7 @@ export function ClozeTypeTest({
     getState,
     submit,
     registerInputRef,
-    next,
+    next
   } = useClozeExercise({ exercise, onSubmit, onComplete, handleAudio });
 
   const { stars, spawnStars, registerStarRef } = useExerciseStars();
@@ -36,7 +36,7 @@ export function ClozeTypeTest({
   function handleChange(clozeId: string, value: string) {
     setLocalInput((prev) => ({
       ...prev,
-      [clozeId]: value,
+      [clozeId]: value
     }));
   }
 
@@ -56,7 +56,7 @@ export function ClozeTypeTest({
       // input leegmaken voor volgende ronde
       setLocalInput((prev) => ({
         ...prev,
-        [clozeId]: '',
+        [clozeId]: ''
       }));
     }
   }
@@ -72,9 +72,9 @@ export function ClozeTypeTest({
       onContinue={next}
       stars={stars}
       content={
-        <div className='flex flex-col gap-6'>
+        <div className='flex flex-col gap-6 pt-6'>
           {/* Phrase */}
-          <div className='flex flex-wrap items-center gap-2 text-lg'>
+          <div className='flex flex-1 self-center gap-2 text-lg'>
             {phrase?.textParts.map((part: string, index: number) => {
               const cloze = phrase.gaps[index];
               const clozeId = cloze?.id ?? 'unknown';
@@ -106,7 +106,7 @@ export function ClozeTypeTest({
                             handleChange(clozeId, e.target.value)
                           }
                           onKeyDown={(
-                            e: React.KeyboardEvent<HTMLInputElement>,
+                            e: React.KeyboardEvent<HTMLInputElement>
                           ) => {
                             if (e.key === 'Enter') {
                               handleSubmit(clozeId);
