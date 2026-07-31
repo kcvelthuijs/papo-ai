@@ -1,3 +1,5 @@
+export * from './assets/Data/Languages';
+export * from './assets/Data/Voices';
 export * from './Types/Interfaces/Audio';
 export * from './Types/Interfaces/Dictionary';
 export * from './Types/Interfaces/Exercise';
@@ -5,8 +7,6 @@ export * from './Types/Interfaces/Images';
 export * from './Types/Interfaces/Lesson';
 export * from './Types/Interfaces/Pronouns';
 export * from './Types/Interfaces/Speech';
-export * from './assets/Data/Languages';
-export * from './assets/Data/Voices';
 export * from './Types/Props/ExercisesProps';
 export * from './Types/Props/LessonCardProps';
 export * from './Types/Props/LessonSelectProps';

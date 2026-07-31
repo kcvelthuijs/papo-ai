@@ -9,6 +9,7 @@ import { checkAnswerText } from '../Atoms/CheckAnswer';
 
 export function checkCard(
   exercise: CardExercise,
+  question: number,
   answer: CardAnswer
 ): CardFeedback {
   // vind het item
@@ -32,6 +33,7 @@ export function checkCard(
   return {
     lessonId: exercise.lessonId,
     seqNumber: exercise.seqNumber,
+    question,
     score,
     nextAction,
     givenAnswer,

@@ -15,42 +15,42 @@ type Props = {
 };
 
 export function Smiley({ result, className = '', size = 80 }: Props) {
-  if (result > 9)
+  if (result > 0.9)
     return (
       <FaRegLaughSquint
         size={size}
         className={`text-green-600 dark:text-green-200 ${className}`}
       />
     );
-  else if (result > 8)
+  else if (result > 0.8)
     return (
       <FaRegLaughBeam
         size={size}
         className={`text-green-600 dark:text-green-200 ${className}`}
       />
     );
-  else if (result > 7)
+  else if (result > 0.7)
     return (
       <FaRegLaugh
         size={size}
         className={`text-green-600 dark:text-green-200 ${className}`}
       />
     );
-  else if (result > 6)
+  else if (result > 0.6)
     return (
       <FaRegSmile
         size={size}
         className={`text-green-600 dark:text-green-200 ${className}`}
       />
     );
-  else if (result > 4)
+  else if (result > 0.4)
     return (
       <FaRegMeh
         size={size}
         className={`text-orange-400 dark:text-orange-300 ${className}`}
       />
     );
-  else if (result > 2)
+  else if (result > 0.2)
     return (
       <FaSadCry
         size={size}

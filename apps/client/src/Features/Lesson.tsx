@@ -7,10 +7,12 @@ import ImageComponent from '../Components/ImageComponent';
 const Lesson = () => {
   const {
     isLoading,
+    error,
     currentLesson,
     currentExercise,
     currentExerciseState,
     startLesson,
+    endLesson
   } = useLessonStore();
 
   // Expliciete condities voor weergave van componentonderdelen
@@ -18,17 +20,24 @@ const Lesson = () => {
     !currentExerciseState ||
     currentExerciseState === 'unknown' ||
     currentExerciseState === 'prepare';
-  const showPreparingLesson = !currentExercise;
+  const hasError: boolean = error?.length == 0;
+  const showPreparingLesson = !currentExercise && !hasError;
   const showPreparingExercise =
-    currentExercise && currentExerciseState === 'prepare';
-  const showExercise = currentExercise && currentExerciseState === 'active';
+    currentExercise && !hasError && currentExerciseState === 'prepare';
+  const showExercise =
+    currentExercise && !hasError && currentExerciseState === 'active';
+
+  const reset = () => {
+    endLesson();
+  };
 
   return (
     <div className='mx-3'>
       <div className='self-center mx-0 lg:mx-2 pt-3'>
-        {/* IMAGE */}
+        {/* LESSON INFO */}
         {showLessonInfo && (
           <>
+            {/* IMAGE */}
             <ImageComponent
               name={currentLesson?.image ?? ''}
               tree={['lessons', 'title']}
@@ -45,7 +54,6 @@ const Lesson = () => {
             </div>
           </>
         )}
-
         {/* START BUTTON */}
         {showPreparingLesson && (
           <div className='flex justify-center w-full my-6'>
@@ -63,7 +71,6 @@ const Lesson = () => {
             )}
           </div>
         )}
-
         {/* LOADING EXERCISE */}
         {showPreparingExercise && (
           <div className='flex justify-center w-full my-6'>
@@ -75,16 +82,25 @@ const Lesson = () => {
             </>
           </div>
         )}
-
         {/* EXERCISE RENDERING */}
         {showExercise && (
           <div className='mt-4'>
             <ExerciseRenderer exercise={currentExercise} />
           </div>
         )}
+        {/* ERROR RENDERING */}
+        {hasError && (
+          <div>
+            <div>
+              Este aula não ésta disponível neste momento. Pedimos desculpa.
+            </div>
+            <ActionButton className='cursor-pointer' onClick={reset}>
+              Voltar ao início
+            </ActionButton>
+          </div>
+        )}
       </div>
     </div>
   );
 };
-
 export default Lesson;

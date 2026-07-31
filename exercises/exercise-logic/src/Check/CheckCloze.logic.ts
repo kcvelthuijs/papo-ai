@@ -3,13 +3,14 @@ import type {
   CheckClozeFeedback,
   ExerciseAction,
   ClozeAnswer,
-  Phrase,
+  Phrase
 } from '@workspace/dtotypes';
 import { checkAnswerText } from '../Atoms/CheckAnswer';
 
 export function checkCloze(
   exercise: CheckClozeExercise,
-  answer: ClozeAnswer,
+  question: number,
+  answer: ClozeAnswer
 ): CheckClozeFeedback {
   // check the phrase
   const phrase: Phrase | undefined = exercise.phrases[answer.phraseIndex];
@@ -33,11 +34,12 @@ export function checkCloze(
       return {
         lessonId: exercise.lessonId,
         seqNumber: exercise.seqNumber,
+        question: question,
         clozeId: answer.clozeId,
         value: answer.value,
         correctValue: cloze?.correct ?? '',
         score,
-        nextAction,
+        nextAction
       };
     }
   }
@@ -46,9 +48,10 @@ export function checkCloze(
     lessonId: exercise.lessonId,
     seqNumber: exercise.seqNumber,
     clozeId: answer.clozeId,
+    question: question,
     value: answer.value,
     correctValue: '',
     score: 'wrong',
-    nextAction: 'quit',
+    nextAction: 'quit'
   };
 }

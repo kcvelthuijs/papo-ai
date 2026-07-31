@@ -39,6 +39,7 @@ type LessonState = {
   currentExercise?: Exercise;
 
   // Exercise results
+  resultId: number;
   results: ExerciseEvaluation[];
 
   // Other settings
@@ -60,6 +61,8 @@ type LessonState = {
   endLesson: () => void;
 
   submitAnswer: (answer: any) => Promise<ExerciseEvaluation>;
+  skipAnswer: () => Promise<ExerciseEvaluation>;
+
   submitAudio: (
     text: string,
     options?: SpeechOptions,
@@ -78,6 +81,7 @@ export const useLessonStore = create<LessonState>((set, get) => ({
   currentExerciseState: 'unknown',
   currentExercise: undefined,
 
+  resultId: 0,
   results: [],
 
   isLoading: false,
@@ -207,6 +211,7 @@ export const useLessonStore = create<LessonState>((set, get) => ({
   // -------------------------
   setExercise: async (exerciseId: number) => {
     const exercises = get().exercises;
+    set({ resultId: 0 });
     if (!exercises || exercises.length == 0) {
       console.log(`Lesson ${get().currentLessonID ?? 0} has no exercises`);
       return;
@@ -244,7 +249,7 @@ export const useLessonStore = create<LessonState>((set, get) => ({
         state: 'active'
       },
       currentExerciseState: 'active',
-      results: []
+      resultId: 0
     });
   },
 
@@ -253,11 +258,38 @@ export const useLessonStore = create<LessonState>((set, get) => ({
   // -------------------------
   submitAnswer: async (answer: any): Promise<ExerciseEvaluation> => {
     const exercise = get().currentExercise;
+    const question = get().resultId;
+    if (!exercise) throw new Error('Current exercise is undefined.');
+    const evaluation = await executeExercise(exercise, question, answer);
+    const nextQuestion =
+      evaluation.nextAction == 'retry' ? question : question + 1;
+    set((state) => ({
+      results: [...state.results, evaluation],
+      resultId: nextQuestion
+    }));
+    return evaluation;
+  },
+
+  // -------------------------
+  // SKIP ANSWER
+  // -------------------------
+  skipAnswer: async (): Promise<ExerciseEvaluation> => {
+    const exercise = get().currentExercise;
+    const question = get().resultId;
+
     if (!exercise) throw new Error('Current exercise is undefined.');
 
-    const evaluation = await executeExercise(exercise, answer);
+    const evaluation: ExerciseEvaluation = {
+      lessonId: exercise.lessonId,
+      seqNumber: exercise.seqNumber,
+      question,
+      score: undefined,
+      nextAction: 'next exercise'
+    };
+
     set((state) => ({
-      results: [...state.results, evaluation]
+      results: [...state.results, evaluation],
+      resultId: question + 1
     }));
     return evaluation;
   },

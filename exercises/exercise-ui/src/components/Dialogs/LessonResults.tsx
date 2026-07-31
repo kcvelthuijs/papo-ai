@@ -10,19 +10,66 @@ import {
 } from '@workspace/ui';
 
 import { useLessonStore } from '@workspace/controllers';
-import { ProcessLessonResults, type LessonSummary } from '@exercises/logic';
+import { ProcessLessonResults, type LessonResult } from '@exercises/logic';
 import { LessonSummaryItem } from '../Atoms/LessonSummaryItem';
 import { Smiley } from '../Atoms/Smiley';
 
+type LessonSummary = {
+  attempts: number;
+  lastResult: LessonResult;
+};
+
 export function LessonResults() {
   const { currentLesson, endLesson } = useLessonStore.getState();
-  const results: LessonSummary[] = ProcessLessonResults();
+  const results: LessonResult[] = ProcessLessonResults();
+  console.log('results', results);
 
-  const correct = results.filter(
-    (r) => r.countAnswers == 0 && r.result === 'correct'
+  const renderSummary = (text: string): React.ReactNode[] => {
+    const parts = text.split(/(\[\[.*?\]\])/g);
+    return parts.map((part, index) => {
+      const match = part.match(/^\[\[(.*)\]\]$/);
+      if (match) {
+        return (
+          <span
+            key={index}
+            className='underline decoration-2 decoration-blue-400 decoration-dotted px-1 font-semibold'
+          >
+            {match[1]}
+          </span>
+        );
+      }
+      return part;
+    });
+  };
+
+  const summaryMap = new Map<string, LessonSummary>();
+  for (const result of results) {
+    const key = `lesson: ${result.lessonId} sequence: ${result.seqIndex} question: ${result.question}`;
+    const existing = summaryMap.get(key);
+    if (existing) {
+      existing.attempts++;
+      existing.lastResult = result; // expliciet: bewaar de laatste poging
+    } else {
+      summaryMap.set(key, {
+        attempts: 1,
+        lastResult: result
+      });
+    }
+  }
+  const summary = [...summaryMap.values()];
+  console.log('summary', summary);
+
+  const correct = summary.filter(
+    (r) =>
+      r.attempts == 1 &&
+      (r.lastResult.score === 'right' || r.lastResult.score === 'partial')
   );
-  const errors = results.filter((r) => r.countAnswers > 0);
-  const score = ((results.length - errors.length) / results.length) * 100;
+  const errors = summary.filter(
+    (r) =>
+      r.attempts > 1 ||
+      !(r.lastResult.score === 'right' || r.lastResult.score === 'partial')
+  );
+  const score = correct.length / summary.length;
 
   const EndThisLesson = () => {
     endLesson();
@@ -41,6 +88,7 @@ export function LessonResults() {
           </CardTitle>
           <CardDescription className='pb-2 text-center text-xl font-semibold'>
             {currentLesson?.description}
+            <div> Your score: {`${(score * 100).toFixed(2)}%`} </div>
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -50,11 +98,9 @@ export function LessonResults() {
             <div className='my-3'>
               <div className='text-2xl mt-3 font-semibold'>{`${correct.length} respostas corretas:`}</div>
               {correct.map((r) => (
-                <LessonSummaryItem
-                  text={r.correctAnswer}
-                  score='right'
-                  className='m-1'
-                />
+                <LessonSummaryItem score='right' className='m-1'>
+                  {renderSummary(r.lastResult.correctAnswer)}
+                </LessonSummaryItem>
               ))}
             </div>
             {errors.length >= 0 && (
@@ -63,11 +109,9 @@ export function LessonResults() {
                   {errors.length == 0 ? 'Sem erros' : `${errors.length} erros`}
                 </div>
                 {errors.map((r) => (
-                  <LessonSummaryItem
-                    text={r.correctAnswer}
-                    score='wrong'
-                    className='m-1'
-                  />
+                  <LessonSummaryItem score='wrong' className='m-1'>
+                    {renderSummary(r.lastResult.correctAnswer)}
+                  </LessonSummaryItem>
                 ))}
               </div>
             )}
@@ -75,7 +119,7 @@ export function LessonResults() {
         </CardContent>
         <CardFooter className='flex-none flex w-full justify-center border-t border-gray-600 min-h-16 p-2'>
           <CardAction className='pt-2'>
-            <ActionButton onClick={EndThisLesson}>Concluir</ActionButton>
+            <ActionButton onClick={EndThisLesson}>Voltar</ActionButton>
           </CardAction>
         </CardFooter>
       </Card>

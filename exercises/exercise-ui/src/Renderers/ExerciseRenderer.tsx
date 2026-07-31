@@ -3,16 +3,15 @@ import type {
   ExerciseExitReason
 } from '@workspace/dtotypes';
 
-import { ChatExerciseRenderer } from '../Exercises/CheckChatExercise/Renderer/ChatExerciseRenderer';
+import type { SpeechOptions } from '@workspace/dtotypes';
 
+import { LessonResults } from '../Components/Dialogs/LessonResults';
+
+import { ChatExerciseRenderer } from '../Exercises/CheckChatExercise/Renderer/ChatExerciseRenderer';
 import { CheckVerbRenderer } from '../Exercises/CheckVerbExercise/Renderer/CheckVerbRenderer';
 import { CheckClozeRenderer } from '../Exercises/CheckClozeExercise/Renderers/CheckClozeRenderer';
 import { CheckCardRenderer } from '../Exercises/CheckCardExercise/Renderers/CheckCardRenderer';
-import type { SpeechOptions } from '@workspace/dtotypes';
-import { LessonResults } from '../Components/Dialogs/LessonResults';
 
-// import { PhraseBuildRenderer } from './renderers/PhraseBuildRenderer';
-// import { OpenExerciseRenderer } from './renderers/OpenExerciseRenderer';
 
 type Props = {
   exercise: any;

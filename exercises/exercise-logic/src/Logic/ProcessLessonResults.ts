@@ -12,19 +12,18 @@ import type {
   ExerciseScore
 } from '@workspace/dtotypes';
 
+import { PtPronouns } from '@workspace/dtotypes';
+
 export type LessonResult = {
+  lessonId: number;
+  seqIndex: number;
+  question: number;
   givenAnswer: string;
   correctAnswer: string;
   score: ExerciseScore;
 };
 
-export type LessonSummary = {
-  correctAnswer: string;
-  countAnswers: number;
-  result: string;
-};
-
-export function ProcessLessonResults(): LessonSummary[] {
+export function ProcessLessonResults(): LessonResult[] {
   const { exercises, results } = useLessonStore.getState();
 
   const getExerciseResult = (
@@ -46,10 +45,17 @@ export function ProcessLessonResults(): LessonSummary[] {
         return getCardLessonResult(exercise, answer);
     }
     return {
+      lessonId: exercise.lessonId,
+      seqIndex: exercise.seqNumber,
+      question: -1,
       givenAnswer: '',
       correctAnswer: '',
-      score: 'partial'
+      score: undefined
     } as LessonResult;
+  };
+
+  const createReactSpan = (text: string): string => {
+    return `[[${text}]]`;
   };
 
   const getCardLessonResult = (
@@ -59,8 +65,11 @@ export function ProcessLessonResults(): LessonSummary[] {
     const e = exercise as CardExercise;
     const a = answer as CardFeedback;
     return {
+      lessonId: e.lessonId,
+      seqIndex: e.seqNumber,
+      question: a.question,
       givenAnswer: a.givenAnswer,
-      correctAnswer: a.correctAnswer,
+      correctAnswer: createReactSpan(a.correctAnswer),
       score: a.score
     };
   };
@@ -72,8 +81,11 @@ export function ProcessLessonResults(): LessonSummary[] {
     const e = exercise as CheckClozeExercise;
     const a = answer as CheckClozeFeedback;
     return {
+      lessonId: e.lessonId,
+      seqIndex: e.seqNumber,
+      question: a.question,
       givenAnswer: a.value,
-      correctAnswer: a.correctValue ?? '',
+      correctAnswer: createReactSpan(a.correctValue ?? ''),
       score: a.score
     };
   };
@@ -84,26 +96,23 @@ export function ProcessLessonResults(): LessonSummary[] {
   ): LessonResult => {
     const e = exercise as CheckVerbExercise;
     const a = answer as CheckVerbFeedback;
+    const pronoun =
+      PtPronouns.find((p) => p.id == a.answer.pronounId)?.text ?? 'todos';
+    const correctAnswer = `${pronoun} ${createReactSpan(a.correctValue)}`;
     return {
+      lessonId: e.lessonId,
+      seqIndex: e.seqNumber,
+      question: a.question,
       givenAnswer: `${a.answer.value}`,
-      correctAnswer: a.correctValue,
+      correctAnswer: correctAnswer,
       score: a.score
     };
   };
 
   // Vertaal de results van de exercises naar uniforme LessonResults
-  const lessonResults = exercises.flatMap((e) =>
+  return exercises.flatMap((e) =>
     results
       .filter((r) => r.lessonId === e.lessonId && r.seqNumber === e.seqNumber)
       .map((r) => getExerciseResult(e, r))
   );
-
-  // Vat de array samen per vraag met het aantal goede en foute antwoorden
-  const groupedResult = Object.groupBy(lessonResults, (r) => r.correctAnswer);
-
-  return Object.entries(groupedResult).map(([correctAnswer, answers]) => ({
-    correctAnswer,
-    countAnswers: answers!.length - 1,
-    result: answers!.some((a) => a.score !== 'wrong') ? 'correct' : 'wrong'
-  }));
 }

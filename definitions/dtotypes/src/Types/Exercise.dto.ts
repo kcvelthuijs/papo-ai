@@ -43,6 +43,7 @@ export type Exercise = ClosedExercise | ChatExercise;
 export type ExerciseEvaluation = {
   lessonId: number;
   seqNumber: number;
+  question: number;
   score: ExerciseScore;
   nextAction: ExerciseAction;
 };

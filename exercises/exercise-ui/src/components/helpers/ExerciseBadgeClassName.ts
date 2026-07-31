@@ -5,10 +5,10 @@ export function getBadgeClassName(used: boolean, score?: ExerciseScore) {
 
   switch (score) {
     case 'wrong':
-      return `${base} animate-shake border-red-400 bg-red-100 text-red-800 dark:bg-red-900 dark:text-white hover:bg-red-100 hover:text-red-800 `;
+      return `${base} border-red-300 bg-red-100 text-red-800 dark:bg-red-900 dark:border-red-800 dark:hover:border-red-600 dark:text-white hover:border-red-600`;
 
     case 'right':
-      return `${base} border-green-600 text-black bg-green-100 dark:bg-green-900 dark:text-white hover:border-green-800 hover:bg-green-100 hover:text-white`;
+      return `${base} border-green-300 text-black bg-green-100 dark:bg-green-800 dark:border-green-800 dark:hover:border-green-600 dark:text-white hover:border-green-600`;
 
     default:
       if (used)

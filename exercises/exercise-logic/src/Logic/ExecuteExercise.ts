@@ -16,6 +16,7 @@ import { evaluateChatExercise } from '../Check/CheckChat.logic';
 
 export async function executeExercise(
   exercise: ClosedExercise | ChatExercise,
+  question: number,
   answer: any,
 ): Promise<ExerciseEvaluation> {
   // -------------------------
@@ -28,6 +29,7 @@ export async function executeExercise(
         return {
           lessonId: exercise.lessonId,
           seqNumber: exercise.seqNumber,
+          question: question, 
           score: feedback.score > 0.7 ? 'right' : 'wrong',
           nextAction: 'next',
         };
@@ -44,15 +46,15 @@ export async function executeExercise(
       case 'verb-click-learn':
       case 'verb-click-test':
       case 'verb-type-test':
-        return checkVerb(exercise as CheckVerbExercise, answer);
+        return checkVerb(exercise as CheckVerbExercise, question, answer);
 
       case 'cloze-click-test':
       case 'cloze-type-test':
-        return checkCloze(exercise as CheckClozeExercise, answer);
+        return checkCloze(exercise as CheckClozeExercise, question, answer);
 
       case 'card-type-test':
       case 'card-click-learn':
-        return checkCard(exercise as CardExercise, answer);
+        return checkCard(exercise as CardExercise, question, answer);
 
       /*
       case 'Phrase-build-test':

@@ -8,6 +8,7 @@ import { checkAnswerText } from '../Atoms/CheckAnswer';
 
 export function checkVerb(
   exercise: CheckVerbExercise,
+  question: number,
   answer: VerbAnswer,
 ): CheckVerbFeedback {
   const correctAnswer = exercise.forms[answer.pronounId] ?? '';
@@ -27,6 +28,7 @@ export function checkVerb(
   return {
     lessonId: exercise.lessonId,
     seqNumber: exercise.seqNumber,
+    question,
     answer,
     correctValue: correctAnswer,
     score,
