@@ -155,9 +155,7 @@ export type CardFeedback = ExerciseEvaluation & {
 //  OPENEXERCISES
 // -----------------------
 export type ChatExercise = BaseExercise & {
-  id: string;
   type: 'open-writing' | 'open-dialog' | 'open-reflection';
-  description: string;
   prompt: string;
   avatar: AvatarConfig;
   voice: any;
@@ -166,7 +164,6 @@ export type ChatExercise = BaseExercise & {
 export type ChatScene = {
   sequenceNumber: number;
   title: string;
-  words: string[];
   prompt: string;
   completionRules: CompletionRule[];
 };
