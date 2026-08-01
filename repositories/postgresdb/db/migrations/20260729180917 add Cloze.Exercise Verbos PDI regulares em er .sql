@@ -353,7 +353,7 @@ SELECT "Cloze"."AddSentence"(
 );
 
 INSERT INTO "Lesson"."Lessons" (id, type, level, title, description, image ) 
-VALUES (18, 'grammar', 'A1', 'Verbos regulares em -er (Presente do indicativo)', 'Aprende a conjugar os verbos regulares terminados em -er no presente do indicativo. Pratica as formas mais usadas e ganha confiança para construir frases do dia a dia.', '{portugues.png}');
+VALUES (18, 'grammar', 'A1', 'Verbos regulares em -er (Presente do indicativo)', 'Aprende a conjugar os verbos regulares terminados em -er no presente do indicativo. Pratica as formas mais usadas e ganha confiança para construir frases do dia a dia.', '{portuguese.png}');
 
 INSERT INTO "Lesson"."Exercises" ("lessonId", "seqNumber", "exerciseType", "exerciseId" )
 VALUES (18, 1, 'cloze', 3);

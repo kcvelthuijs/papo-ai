@@ -705,7 +705,8 @@ CREATE TABLE "Lesson"."Lessons" (
     level character varying(3),
     title character varying(255),
     description text,
-    image text[]
+    image text[],
+    state character varying(1) DEFAULT 'T'::character varying
 );
 
 
@@ -1084,4 +1085,5 @@ INSERT INTO public.schema_migrations (version) VALUES
     ('20260729072503'),
     ('20260729144503'),
     ('20260729180917'),
-    ('20260801143946');
+    ('20260801143946'),
+    ('20260801185705');
