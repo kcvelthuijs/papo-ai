@@ -44,7 +44,7 @@ export const LessonCard = ({ lesson, onSelectLesson }: LessonCardProps) => {
   return (
     <Card
       id={lesson.id}
-      className='relative overflow-hidden mx-auto w-full max-w-sm h-65 pt-0 pb-3 bg-gray-100 border-gray-500 dark:bg-gray-500 dark:border-gray-500 border-1'
+      className='relative overflow-hidden mx-auto w-full max-w-sm h-72 pt-0 pb-3 bg-gray-100 border-gray-500 dark:bg-gray-500 dark:border-gray-500 border-1'
       onClick={(e: any) => {
         e.stopPropagation();
         onSelectLesson(lesson.id);
@@ -66,11 +66,13 @@ export const LessonCard = ({ lesson, onSelectLesson }: LessonCardProps) => {
         className='w-100 h-50'
       />
 
-      <CardHeader className='px-2 m-0'>
-        <CardAction>
+      <CardHeader className='relative flex flex-row items-center px-2 m-0'>
+        <CardAction className='absolute top-0 right-3'>
           <ActionButton className='cursor-pointer'>Start</ActionButton>
         </CardAction>
-        <CardTitle className='text-lg p-0'>{lesson.title}</CardTitle>
+        <CardTitle className='text-lg p-0 pr-15 whitespace-pre-line'>
+          {lesson.title.replace(/\\n/g, '\n')}
+        </CardTitle>
       </CardHeader>
     </Card>
   );
