@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
 
 import {
   type CheckClozeExercise,
@@ -8,14 +8,16 @@ import {
   type Cloze,
   type ClozeAnswer,
   type Phrase,
-  type SpeechOptions,
+  type SpeechOptions
 } from '@workspace/dtotypes';
 
 import {
   EXERCISE_FEEDBACK_TIME,
-  type ExerciseInputState,
+  CLOZE_SENTENCE_COUNT,
+  type ExerciseInputState
 } from '@workspace/webtypes';
 import { getRandomSpeechOption } from '../../../Components/Helpers/RandomVoice';
+import { shuffle } from '@workspace/ui';
 
 type ClozeFeedback = {
   answer: string;
@@ -29,7 +31,7 @@ type useClozeExercise = {
   handleAudio: (
     text: string,
     options?: SpeechOptions,
-    callBack?: () => void,
+    callBack?: () => void
   ) => Promise<void>;
 };
 
@@ -37,7 +39,7 @@ export function useClozeExercise({
   exercise,
   onSubmit,
   onComplete,
-  handleAudio,
+  handleAudio
 }: useClozeExercise) {
   const [answers, setAnswers] = useState<Record<string, ClozeFeedback>>({});
   const inputRefs = useRef<Record<string, HTMLInputElement | null>>({});
@@ -49,7 +51,17 @@ export function useClozeExercise({
   const [isComplete, setComplete] = useState<boolean>(false);
   const [busy, setBusy] = useState<boolean>(false);
 
-  const phrase = exercise.phrases[phraseIndex];
+  // -----------------------------
+  // CHOOSE 10 SENTENCES ASELECT
+  // -----------------------------
+  const selectedPhrases = useMemo(() => {
+    const indices = exercise.phrases.map((_, index) => index);
+
+    return shuffle(indices).slice(0, CLOZE_SENTENCE_COUNT);
+  }, [exercise]);
+
+  const selectedPhraseIndex = selectedPhrases[phraseIndex];
+  const phrase = exercise.phrases[selectedPhraseIndex ?? 0];
 
   // -------------------------
   // PHRASE CHANGE HANDLING
@@ -66,7 +78,7 @@ export function useClozeExercise({
   useEffect(() => {
     const cloze = phrase?.gaps?.[clozeIndex];
     setActive(cloze);
-  }, [clozeIndex, phraseIndex]);
+  }, [clozeIndex, phraseIndex, phrase]);
 
   // -------------------------
   // FOCUS HANDLING
@@ -86,7 +98,7 @@ export function useClozeExercise({
   // -------------------------
   function getState(
     clozeId: string,
-    tempFocus: string | null,
+    tempFocus: string | null
   ): ExerciseInputState {
     const baseState =
       clozeId === active?.id ? 'input' : !answers[clozeId] ? 'idle' : 'ready';
@@ -107,10 +119,10 @@ export function useClozeExercise({
 
     const current = active;
     const result: CheckClozeFeedback = await onSubmit({
-      phraseIndex,
+      phraseIndex: selectedPhraseIndex ?? 0,
       clozeIndex,
       clozeId: active.id,
-      value,
+      value
     });
 
     // vul het antwoord in met de score
@@ -118,8 +130,8 @@ export function useClozeExercise({
       ...prev,
       [current.id]: {
         answer: value,
-        score: result.score,
-      },
+        score: result.score
+      }
     }));
 
     // Show correct/incorrect
@@ -134,7 +146,7 @@ export function useClozeExercise({
           await handleAudio(
             getFullPhraseText(phrase),
             getRandomSpeechOption(),
-            isComplete,
+            isComplete
           );
         } else isComplete();
         break;
@@ -162,7 +174,7 @@ export function useClozeExercise({
   // CONTINUE TO NEXT
   // -------------------------
   async function next() {
-    if (phraseIndex < exercise.phrases.length - 1) {
+    if (phraseIndex < selectedPhrases.length - 1) {
       // next phrase
       setPhraseIndex((prev) => prev + 1);
     } else
@@ -187,6 +199,9 @@ export function useClozeExercise({
   function reset() {
     setAnswers({});
     setClozeIndex(0);
+    setPhraseIndex(0);
+    setComplete(false);
+    setActive(undefined);
   }
 
   // -------------------------
@@ -211,6 +226,6 @@ export function useClozeExercise({
 
     // setters (optioneel)
     setAnswers,
-    next,
+    next
   };
 }
