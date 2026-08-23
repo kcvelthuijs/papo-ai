@@ -1,13 +1,19 @@
 import pool from '../Connections/connect.pool';
 import { type LessonSummary } from '@workspace/dtotypes';
+import { isDevelopment } from '../Helpers/Development';
 
 class classLessonsRepository {
   constructor() {}
 
+  devExpr = (): string => {
+    return isDevelopment() ? ' (1=1) ' : " state <> 'T' ";
+  };
+
   async getAll(): Promise<LessonSummary[]> {
     const query = `
       SELECT id, type, title, level, image, description
-      FROM "Lesson"."Lessons"`;
+      FROM "Lesson"."Lessons"
+      WHERE ${this.devExpr()}`;
     try {
       const lessons = await pool.query(query);
       return lessons.rows.map((l) => this.toLessonSummary(l));
@@ -21,7 +27,7 @@ class classLessonsRepository {
     const query = `
       SELECT id, type, title, level, image, description
       FROM "Lesson"."Lessons"
-      WHERE id = $1
+      WHERE id = $1 AND ${this.devExpr()}
       LIMIT 1`;
     const values = [lessonId];
     try {
@@ -40,7 +46,7 @@ class classLessonsRepository {
       title: data.title,
       level: data.level,
       image: data.image?.[0] ?? '',
-      description: data.description ?? ''
+      description: data.description ?? '',
     };
   }
 }

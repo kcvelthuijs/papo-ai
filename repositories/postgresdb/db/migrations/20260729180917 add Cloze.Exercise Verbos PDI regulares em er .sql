@@ -1,6 +1,6 @@
 -- migrate:up
 INSERT INTO "Cloze"."Exercises" (id, type, title, description) VALUES 
-(3, 'cloze-click-test', 'Verbos regulares em -er (Presente do indicativo)', 'Aprende a conjugar os verbos regulares terminados em -er no presente do indicativo. Pratica as formas mais usadas e ganha confiança para construir frases do dia a dia.');
+(3, 'cloze-click-test', 'Presente do indicativo:\nVerbos regulares em -er', 'Aprende a conjugar os verbos regulares terminados em -er no presente do indicativo. Pratica as formas mais usadas e ganha confiança para construir frases do dia a dia.');
 
 SELECT "Cloze"."AddSentence"(
   3, 1, 
@@ -353,15 +353,14 @@ SELECT "Cloze"."AddSentence"(
 );
 
 INSERT INTO "Lesson"."Lessons" (id, type, level, title, description, image ) 
-VALUES (18, 'grammar', 'A1', 'Verbos regulares em -er (Presente do indicativo)', 'Aprende a conjugar os verbos regulares terminados em -er no presente do indicativo. Pratica as formas mais usadas e ganha confiança para construir frases do dia a dia.', '{portugues.png}');
+VALUES (18, 'grammar', 'A1', 'Presente do indicativo: Verbos regulares em -er', 'Aprende a conjugar os verbos regulares terminados em -er no presente do indicativo. Pratica as formas mais usadas e ganha confiança para construir frases do dia a dia.', '{portuguese.png}');
 
 INSERT INTO "Lesson"."Exercises" ("lessonId", "seqNumber", "exerciseType", "exerciseId" )
 VALUES (18, 1, 'cloze', 3);
 
 -- migrate:down
 DELETE FROM "Lesson"."Exercises"
-  WHERE "exerciseType" = 'close'
-    AND "exerciseId" = 3;
+  WHERE "lessonId" = 18;
 
 DELETE FROM "Cloze"."Sentences"
   WHERE "exerciseId" = 3;
@@ -369,5 +368,5 @@ DELETE FROM "Cloze"."Sentences"
 DELETE FROM "Cloze"."Exercises"
   WHERE id = 3;
 
-
-
+DELETE FROM "Lesson"."Lessons"
+  WHERE "id" = 18;

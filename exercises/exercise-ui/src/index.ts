@@ -27,7 +27,7 @@ export * from './Exercises/CheckCardExercise/Hooks/CardHook';
 export * from './Exercises/CheckCardExercise/Tests/CardLearn';
 export * from './Exercises/CheckCardExercise/Tests/CardTest';
 export * from './Exercises/CheckChatExercise/Helpers/UpdatePhraseStates';
-export * from './Exercises/CheckChatExercise/Layouts/PhraseProgress';
+export * from './Exercises/CheckChatExercise/Layouts/SceneCompletionState';
 export * from './Exercises/CheckChatExercise/Renderer/ChatExerciseRenderer';
 export * from './Exercises/CheckChatExercise/Tests/CheckChatTest';
 export * from './Exercises/CheckClozeExercise/Hooks/ClozeExerciseHook';

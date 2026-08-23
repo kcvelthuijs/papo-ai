@@ -30,13 +30,13 @@ export function ExerciseFromExerciseData(
         base: BaseExercise,
         data: any,
       ): ChatExercise => {
-        const { prompt, avatar, voice, items } = data.data;
+        const { prompt, avatar, voice, scenes } = data.data;
         return {
           ...base,
           prompt,
           avatar,
           voice,
-          scenes: items,
+          scenes,
         } as ChatExercise;
       };
       return createChatExercise(base, data);

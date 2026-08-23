@@ -18,7 +18,7 @@ import {
   type PhraseList,
   type PhraseStates,
 } from '../Helpers/UpdatePhraseStates';
-import { PhraseProgress } from '../Layouts/PhraseProgress';
+import { SceneCompletionState } from '../Layouts/SceneCompletionState';
 
 export function CheckChatTest({
   exercise,
@@ -140,7 +140,7 @@ export function CheckChatTest({
           <AudioPlayer />
         ) : (
           <>
-            <PhraseProgress phrases={phrases} states={phraseStates} />
+            <SceneCompletionState phrases={phrases} states={phraseStates} />
             <ChatInput onSubmit={handleSubmit} isDisabled={isBusy} />
           </>
         )}
