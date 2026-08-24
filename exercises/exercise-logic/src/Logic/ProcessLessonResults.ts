@@ -3,6 +3,7 @@ import type {
   CardAnswer,
   CardExercise,
   CardFeedback,
+  ChatExercise,
   CheckClozeExercise,
   CheckClozeFeedback,
   CheckVerbExercise,
@@ -43,6 +44,9 @@ export function ProcessLessonResults(): LessonResult[] {
       case 'card-type-test':
       case 'card-click-learn':
         return getCardLessonResult(exercise, answer);
+
+      case 'open-dialog':
+        return getChatLessonResult(exercise, answer);
     }
     return {
       lessonId: exercise.lessonId,
@@ -106,6 +110,21 @@ export function ProcessLessonResults(): LessonResult[] {
       givenAnswer: `${a.answer.value}`,
       correctAnswer: correctAnswer,
       score: a.score
+    };
+  };
+
+  const getChatLessonResult = (
+    exercise: Exercise,
+    answer: ExerciseEvaluation
+  ): LessonResult => {
+    const e = exercise as ChatExercise;
+    return {
+      lessonId: e.lessonId,
+      seqIndex: e.seqNumber,
+      question: 1,
+      givenAnswer: 'result',
+      correctAnswer: 'result',
+      score: 'right'
     };
   };
 

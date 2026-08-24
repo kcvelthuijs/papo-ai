@@ -4,7 +4,7 @@ import type {
   ChatExercise,
   CheckVerbExercise,
   CheckClozeExercise,
-  CardExercise,
+  CardExercise
 } from '@workspace/dtotypes';
 
 import { isOpenExercise } from '../Types/Exercise.types';
@@ -17,7 +17,7 @@ import { evaluateChatExercise } from '../Check/CheckChat.logic';
 export async function executeExercise(
   exercise: ClosedExercise | ChatExercise,
   question: number,
-  answer: any,
+  answer: any
 ): Promise<ExerciseEvaluation> {
   // -------------------------
   // OPEN (LLM)
@@ -29,13 +29,13 @@ export async function executeExercise(
         return {
           lessonId: exercise.lessonId,
           seqNumber: exercise.seqNumber,
-          question: question, 
-          score: feedback.score > 0.7 ? 'right' : 'wrong',
-          nextAction: 'next',
+          question: question,
+          score: feedback.score,
+          nextAction: 'next'
         };
       default:
         throw new Error(
-          `Unknown open exercise type: ${(exercise as ClosedExercise).type}`,
+          `Unknown open exercise type: ${(exercise as ClosedExercise).type}`
         );
     }
   } else {
@@ -62,7 +62,7 @@ export async function executeExercise(
 */
       default:
         throw new Error(
-          `Unknown closed exercise type: ${(exercise as ClosedExercise).type}`,
+          `Unknown closed exercise type: ${(exercise as ClosedExercise).type}`
         );
     }
   }

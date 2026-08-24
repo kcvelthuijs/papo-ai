@@ -290,24 +290,24 @@ SELECT "Cloze"."AddSentence"(
 
 SELECT "Cloze"."AddSentence"(
     3, 21,
-    ARRAY['Da janela, eu ', ' o mar ao longe.' ],
+    ARRAY['Amanhã, eu ', ' trabalhar até mais tarde.' ],
     '[{
         "language": "NL",
-        "text": "Vanuit het raam zie ik de zee in de verte."
+        "text": "Morgen moet ik langer werken."
       }]'::jsonb,
     '[{
-        "correct": "vejo",
-        "alt": ["vês", "vê", "vemos", "veem"],
-        "hint": "ver (eu)"
+        "correct": "devo",
+        "alt": ["deves", "deve", "devemos", "devem"],
+        "hint": "dever (eu)"
       }]'::jsonb
 );
 
 SELECT "Cloze"."AddSentence"(
     3, 22,
-    ARRAY['Depois da explicação, nós ', ' tudo muito bem.' ],
+    ARRAY['Depois da explicação, nós ', ' melhor a situação.' ],
     '[{
         "language": "NL",
-        "text": "Na de uitleg begrijpen we alles heel goed."
+        "text": "Na de uitleg begrijpen we de situatie beter."
       }]'::jsonb,
     '[{
         "correct": "entendemos",
@@ -318,10 +318,10 @@ SELECT "Cloze"."AddSentence"(
 
 SELECT "Cloze"."AddSentence"(
     3, 23,
-    ARRAY['Quando está muito ocupado, o Pedro ', ' frequentemente as chaves.' ],
+    ARRAY['Quando está muito ocupado, o João ', ' frequentemente as chaves.' ],
     '[{
         "language": "NL",
-        "text": "Wanneer Pedro het erg druk heeft, vergeet hij vaak zijn sleutels."
+        "text": "Wanneer João het erg druk heeft, vergeet hij vaak zijn sleutels."
       }]'::jsonb,
     '[{
         "correct": "esquece",
@@ -346,24 +346,24 @@ SELECT "Cloze"."AddSentence"(
 
 SELECT "Cloze"."AddSentence"(
     3, 25,
-    ARRAY['Todas as manhãs, ', ' os meus vizinhos na rua.' ],
+    ARRAY['Tu ', ' estudar mais para o exame.' ],
     '[{
         "language": "NL",
-        "text": "Elke ochtend zie ik mijn buren op straat."
+        "text": "Je moet meer studeren voor het examen."
       }]'::jsonb,
     '[{
-        "correct": "vejo",
-        "alt": ["vês", "vê", "vemos", "veem"],
-        "hint": "ver (eu)"
+        "correct": "deves",
+        "alt": ["devo", "deve", "devemos", "devem"],
+        "hint": "dever (tu)"
       }]'::jsonb
 );
 
 SELECT "Cloze"."AddSentence"(
     3, 26,
-    ARRAY['Os alunos ', ' melhor a matéria depois de praticarem.' ],
+    ARRAY['Os alunos ', ' as instruções do professor.' ],
     '[{
         "language": "NL",
-        "text": "De leerlingen begrijpen de stof beter nadat ze geoefend hebben."
+        "text": "De leerlingen begrijpen de instructies van de leraar."
       }]'::jsonb,
     '[{
         "correct": "entendem",
@@ -374,24 +374,24 @@ SELECT "Cloze"."AddSentence"(
 
 SELECT "Cloze"."AddSentence"(
     3, 27,
-    ARRAY['Antes de sair de casa, tu ', ' sempre o telemóvel.' ],
+    ARRAY['Antes de sair, ela ', ' sempre o telemóvel.' ],
     '[{
         "language": "NL",
-        "text": "Voordat je van huis gaat, vergeet je altijd je telefoon."
+        "text": "Voordat ze weggaat, vergeet ze altijd haar telefoon."
       }]'::jsonb,
     '[{
-        "correct": "esqueces",
-        "alt": ["esqueço", "esquece", "esquecemos", "esquecem"],
-        "hint": "esquecer (tu)"
+        "correct": "esquece",
+        "alt": ["esqueço", "esqueces", "esquecemos", "esquecem"],
+        "hint": "esquecer (ela)"
       }]'::jsonb
 );
 
 SELECT "Cloze"."AddSentence"(
     3, 28,
-    ARRAY['Depois do almoço, nós ', ' as escadas devagar.' ],
+    ARRAY['Depois do jantar, nós ', ' as escadas.' ],
     '[{
         "language": "NL",
-        "text": "Na de lunch lopen we langzaam de trap af."
+        "text": "Na het eten lopen we de trap af."
       }]'::jsonb,
     '[{
         "correct": "descemos",
@@ -402,24 +402,24 @@ SELECT "Cloze"."AddSentence"(
 
 SELECT "Cloze"."AddSentence"(
     3, 29,
-    ARRAY['Ao longe, os turistas ', ' uma montanha coberta de neve.' ],
+    ARRAY['Os meus pais ', ' pagar a conta hoje.' ],
     '[{
         "language": "NL",
-        "text": "In de verte zien de toeristen een met sneeuw bedekte berg."
+        "text": "Mijn ouders moeten de rekening vandaag betalen."
       }]'::jsonb,
     '[{
-        "correct": "veem",
-        "alt": ["vejo", "vês", "vê", "vemos"],
-        "hint": "ver (eles)"
+        "correct": "devem",
+        "alt": ["devo", "deves", "deve", "devemos"],
+        "hint": "dever (eles)"
       }]'::jsonb
 );
 
 SELECT "Cloze"."AddSentence"(
     3, 30,
-    ARRAY['Depois de ouvir a professora, ', ' a pergunta.' ],
+    ARRAY['Depois de ler o texto, ', ' finalmente a pergunta.' ],
     '[{
         "language": "NL",
-        "text": "Nadat we de lerares hebben gehoord, begrijpen we de vraag."
+        "text": "Na het lezen van de tekst begrijpen we eindelijk de vraag."
       }]'::jsonb,
     '[{
         "correct": "entendemos",
@@ -427,7 +427,6 @@ SELECT "Cloze"."AddSentence"(
         "hint": "entender (nós)"
       }]'::jsonb
 );
-
 SELECT "Cloze"."AddSentence"(
     3, 31,
     ARRAY['Na cozinha, eu ', ' a sopa com uma colher.' ],

@@ -1,11 +1,12 @@
 import { create } from 'zustand';
 
 import type { ChatScene, ChatMessage, ChatRole } from '@workspace/dtotypes';
+import { useLanguageStore, submitAudioHelper } from '@workspace/controllers';
+
 import {
   AddConversationMessage,
-  CreateConversation,
+  CreateConversation
 } from '@workspace/connectors';
-import { useLanguageStore } from '@workspace/controllers';
 
 export interface DialogConfig {
   title: string;
@@ -73,7 +74,7 @@ export const useDialogStore = create<DialogState>((set, get) => ({
     set({
       title: config.title,
       identity: config.identity,
-      assignment: config.assignment,
+      assignment: config.assignment
     });
   },
 
@@ -85,7 +86,7 @@ export const useDialogStore = create<DialogState>((set, get) => ({
       messages: [],
       isBusy: false,
       isErr: false,
-      errorMessage: '',
+      errorMessage: ''
     });
 
     try {
@@ -95,11 +96,11 @@ export const useDialogStore = create<DialogState>((set, get) => ({
       const conversation = await CreateConversation({
         userId: 'system',
         title: title,
-        introduction: getChatIntroPrompt(),
+        introduction: getChatIntroPrompt()
       });
       const conversationId = conversation?.id;
       set({
-        conversationId: conversationId,
+        conversationId: conversationId
       });
 
       // Stel de openingsvraag
@@ -110,7 +111,7 @@ export const useDialogStore = create<DialogState>((set, get) => ({
         errorMessage:
           err?.messages?.join('\n') ??
           err?.message ??
-          'Unable to create a conversation!',
+          'Unable to create a conversation!'
       });
     }
     return;
@@ -122,27 +123,25 @@ export const useDialogStore = create<DialogState>((set, get) => ({
         conversationId: get().conversationId!,
         role: role,
         instructions: getChatConvPrompt(get().identity, get().assignment),
-        prompt: message,
+        prompt: message
       });
 
       // Voeg de response toe aan de messages
       const newMsg: ChatMessage = {
         id: response?.responseId,
         content: response?.message ?? '...',
-        role: 'bot',
+        role: 'bot'
       };
       set((state) => ({
         messages: [...state.messages, newMsg],
-        isBusy: false,
+        isBusy: false
       }));
       await get().sayMessage(newMsg);
     } catch (err: any) {
       set({
         isErr: true,
         errorMessage:
-          err?.messages?.join('\n') ??
-          err?.message ??
-          'Unable to send message!',
+          err?.messages?.join('\n') ?? err?.message ?? 'Unable to send message!'
       });
     }
   },
@@ -151,11 +150,11 @@ export const useDialogStore = create<DialogState>((set, get) => ({
     // Add user message to the list
     const newMsg: ChatMessage = {
       content: text,
-      role: 'user',
+      role: 'user'
     };
     set((state) => ({
       messages: [...state.messages, newMsg],
-      isBusy: true,
+      isBusy: true
     }));
     // Send message and process answer
     get().sendMessage('user', text);
@@ -167,5 +166,5 @@ export const useDialogStore = create<DialogState>((set, get) => ({
 
   sayMessage: async (msg: ChatMessage) => {
     // do nothing
-  },
+  }
 }));

@@ -7,28 +7,24 @@ import type { ChatExerciseProps } from '@exercises/logic';
 import { ChatMessageList } from '../../../Components/Atoms/ChatMessageList';
 import { ChatInput } from '../../../Components/Atoms/ChatInput';
 import { AudioPlayer } from '../../../Components/Atoms/AudioPlayer';
-import type { ChatMessage, CompletionRule } from '@workspace/dtotypes';
+import type {
+  ChatExerciseFeedback,
+  ChatMessage,
+  CompletionRule
+} from '@workspace/dtotypes';
 
-import {
-  areAllPhraseStatesCompleted,
-  createPhraseList,
-  createPhraseStates,
-  updatePhraseStates,
-  type Phrase,
-  type PhraseList,
-  type PhraseStates,
-} from '../Helpers/UpdatePhraseStates';
+
 import { SceneCompletionState } from '../Layouts/SceneCompletionState';
 
 export function CheckChatTest({
   exercise,
   onSubmit,
   onComplete,
-  handleAudio,
+  handleAudio
 }: ChatExerciseProps) {
   const { messages, isBusy, isErr, errorMessage } = useDialogStore();
-  const [sceneId, setSceneId] = useState<number>(0);
 
+  const [sceneId, setSceneId] = useState<number>(0);
   const [phrases, setPhrases] = useState<PhraseList>({});
   const [phraseStates, setPhraseStates] = useState<PhraseStates>({});
   const [isPlaying, setPlaying] = useState<boolean>(false);
@@ -42,7 +38,7 @@ export function CheckChatTest({
     if (messages && messages.length == 1) {
       startAudio(messages[0]!);
     }
-  }, [messages]);
+  }, [messages, messages.length]);
 
   useEffect(() => {
     const rules = exercise.scenes[0]?.completionRules;
@@ -74,13 +70,21 @@ export function CheckChatTest({
   // HANDLE SUBMIT
   // -------------------------
   const handleSubmit = async (text: string) => {
+    const question = messages[messages.length - 1]?.content ?? '';
+    const result: ChatExerciseFeedback = await onSubmit(question, text);
+
+    // Set the new phrases and states
+    setPhrases(result.phrases);
+    setPhraseStates(result.states);
+
+    /*
     const phraseList = createPhraseList(
-      exercise.scenes[sceneId]?.completionRules ?? [],
+      exercise.scenes[sceneId]?.completionRules ?? []
     );
     const updatedPhraseStates = updatePhraseStates(
       text,
       phraseList,
-      phraseStates,
+      phraseStates
     );
     setPhraseStates(updatedPhraseStates);
     const completed = areAllPhraseStatesCompleted(updatedPhraseStates);
@@ -91,7 +95,7 @@ export function CheckChatTest({
         return;
       }
     }
-
+    */
     // Add input from user to the dialogue
     useDialogStore.getState().sayMessage = startAudio;
     useDialogStore.getState().addMessage(text);
@@ -101,6 +105,7 @@ export function CheckChatTest({
   // HANDLE AUDIO
   // -------------------------
   const startAudio = async (msg: ChatMessage) => {
+    console.log('CheckChatTest', 'startAudio', msg.role, msg.content);
     const voice: string = msg.role === 'bot' ? exercise.voice.voice : 'ash';
     if (handleAudio !== undefined) {
       setPlaying(true);

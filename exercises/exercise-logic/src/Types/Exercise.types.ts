@@ -9,7 +9,7 @@ import type {
   CheckClozeFeedback,
   CheckVerbFeedback,
   CardAnswer,
-  ChatExerciseFeedback,
+  ChatExerciseFeedback
 } from '@workspace/dtotypes';
 
 import type { SpeechOptions } from '@workspace/dtotypes';
@@ -32,7 +32,7 @@ export type VerbExerciseProps = {
   handleAudio: (
     text: string,
     options?: SpeechOptions,
-    callBack?: () => void,
+    callBack?: () => void
   ) => Promise<void>;
 };
 
@@ -43,7 +43,7 @@ export type ClozeExerciseProps = {
   handleAudio: (
     text: string,
     options?: SpeechOptions,
-    callBack?: () => void,
+    callBack?: () => void
   ) => Promise<void>;
 };
 
@@ -54,7 +54,7 @@ export type CardExerciseProps = {
   handleAudio: (
     text: string,
     options?: SpeechOptions,
-    callBack?: () => void,
+    callBack?: () => void
   ) => Promise<void>;
 };
 
@@ -67,11 +67,11 @@ export type QuizQuestionProps = {
 
 export type ChatExerciseProps = {
   exercise: ChatExercise;
-  onSubmit: (message: string) => Promise<ChatExerciseFeedback>;
+  onSubmit: (question: string, reply: string) => Promise<ChatExerciseFeedback>;
   onComplete: (reason: ExerciseExitReason) => Promise<void>;
   handleAudio: (
     text: string,
     options?: SpeechOptions,
-    callBack?: () => void,
+    callBack?: () => void
   ) => Promise<void>;
 };

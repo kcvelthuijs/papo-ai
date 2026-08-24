@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import type { SpeechOptions } from '@workspace/webtypes';
+import type { SpeechOptions } from '@workspace/dtotypes';
 import { LLM_HOST, LLM_PORT } from '../Config/Connector.config';
 
 const getRouteUrl = (route: string): string => {
@@ -8,11 +8,11 @@ const getRouteUrl = (route: string): string => {
 };
 
 export const fetchSoundClip = async (
-  props: SpeechOptions,
+  props: SpeechOptions
 ): Promise<Blob | null> => {
   try {
     const response = await axios.post(getRouteUrl('/llm/tts'), props, {
-      responseType: 'blob',
+      responseType: 'blob'
     });
     return response.data;
   } catch (err) {

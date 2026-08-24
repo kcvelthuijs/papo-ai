@@ -1,5 +1,8 @@
 import { SceneCompletionBadge } from '../../../Components/Atoms/SceneCompletionBadge';
-import type { PhraseList, PhraseStates } from '../Helpers/UpdatePhraseStates';
+import type {
+  PhraseList,
+  PhraseStates
+} from '../../../../../exercise-logic/src/Helper/UpdatePhraseStates';
 
 interface SceneCompletionProps {
   phrases: PhraseList;
@@ -8,7 +11,7 @@ interface SceneCompletionProps {
 
 export function SceneCompletionState({
   phrases,
-  states,
+  states
 }: SceneCompletionProps) {
   return (
     <div className='px-2 py-1 text-sm'>

@@ -477,4 +477,6 @@ SELECT "Cloze"."AddSentence"(
 
 
 -- migrate:down
-
+DELETE FROM "Cloze"."Sentences"
+WHERE "exerciseId" = 1
+  AND "sequence" > 16;

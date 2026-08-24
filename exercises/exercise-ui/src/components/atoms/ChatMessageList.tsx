@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useLayoutEffect, useRef } from 'react';
 import type { ChatMessage } from '@workspace/dtotypes';
 import { ChatMessageItem } from './ChatMessageItem';
 
@@ -10,9 +10,13 @@ type Props = {
 export const ChatMessageList = ({ messages, onSpeakMessage }: Props) => {
   const lastRef = useRef<HTMLDivElement | null>(null);
 
-  useEffect(() => {
-    lastRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages.length]);
+  useLayoutEffect(() => {
+    console.log('ChatMessageList', 'scroll');
+    lastRef.current?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'end'
+    });
+  }, [messages, messages.length]);
 
   return (
     <div className='flex flex-col gap-2 py-2'>

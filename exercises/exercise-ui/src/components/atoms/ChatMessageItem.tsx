@@ -30,7 +30,7 @@ export const ChatMessageItem = ({ message, onSpeakMessage }: Props) => {
         <div className='mr-4'>
           <RoleAvatar
             role='bot'
-            className='-ml-4 border-1 shadow-xl border-gray-400 dark:border-gray-200'
+            className='-ml-4 border shadow-xl border-gray-400 dark:border-gray-200'
             style={{ width: '4rem', height: '4rem' }}
           />
         </div>
@@ -59,11 +59,11 @@ export const ChatMessageItem = ({ message, onSpeakMessage }: Props) => {
           <div className='mx-0'>
             <RoleAvatar
               role='student'
-              className='border-1 shadow-xl border-gray-400 dark:border-gray-200'
+              className='border shadow-xl border-gray-400 dark:border-gray-200'
               style={{
                 width: '4rem',
                 height: '4rem',
-                transform: 'scaleX(-1)',
+                transform: 'scaleX(-1)'
               }}
             />
           </div>

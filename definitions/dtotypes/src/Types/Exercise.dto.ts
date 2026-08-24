@@ -173,11 +173,18 @@ export interface CompletionRule {
   alternatives: string[];
 }
 export type ChatResponse = {
-  responseId: string;
+  sceneId: number;
   value: string;
 };
-export type ChatExerciseFeedback = {
-  feedback: string;
-  score: number;
-  suggestions: string;
+export interface ChatPhrase {
+  description: string;
+  alternatives: string[];
+}
+export interface ChatState {
+  completed: boolean;
+  matchedAlternative?: string;
+}
+export type ChatExerciseFeedback = ExerciseEvaluation & {
+  phrases: Record<string, ChatPhrase>;
+  states: Record<string, ChatState>;
 };
