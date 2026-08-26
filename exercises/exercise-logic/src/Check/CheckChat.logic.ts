@@ -22,17 +22,13 @@ async function getTeacherFeedback(
   const prompt = `Op de vraag "${message}" antwoordt de student "${response}".`;
   const instructions = `Als docent begeleidt je een student die **portugues europeu** wil leren. 
       Je beoordeelt **uitsluitend** het antwoord en niet de vraag. Je let op correcte spelling in portuguse europeu. 
-      Geef alleen feedback op fouten. Gebruik maximaal 50 tokens voor een compleet antwoord. Vermijd overbodige correcties. 
+      Je geeft alleen feedback op fouten. Als er geen fouten zijn, is je feedback leeg.
       Geef feedback en een grade 1 tot 10 in hele cijfers.
       Antwoord in de json structuur
-      {'feedback': [{ 'text': <hier staat de foute tekst: Ola>, 'correct': <hier staat de correctie>, 'error': <vermelding wat er fout is>}, ... ], {'grade': <hier staat de grade>}`;
+      {'feedback': [{ 'text': <hier staat de foute tekst: Ola>, 'correct': <hier staat de correctie>, 'error': <vermelding wat er fout is>}, ... ], {'grade': <hier staat de grade>}
+      Gebruik maximaal 50 tokens voor een compleet antwoord.`;
 
-  const resp = await getResponse(
-    role,
-    prompt,
-    instructions,
-    'resp_0bf530ddd1966954006a8dd9a328ec819482efbd40e53ad920',
-  );
+  const resp = await getResponse(role, prompt, instructions);
 
   if (!resp) return { remarks: [], grade: 0 };
   else {
