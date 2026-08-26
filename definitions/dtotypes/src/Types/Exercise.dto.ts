@@ -9,12 +9,18 @@ export type ExerciseState =
 
 export type ExerciseAction =
   | 'retry'
+  | 'continue'
   | 'next'
   | 'next step'
   | 'next exercise'
   | 'restart'
   | 'quit';
-export type ExerciseScore = 'right' | 'wrong' | 'partial' | undefined;
+export type ExerciseScore =
+  | 'right'
+  | 'wrong'
+  | 'partial'
+  | 'skipped'
+  | undefined;
 
 export type ExerciseExitReason = 'end' | 'quit';
 
@@ -184,7 +190,30 @@ export interface ChatState {
   completed: boolean;
   matchedAlternative?: string;
 }
+export type ChatPhrases = Record<string, ChatPhrase>;
+export type ChatStates = Record<string, ChatState>;
+export interface ChatSceneProgress {
+  phrases: ChatPhrases;
+  states: ChatStates;
+}
+export type ChatAnswer = {
+  message: string;
+  response: string;
+  phrases: ChatPhrases;
+  states: ChatStates;
+};
 export type ChatExerciseFeedback = ExerciseEvaluation & {
-  phrases: Record<string, ChatPhrase>;
-  states: Record<string, ChatState>;
+  message: string;
+  response: string;
+  feedback: TeacherFeedback;
+  progress: ChatSceneProgress;
+};
+export type TeacherFeedback = {
+  remarks: TeacherRemark[];
+  grade: number;
+};
+export type TeacherRemark = {
+  text: string;
+  correct: string;
+  error: string;
 };

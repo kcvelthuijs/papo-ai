@@ -6,19 +6,19 @@ import type {
   ExerciseData,
   ExerciseExitReason,
   ExerciseState,
-  SpeechOptions
+  SpeechOptions,
 } from '@workspace/dtotypes';
 
 import {
   getAllLessons,
   getLessonByID,
-  getExercisesByLessonID
+  getExercisesByLessonID,
 } from '@workspace/connectors';
 
 import {
   prepareExercise,
   executeExercise,
-  ExerciseFromExerciseData
+  ExerciseFromExerciseData,
 } from '@exercises/logic';
 
 import type { ExerciseEvaluation } from '@workspace/webtypes';
@@ -39,7 +39,7 @@ type LessonState = {
   currentExercise?: Exercise;
 
   // Exercise results
-  resultId: number;
+  question: number;
   results: ExerciseEvaluation[];
 
   // Other settings
@@ -66,7 +66,7 @@ type LessonState = {
   submitAudio: (
     text: string,
     options?: SpeechOptions,
-    callback?: () => void
+    callback?: () => void,
   ) => Promise<void>;
 };
 
@@ -81,7 +81,7 @@ export const useLessonStore = create<LessonState>((set, get) => ({
   currentExerciseState: 'unknown',
   currentExercise: undefined,
 
-  resultId: 0,
+  question: 0,
   results: [],
 
   isLoading: false,
@@ -102,20 +102,20 @@ export const useLessonStore = create<LessonState>((set, get) => ({
             acc[l.id] = l;
             return acc;
           },
-          {} as Record<string, LessonSummary>
+          {} as Record<string, LessonSummary>,
         );
 
         set({
-          lessons: map
+          lessons: map,
         });
       }
     } catch (err: any) {
       set({
-        error: err?.message
+        error: err?.message,
       });
     } finally {
       set({
-        isLoading: false
+        isLoading: false,
       });
     }
   },
@@ -133,10 +133,10 @@ export const useLessonStore = create<LessonState>((set, get) => ({
       set((state) => ({
         lessons: {
           ...state.lessons,
-          [id]: lesson
+          [id]: lesson,
         },
         isLoading: false,
-        isComplete: false
+        isComplete: false,
       }));
     }
     return lesson;
@@ -149,7 +149,7 @@ export const useLessonStore = create<LessonState>((set, get) => ({
     set({
       isLoading: true,
       isComplete: false,
-      error: undefined
+      error: undefined,
     });
 
     try {
@@ -173,7 +173,7 @@ export const useLessonStore = create<LessonState>((set, get) => ({
 
         set((state) => ({
           ...state.exerciseCache,
-          [lessonId]: exercises!
+          [lessonId]: exercises!,
         }));
       }
 
@@ -183,7 +183,7 @@ export const useLessonStore = create<LessonState>((set, get) => ({
         exercises,
         results: [],
         isLoading: false,
-        isComplete: false
+        isComplete: false,
       });
 
       // Automatically start lesson
@@ -192,7 +192,7 @@ export const useLessonStore = create<LessonState>((set, get) => ({
       set({
         isLoading: false,
         isComplete: false,
-        error: err.message
+        error: err.message,
       });
     }
   },
@@ -211,7 +211,7 @@ export const useLessonStore = create<LessonState>((set, get) => ({
   // -------------------------
   setExercise: async (exerciseId: number) => {
     const exercises = get().exercises;
-    set({ resultId: 0 });
+    set({ question: 0 });
     if (!exercises || exercises.length == 0) {
       console.log(`Lesson ${get().currentLessonID ?? 0} has no exercises`);
       return;
@@ -225,8 +225,8 @@ export const useLessonStore = create<LessonState>((set, get) => ({
           currentExerciseState: 'prepare',
           currentExercise: {
             ...exercise,
-            state: 'prepare'
-          }
+            state: 'prepare',
+          },
         });
         await prepareExercise(exercise);
         await get().startExercise();
@@ -246,10 +246,10 @@ export const useLessonStore = create<LessonState>((set, get) => ({
     set({
       currentExercise: {
         ...currentExercise,
-        state: 'active'
+        state: 'active',
       },
       currentExerciseState: 'active',
-      resultId: 0
+      question: 0,
     });
   },
 
@@ -258,15 +258,38 @@ export const useLessonStore = create<LessonState>((set, get) => ({
   // -------------------------
   submitAnswer: async (answer: any): Promise<ExerciseEvaluation> => {
     const exercise = get().currentExercise;
-    const question = get().resultId;
+    const question = get().question;
     if (!exercise) throw new Error('Current exercise is undefined.');
     const evaluation = await executeExercise(exercise, question, answer);
-    const nextQuestion =
-      evaluation.nextAction == 'retry' ? question : question + 1;
+
+    // save results
     set((state) => ({
       results: [...state.results, evaluation],
-      resultId: nextQuestion
     }));
+
+    switch (evaluation.nextAction) {
+      case 'continue':
+      case 'retry':
+        break;
+
+      case 'next':
+      case 'next step':
+        const nextQuestion = question + 1;
+        set((state) => ({ question: nextQuestion }));
+        break;
+
+      case 'next exercise':
+        get().nextExercise();
+        break;
+
+      case 'quit':
+        get().completeExercise('quit');
+        break;
+
+      case 'restart':
+        set((state) => ({ results: [], question: 0 }));
+        break;
+    }
     return evaluation;
   },
 
@@ -275,7 +298,7 @@ export const useLessonStore = create<LessonState>((set, get) => ({
   // -------------------------
   skipAnswer: async (): Promise<ExerciseEvaluation> => {
     const exercise = get().currentExercise;
-    const question = get().resultId;
+    const question = get().question;
 
     if (!exercise) throw new Error('Current exercise is undefined.');
 
@@ -283,13 +306,13 @@ export const useLessonStore = create<LessonState>((set, get) => ({
       lessonId: exercise.lessonId,
       seqNumber: exercise.seqNumber,
       question,
-      score: undefined,
-      nextAction: 'next exercise'
+      score: 'skipped',
+      nextAction: 'next exercise',
     };
 
     set((state) => ({
       results: [...state.results, evaluation],
-      resultId: question + 1
+      question: question + 1,
     }));
     return evaluation;
   },
@@ -330,7 +353,7 @@ export const useLessonStore = create<LessonState>((set, get) => ({
   submitAudio: async (
     text: string,
     options?: SpeechOptions,
-    callBack?: () => void
+    callBack?: () => void,
   ): Promise<void> => {
     await submitAudioHelper(text, options, callBack);
   },
@@ -354,7 +377,7 @@ export const useLessonStore = create<LessonState>((set, get) => ({
       currentLessonID: '',
       exercises: [],
       currentExerciseIndex: 0,
-      currentExercise: undefined
+      currentExercise: undefined,
     });
-  }
+  },
 }));

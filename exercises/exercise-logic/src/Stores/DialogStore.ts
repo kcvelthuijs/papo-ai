@@ -1,11 +1,11 @@
 import { create } from 'zustand';
 
-import type { ChatScene, ChatMessage, ChatRole } from '@workspace/dtotypes';
-import { useLanguageStore, submitAudioHelper } from '@workspace/controllers';
+import type { ChatMessage } from '@workspace/dtotypes';
+import { useLanguageStore } from '@workspace/controllers';
 
 import {
   AddConversationMessage,
-  CreateConversation
+  CreateConversation,
 } from '@workspace/connectors';
 
 export interface DialogConfig {
@@ -36,6 +36,7 @@ type DialogState = {
   sendMessage: (role: string, message: string) => Promise<void>;
   setAssignment: (text: string) => void;
   sayMessage: (msg: ChatMessage) => Promise<void>;
+  getConversation: () => string;
 };
 
 const getChatIntroPrompt = (): string => {
@@ -46,13 +47,14 @@ const getChatIntroPrompt = (): string => {
   return `**Algemene instructies**
     Je bent een taalcoach die volwassenen helpt om ${language} te leren. Voer een natuurlijk gesprek. 
     Stel maximaal één vraag tegelijk. Pas je reactie aan op wat de gesprekspartner zegt.
-    Hou je aan de onderwerpen uit de opdracht. Geef korte antwoorden van maximaal 50 tokens in volledige zinnen.`;
+    Hou je aan de onderwerpen uit de opdracht. Geef korte antwoorden in volledige zinnen van maximaal 50 tokens.`;
 };
 
 const getChatConvPrompt = (intro: string, scene: string): string => {
   return `${getChatIntroPrompt()}
     **Identiteit**
     ${intro}
+    **Opdracht**
     ${scene}
     `;
 };
@@ -74,7 +76,7 @@ export const useDialogStore = create<DialogState>((set, get) => ({
     set({
       title: config.title,
       identity: config.identity,
-      assignment: config.assignment
+      assignment: config.assignment,
     });
   },
 
@@ -86,7 +88,7 @@ export const useDialogStore = create<DialogState>((set, get) => ({
       messages: [],
       isBusy: false,
       isErr: false,
-      errorMessage: ''
+      errorMessage: '',
     });
 
     try {
@@ -96,22 +98,22 @@ export const useDialogStore = create<DialogState>((set, get) => ({
       const conversation = await CreateConversation({
         userId: 'system',
         title: title,
-        introduction: getChatIntroPrompt()
+        introduction: getChatIntroPrompt(),
       });
       const conversationId = conversation?.id;
       set({
-        conversationId: conversationId
+        conversationId: conversationId,
       });
 
       // Stel de openingsvraag
-      get().sendMessage('system', 'Open het gesprek met een eerste vraag.');
+      get().sendMessage('system', get().assignment);
     } catch (err: any) {
       set({
         isErr: true,
         errorMessage:
           err?.messages?.join('\n') ??
           err?.message ??
-          'Unable to create a conversation!'
+          'Unable to create a conversation!',
       });
     }
     return;
@@ -123,25 +125,27 @@ export const useDialogStore = create<DialogState>((set, get) => ({
         conversationId: get().conversationId!,
         role: role,
         instructions: getChatConvPrompt(get().identity, get().assignment),
-        prompt: message
+        prompt: message,
       });
 
       // Voeg de response toe aan de messages
       const newMsg: ChatMessage = {
         id: response?.responseId,
         content: response?.message ?? '...',
-        role: 'bot'
+        role: 'bot',
       };
       set((state) => ({
         messages: [...state.messages, newMsg],
-        isBusy: false
+        isBusy: false,
       }));
       await get().sayMessage(newMsg);
     } catch (err: any) {
       set({
         isErr: true,
         errorMessage:
-          err?.messages?.join('\n') ?? err?.message ?? 'Unable to send message!'
+          err?.messages?.join('\n') ??
+          err?.message ??
+          'Unable to send message!',
       });
     }
   },
@@ -150,11 +154,11 @@ export const useDialogStore = create<DialogState>((set, get) => ({
     // Add user message to the list
     const newMsg: ChatMessage = {
       content: text,
-      role: 'user'
+      role: 'user',
     };
     set((state) => ({
       messages: [...state.messages, newMsg],
-      isBusy: true
+      isBusy: true,
     }));
     // Send message and process answer
     get().sendMessage('user', text);
@@ -166,5 +170,15 @@ export const useDialogStore = create<DialogState>((set, get) => ({
 
   sayMessage: async (msg: ChatMessage) => {
     // do nothing
-  }
+  },
+
+  getConversation: (): string => {
+    const dialog = get()
+      .messages.filter(
+        (message) => message.role === 'bot' || message.role === 'user',
+      )
+      .map((message) => `${message.role}: '${message.content}'`)
+      .join('\n');
+    return dialog;
+  },
 }));

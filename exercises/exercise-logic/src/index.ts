@@ -5,6 +5,7 @@ export * from './Check/CheckChat.logic';
 export * from './Check/CheckCloze.logic';
 export * from './Check/CheckVerb.logic';
 export * from './Check/PhraseBuild.logic';
+export * from './Helper/UpdatePhraseStates';
 export * from './Logic/ExecuteExercise';
 export * from './Logic/PrepareExercise';
 export * from './Logic/ProcessLessonResults';

@@ -1,18 +1,18 @@
 import { useEffect, useState } from 'react';
 
-import { useDialogStore } from '@workspace/controllers';
+import { useDialogStore, useLessonStore } from '@workspace/controllers';
 import { CardLayout, Spinner } from '@workspace/ui';
-import type { ChatExerciseProps } from '@exercises/logic';
+import { createProgress, type ChatExerciseProps } from '@exercises/logic';
 
 import { ChatMessageList } from '../../../Components/Atoms/ChatMessageList';
 import { ChatInput } from '../../../Components/Atoms/ChatInput';
 import { AudioPlayer } from '../../../Components/Atoms/AudioPlayer';
-import type {
-  ChatExerciseFeedback,
-  ChatMessage,
-  CompletionRule
+import {
+  type ChatPhrases,
+  type ChatStates,
+  type ChatExerciseFeedback,
+  type ChatMessage,
 } from '@workspace/dtotypes';
-
 
 import { SceneCompletionState } from '../Layouts/SceneCompletionState';
 
@@ -20,18 +20,24 @@ export function CheckChatTest({
   exercise,
   onSubmit,
   onComplete,
-  handleAudio
+  handleAudio,
 }: ChatExerciseProps) {
   const { messages, isBusy, isErr, errorMessage } = useDialogStore();
+  const { question } = useLessonStore();
 
-  const [sceneId, setSceneId] = useState<number>(0);
-  const [phrases, setPhrases] = useState<PhraseList>({});
-  const [phraseStates, setPhraseStates] = useState<PhraseStates>({});
   const [isPlaying, setPlaying] = useState<boolean>(false);
+  const [phrases, setPhrases] = useState<ChatPhrases>({});
+  const [states, setStates] = useState<ChatStates>({});
 
   if (isErr) {
     return <div className='p-4 text-red-600'>{errorMessage}</div>;
   }
+
+  useEffect(() => {
+    const progress = createProgress(exercise.scenes[0]);
+    setPhrases(progress.phrases);
+    setStates(progress.states);
+  }, [exercise]);
 
   useEffect(() => {
     // speel de eerste melding
@@ -41,61 +47,29 @@ export function CheckChatTest({
   }, [messages, messages.length]);
 
   useEffect(() => {
-    const rules = exercise.scenes[0]?.completionRules;
-    if (rules) {
-      const phraseList = createPhraseList(rules);
-      setPhrases(phraseList);
-      setPhraseStates(createPhraseStates(phraseList));
-    }
-  }, [exercise]);
-
-  // -------------------------
-  // HANDLE NEXTSCENE
-  // -------------------------
-  const nextScene = () => {
-    const nextSceneId = sceneId + 1;
-    const nextSceneData = exercise.scenes[nextSceneId];
-    if (nextSceneData) {
-      const phraseList = createPhraseList(nextSceneData.completionRules);
-      setSceneId(nextSceneId);
-      setPhrases(phraseList);
-      setPhraseStates(createPhraseStates(phraseList));
-      useDialogStore.getState().assignment =
-        nextSceneData.prompt ?? 'continue your conversation';
-      return true;
-    } else return false;
-  };
+    const nextScenePrompt = exercise.scenes[question]?.prompt;
+    useDialogStore.getState().assignment =
+      nextScenePrompt ?? 'continue your conversation';
+  }, [question]);
 
   // -------------------------
   // HANDLE SUBMIT
   // -------------------------
   const handleSubmit = async (text: string) => {
-    const question = messages[messages.length - 1]?.content ?? '';
-    const result: ChatExerciseFeedback = await onSubmit(question, text);
+    const message = messages[messages.length - 1]?.content ?? '';
+    const result: ChatExerciseFeedback = await onSubmit({
+      message,
+      response: text,
+      phrases,
+      states,
+    });
 
     // Set the new phrases and states
-    setPhrases(result.phrases);
-    setPhraseStates(result.states);
+    setPhrases(result.progress.phrases);
+    setStates(result.progress.states);
 
-    /*
-    const phraseList = createPhraseList(
-      exercise.scenes[sceneId]?.completionRules ?? []
-    );
-    const updatedPhraseStates = updatePhraseStates(
-      text,
-      phraseList,
-      phraseStates
-    );
-    setPhraseStates(updatedPhraseStates);
-    const completed = areAllPhraseStatesCompleted(updatedPhraseStates);
-    if (completed) {
-      const moved = nextScene();
-      if (!moved) {
-        await onComplete('end');
-        return;
-      }
+    if (result.nextAction == 'next step') {
     }
-    */
     // Add input from user to the dialogue
     useDialogStore.getState().sayMessage = startAudio;
     useDialogStore.getState().addMessage(text);
@@ -105,7 +79,6 @@ export function CheckChatTest({
   // HANDLE AUDIO
   // -------------------------
   const startAudio = async (msg: ChatMessage) => {
-    console.log('CheckChatTest', 'startAudio', msg.role, msg.content);
     const voice: string = msg.role === 'bot' ? exercise.voice.voice : 'ash';
     if (handleAudio !== undefined) {
       setPlaying(true);
@@ -115,13 +88,6 @@ export function CheckChatTest({
   const endAudio = () => {
     setPlaying(false);
   };
-
-  // -------------------------
-  // COMPLETE
-  // -------------------------
-  async function handleComplete() {
-    if (onComplete) await onComplete('end');
-  }
 
   // -------------------------
   // QUIT
@@ -145,7 +111,7 @@ export function CheckChatTest({
           <AudioPlayer />
         ) : (
           <>
-            <SceneCompletionState phrases={phrases} states={phraseStates} />
+            <SceneCompletionState phrases={phrases} states={states} />
             <ChatInput onSubmit={handleSubmit} isDisabled={isBusy} />
           </>
         )}

@@ -3,14 +3,16 @@ import type {
   CardAnswer,
   CardExercise,
   CardFeedback,
+  ChatAnswer,
   ChatExercise,
+  ChatExerciseFeedback,
   CheckClozeExercise,
   CheckClozeFeedback,
   CheckVerbExercise,
   CheckVerbFeedback,
   Exercise,
   ExerciseEvaluation,
-  ExerciseScore
+  ExerciseScore,
 } from '@workspace/dtotypes';
 
 import { PtPronouns } from '@workspace/dtotypes';
@@ -29,7 +31,7 @@ export function ProcessLessonResults(): LessonResult[] {
 
   const getExerciseResult = (
     exercise: Exercise,
-    answer: ExerciseEvaluation
+    answer: ExerciseEvaluation,
   ): LessonResult => {
     switch (exercise.type) {
       case 'verb-click-learn':
@@ -54,7 +56,7 @@ export function ProcessLessonResults(): LessonResult[] {
       question: -1,
       givenAnswer: '',
       correctAnswer: '',
-      score: undefined
+      score: undefined,
     } as LessonResult;
   };
 
@@ -64,7 +66,7 @@ export function ProcessLessonResults(): LessonResult[] {
 
   const getCardLessonResult = (
     exercise: Exercise,
-    answer: ExerciseEvaluation
+    answer: ExerciseEvaluation,
   ): LessonResult => {
     const e = exercise as CardExercise;
     const a = answer as CardFeedback;
@@ -74,13 +76,13 @@ export function ProcessLessonResults(): LessonResult[] {
       question: a.question,
       givenAnswer: a.givenAnswer,
       correctAnswer: createReactSpan(a.correctAnswer),
-      score: a.score
+      score: a.score,
     };
   };
 
   const getClozeLessonResult = (
     exercise: Exercise,
-    answer: ExerciseEvaluation
+    answer: ExerciseEvaluation,
   ): LessonResult => {
     const e = exercise as CheckClozeExercise;
     const a = answer as CheckClozeFeedback;
@@ -90,13 +92,13 @@ export function ProcessLessonResults(): LessonResult[] {
       question: a.question,
       givenAnswer: a.value,
       correctAnswer: createReactSpan(a.correctValue ?? ''),
-      score: a.score
+      score: a.score,
     };
   };
 
   const getVerbLessonResult = (
     exercise: Exercise,
-    answer: ExerciseEvaluation
+    answer: ExerciseEvaluation,
   ): LessonResult => {
     const e = exercise as CheckVerbExercise;
     const a = answer as CheckVerbFeedback;
@@ -109,22 +111,23 @@ export function ProcessLessonResults(): LessonResult[] {
       question: a.question,
       givenAnswer: `${a.answer.value}`,
       correctAnswer: correctAnswer,
-      score: a.score
+      score: a.score,
     };
   };
 
   const getChatLessonResult = (
     exercise: Exercise,
-    answer: ExerciseEvaluation
+    answer: ExerciseEvaluation,
   ): LessonResult => {
     const e = exercise as ChatExercise;
+    const a = answer as ChatExerciseFeedback;
     return {
       lessonId: e.lessonId,
       seqIndex: e.seqNumber,
-      question: 1,
-      givenAnswer: 'result',
-      correctAnswer: 'result',
-      score: 'right'
+      question: a.question,
+      givenAnswer: `${a.response}`,
+      correctAnswer: '',
+      score: a.score,
     };
   };
 
@@ -132,6 +135,6 @@ export function ProcessLessonResults(): LessonResult[] {
   return exercises.flatMap((e) =>
     results
       .filter((r) => r.lessonId === e.lessonId && r.seqNumber === e.seqNumber)
-      .map((r) => getExerciseResult(e, r))
+      .map((r) => getExerciseResult(e, r)),
   );
 }

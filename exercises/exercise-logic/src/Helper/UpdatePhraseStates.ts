@@ -1,23 +1,10 @@
-// ----------------------------
-//  Phrase
-
-import type { CompletionRule } from '@workspace/dtotypes';
-
-// ----------------------------
-export interface Phrase {
-  description: string;
-  alternatives: string[];
-}
-export type PhraseList = Record<string, Phrase>;
-
-// ----------------------------
-// PhraseState
-// ----------------------------
-export interface PhraseState {
-  completed: boolean;
-  matchedAlternative?: string;
-}
-export type PhraseStates = Record<string, PhraseState>;
+import type {
+  CompletionRule,
+  ChatPhrases,
+  ChatStates,
+  ChatScene,
+  ChatSceneProgress,
+} from '@workspace/dtotypes';
 
 // ----------------------------
 // Normalize
@@ -46,11 +33,23 @@ function matchesAlternative(sentence: string, alternative: string): boolean {
   const words = normalizedSentence.split(' ');
   return words.includes(normalizedAlternative);
 }
+// ----------------------------
+// createProgress
+// ----------------------------
+export function createProgress(
+  scene: ChatScene | undefined,
+): ChatSceneProgress {
+  const phrases = createPhraseList(scene?.completionRules ?? []);
+  return {
+    phrases,
+    states: createPhraseStates(phrases),
+  };
+}
 
 // ----------------------------
 // createPhraseStates
 // ----------------------------
-export function createPhraseList(rules: CompletionRule[]): PhraseList {
+export function createPhraseList(rules: CompletionRule[]): ChatPhrases {
   return rules.reduce((phrases, definition) => {
     phrases[definition.key] = {
       description: definition.description,
@@ -58,21 +57,21 @@ export function createPhraseList(rules: CompletionRule[]): PhraseList {
     };
 
     return phrases;
-  }, {} as PhraseList);
+  }, {} as ChatPhrases);
 }
 
 // ----------------------------
 // createPhraseStates
 // ----------------------------
 // Maak een lege runtime state voor een scene
-export function createPhraseStates(phrases: PhraseList): PhraseStates {
+export function createPhraseStates(phrases: ChatPhrases): ChatStates {
   return Object.keys(phrases).reduce((states, key) => {
     states[key] = {
       completed: false,
     };
 
     return states;
-  }, {} as PhraseStates);
+  }, {} as ChatStates);
 }
 
 // ----------------------------
@@ -80,9 +79,9 @@ export function createPhraseStates(phrases: PhraseList): PhraseStates {
 // ----------------------------
 export function updatePhraseStates(
   utterance: string,
-  list: PhraseList,
-  states: PhraseStates,
-): PhraseStates {
+  list: ChatPhrases,
+  states: ChatStates,
+): ChatStates {
   const updatedStates = { ...states };
 
   for (const [key, group] of Object.entries(list)) {
@@ -107,6 +106,6 @@ export function updatePhraseStates(
 // ----------------------------
 // areAllPhraseStatesCompleted
 // ----------------------------
-export function areAllPhraseStatesCompleted(states: PhraseStates): boolean {
+export function areAllPhraseStatesCompleted(states: ChatStates): boolean {
   return Object.values(states).every((state) => state.completed);
 }

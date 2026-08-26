@@ -3,8 +3,27 @@ UPDATE "Chat"."Exercises"
 SET "voice" = '{ "voice": "alloy", "speech": "speak clearly, joyful, and not too fast" }'::jsonb
 WHERE id = 1;
 
+
 UPDATE "Chat"."Scenes"
-SET "completionRules" = '[
+SET "prompt" = 'Doel: Maak kennis.
+        Instructies:
+        - Groet en noem je alleen voornaam. 
+        - Vraag dan naar de naam van de ander.
+        - Kom erachter of de ander een man of een vrouw is zonder dat expliciet te vragen
+        - Vraag daarna naar de leeftijd.
+        - Stel nog geen andere vragen.'
+WHERE "exerciseId" = 1
+  AND "sequenceNumber" = 1;
+
+UPDATE "Chat"."Scenes"
+SET "prompt" = 'Doel: weet waar de ander vandaan komt.
+        Instructies:
+        - Vraag waar de ander vandaan komt.
+        - Vraag waar hij of zij nu woont.
+        - Vraag naar de nationaliteit
+        - Vraag eventueel 1 keer door.
+        Praat nog niet over werk of studie.',
+  "completionRules" = '[
     {
     "key": "nacionalidade",
     "description": "nationaliteit",

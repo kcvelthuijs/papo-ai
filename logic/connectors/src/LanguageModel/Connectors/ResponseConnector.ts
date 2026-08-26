@@ -1,20 +1,26 @@
 import axios from 'axios';
 
-import { type ResponseRole } from '@workspace/dtotypes';
+import type { ResponseResponse, ResponseRole } from '@workspace/dtotypes';
 import { getRouteUrl } from '../Route/LanguageModelRouter';
 
 export const getResponse = async (
   role: ResponseRole = 'user',
   prompt: string,
-  responseId?: string,
-): Promise<Response | null> => {
-  const trimmed = prompt.trim();
-  if (!trimmed) return null;
+  instructions: string,
+  responseId: string,
+): Promise<ResponseResponse | null> => {
+  const _prompt = prompt.trim();
+  if (!_prompt) return null;
+  const _instr = instructions.trim();
 
-  const response = await axios.post(getRouteUrl('/llm/response'), {
-    role,
-    prompt,
-    responseId,
-  });
+  const response = await axios.post<ResponseResponse>(
+    getRouteUrl('/llm/response'),
+    {
+      role,
+      prompt: _prompt,
+      instructions: _instr,
+      responseId,
+    },
+  );
   return response.data;
 };
