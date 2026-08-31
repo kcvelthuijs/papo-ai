@@ -213,7 +213,7 @@ export type TeacherFeedback = {
   grade: number;
 };
 export type TeacherRemark = {
-  text: string;
+  woord: string;
   correct: string;
   error: string;
 };

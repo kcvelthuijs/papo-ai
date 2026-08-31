@@ -1,6 +1,6 @@
-import type { Request, Response } from "express";
-import { ResponseService } from "../Services/response.service";
-import { ResponseSchema } from "../Schemas/response.schema";
+import type { Request, Response } from 'express';
+import { ResponseService } from '../Services/response.service';
+import { ResponseSchema } from '../Schemas/response.schema';
 
 export const ResponseController = {
   async sendMessage(req: Request, res: Response) {
@@ -19,18 +19,19 @@ export const ResponseController = {
         role,
         prompt,
         instructions,
-        responseId
+        responseId,
       );
 
-      console.log("response", response);
+      console.log('response', response);
       // Geef het return-object in json terug
       res.json({
         id: response.id,
         role: response.role,
-        message: response.message
+        message: response.message,
       });
     } catch (error) {
-      res.status(500).json({ error: "Failed to generate a response." });
+      console.log('response-error', error);
+      res.status(500).json({ error: 'Failed to generate a response.' });
     }
-  }
+  },
 };

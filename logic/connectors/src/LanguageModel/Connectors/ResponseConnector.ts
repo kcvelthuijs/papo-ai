@@ -21,7 +21,7 @@ export const getResponse = async (
       role,
       prompt: _prompt,
       instructions: _instr,
-      _responseId,
+      responseId: _responseId,
     },
   );
   return response.data;

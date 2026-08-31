@@ -72,7 +72,7 @@ export function CheckChatTest({
     }
     // Add input from user to the dialogue
     useDialogStore.getState().sayMessage = startAudio;
-    useDialogStore.getState().addMessage(text);
+    useDialogStore.getState().addMessage(text, result.feedback);
   };
 
   // -------------------------

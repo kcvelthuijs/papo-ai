@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-import type { ChatMessage } from '@workspace/dtotypes';
+import type { ChatMessage, TeacherFeedback } from '@workspace/dtotypes';
 import { useLanguageStore } from '@workspace/controllers';
 
 import {
@@ -32,7 +32,7 @@ type DialogState = {
 
   initialize: (config: DialogConfig) => void;
   startDialog: () => Promise<void>;
-  addMessage: (text: string) => Promise<void>;
+  addMessage: (text: string, feedback: TeacherFeedback) => Promise<void>;
   sendMessage: (role: string, message: string) => Promise<void>;
   setAssignment: (text: string) => void;
   sayMessage: (msg: ChatMessage) => Promise<void>;
@@ -150,10 +150,11 @@ export const useDialogStore = create<DialogState>((set, get) => ({
     }
   },
 
-  addMessage: async (text: string) => {
+  addMessage: async (text: string, feedback: TeacherFeedback) => {
     // Add user message to the list
     const newMsg: ChatMessage = {
       content: text,
+      feedback,
       role: 'user',
     };
     set((state) => ({

@@ -18,15 +18,14 @@ async function getTeacherFeedback(
   message: string,
   response: string,
 ): Promise<TeacherFeedback> {
-  const role = 'assistant';
-  const prompt = `Op de vraag "${message}" antwoordt de student "${response}".`;
-  const instructions = `Als docent begeleidt je een student die **portugues europeu** wil leren. 
-      Je beoordeelt **uitsluitend** het antwoord en niet de vraag. Je let op correcte spelling in portuguse europeu. 
-      Je geeft alleen feedback op fouten. Als er geen fouten zijn, is je feedback leeg.
-      Geef feedback en een grade 1 tot 10 in hele cijfers.
-      Antwoord in de json structuur
-      {'feedback': [{ 'text': <hier staat de foute tekst: Ola>, 'correct': <hier staat de correctie>, 'error': <vermelding wat er fout is>}, ... ], {'grade': <hier staat de grade>}
-      Gebruik maximaal 50 tokens voor een compleet antwoord.`;
+  const role = 'user';
+  const prompt = `Vraag: "${message}" Antwoord: "${response}".`;
+  const instructions = `Als docent beoordeel je een student die **portugues europeu** wil leren. Je beoordeelt **uitsluitend** zijn antwoord en niet de vraag. 
+    Negeer namen van personen en plaatsen. Als een woord mogelijk een persoonsnaam of plaatsnaam is, behandel het altijd als correct. Probeer een naam nooit te corrigeren of te beoordelen.
+    Je let alleen op correcte spelling. Je vermeldt **alleen** woorden die fouten bevatten. Je geeft feedback en een grade 1 tot 10 in hele cijfers.
+    Je antwoordt in een json structuur met als template: 
+    {'feedback': [{ 'woord': <de fout>, correct: <hier staat de correctie>, 'error': <omschrijving van de fout>}, ... ], {'grade': <hier staat de grade> }
+    Bij een grade van 10 is de uitvoer **altijd** { 'feedback':[], 'grade':10 }.`;
 
   const resp = await getResponse(role, prompt, instructions);
 

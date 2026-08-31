@@ -23,7 +23,6 @@ export const ResponseService = {
             content: prompt,
           },
         ],
-        max_output_tokens: 100,
         temperature: 0.1,
         previous_response_id:
           conversationRepository.getLastResponseId(responseId),

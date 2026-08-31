@@ -2,7 +2,11 @@ import ReactMarkdown from 'react-markdown';
 
 import { CopyIcon } from '@workspace/ui';
 import type { ChatMessage } from '@workspace/dtotypes';
+
 import RoleAvatar from './Avatar';
+import { ChatMessageBubble } from './ChatMessageBubble';
+import { ChatBotMessage } from './ChatBotMessage';
+import { ChatUserMessage } from './ChatUserMessage';
 
 type Props = {
   message: ChatMessage;
@@ -11,7 +15,6 @@ type Props = {
 
 export const ChatMessageItem = ({ message, onSpeakMessage }: Props) => {
   const isAssistant = message.role === 'bot';
-  const isStudent = message.role === 'user';
 
   const handleSpeak = () => {
     onSpeakMessage?.(message);
@@ -35,39 +38,35 @@ export const ChatMessageItem = ({ message, onSpeakMessage }: Props) => {
           />
         </div>
       )}
-      <div
-        className={`max-w-[80%] p-2 rounded-md border cursor-pointer xl:text-lg
-        ${
-          isAssistant
-            ? 'bg-gray-100 border-gray-300 text-black dark:bg-gray-700 dark:border-gray-500 dark:text-gray-200'
-            : 'bg-blue-200 border-blue-900 text-black dark:bg-blue-900 dark:border-gray-500 dark:text-gray-200'
-        }`}
-        onClick={handleSpeak}
-      >
-        <ReactMarkdown>{message.content}</ReactMarkdown>
-      </div>
 
-      {isAssistant && (
+      <ChatMessageBubble role={message.role} onClick={handleSpeak}>
+        {isAssistant ? (
+          <ChatBotMessage>{message.content}</ChatBotMessage>
+        ) : (
+          <ChatUserMessage
+            content={message.content}
+            feedback={message.feedback}
+          />
+        )}
+      </ChatMessageBubble>
+
+      {isAssistant ? (
         <CopyIcon
           className='ml-2 opacity-0 group-hover:opacity-100 cursor-pointer lg:text-2xl'
           onClick={copyText}
         />
-      )}
-
-      {isStudent && (
-        <>
-          <div className='mx-0'>
-            <RoleAvatar
-              role='student'
-              className='border shadow-xl border-gray-400 dark:border-gray-200'
-              style={{
-                width: '4rem',
-                height: '4rem',
-                transform: 'scaleX(-1)'
-              }}
-            />
-          </div>
-        </>
+      ) : (
+        <div className='mx-0'>
+          <RoleAvatar
+            role='student'
+            className='border shadow-xl border-gray-400 dark:border-gray-200'
+            style={{
+              width: '4rem',
+              height: '4rem',
+              transform: 'scaleX(-1)',
+            }}
+          />
+        </div>
       )}
     </div>
   );

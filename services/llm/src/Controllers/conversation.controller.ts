@@ -74,7 +74,7 @@ export const conversationController = {
         message: response.message,
       });
     } catch (error) {
-      console.error(error);
+      console.error('conv-error:', error);
       res.status(500).json({ error: 'Failed to generate a conversation.' });
     }
   },

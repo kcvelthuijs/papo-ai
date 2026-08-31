@@ -14,7 +14,7 @@ export const ChatMessageList = ({ messages, onSpeakMessage }: Props) => {
     console.log('ChatMessageList', 'scroll');
     lastRef.current?.scrollIntoView({
       behavior: 'smooth',
-      block: 'end'
+      block: 'end',
     });
   }, [messages, messages.length]);
 
